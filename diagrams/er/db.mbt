@@ -135,7 +135,7 @@ fn ErDb::add_attributes(
   attributes : Array[Attribute],
 ) -> Unit {
   let entity = self.add_entity(name)
-  for i = attributes.length() - 1; i >= 0; i = i - 1 {
+  for i in (attributes.length() - 1)>=..0 {
     entity.attributes.push(attributes[i])
   }
 }
@@ -243,7 +243,7 @@ fn ErDb::set_class(
   for id in ids {
     if self.entities.get(id) is Some(entity) {
       for class_name in class_names {
-        entity.css_classes = entity.css_classes + " " + class_name
+        entity.css_classes = "\{entity.css_classes} \{class_name}"
       }
     }
     if self.sub_graph_lookup.get(id) is Some(sub_graph) {
