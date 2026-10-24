@@ -113,7 +113,7 @@ fn is_shorthand(name : String) -> Bool {
 /// not.
 fn single_dimension(value : String) -> (Double, String)? {
   guard css_dimension(value.trim().to_owned()) is Some((number, unit)) &&
-    unit.iter().all(c => c is ('a'..<='z' | 'A'..<='Z' | '%')) else {
+    unit.all(c => c is ('a'..<='z' | 'A'..<='Z' | '%')) else {
     return None
   }
   Some((number, unit))
@@ -382,11 +382,10 @@ fn serialize_animation(value : String) -> String {
           None => return false
         }
     }
-    number.length() > 0 &&
-    number.iter().all(c => c is ('0'..<='9' | '.' | '-' | '+'))
+    number.length() > 0 && number.all(c => c is ('0'..<='9' | '.' | '-' | '+'))
   }
   let is_number = (token : String) => {
-    token != "" && token.iter().all(c => c is ('0'..<='9' | '.'))
+    token != "" && token.all(c => c is ('0'..<='9' | '.'))
   }
   for part in value.split(" ") {
     let token = part.trim().to_owned()
