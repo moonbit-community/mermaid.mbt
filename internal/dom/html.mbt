@@ -153,7 +153,7 @@ pub fn Element::set_inner_html(
         j += 1
       }
       flush()
-      for depth = stack.length() - 1; depth > 0; depth = depth - 1 {
+      for depth in stack.length()>..1 {
         if stack[depth].tag.to_lower() == name {
           stack.truncate(depth)
           break

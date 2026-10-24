@@ -33,7 +33,7 @@ fn parse_svg_number(text : StringView) -> Float {
   }
   let mut integer : Float = 0
   let mut multiplier : Float = 1
-  for j = i - 1; j >= digits_start; j = j - 1 {
+  for j in (i - 1)>=..digits_start {
     integer = integer + multiplier * Float::from_int(chars[j].to_int() - '0')
     multiplier = multiplier * 10
   }

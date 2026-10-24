@@ -98,7 +98,7 @@ fn reserialized_text(text : String) -> String raise SanitizeError {
       rest = after
       continue
     }
-    let reference = "&" + after[:length + 1].to_owned()
+    let reference = "&\{after[:length + 1]}"
     let resolved = resolve_references(reference)
     if resolved == reference {
       // Not a reference this port knows; the parser knows many more.
@@ -236,9 +236,9 @@ pub fn sanitize_fragment(text : String) -> String raise SanitizeError {
     guard tag_end(chars, name_end) is Some(end) else { break }
     // Without attributes: nothing but white space and slashes after the
     // name.
-    let bare = chars[name_end:end - 1]
-      .iter()
-      .all(c => c is (' ' | '\t' | '\n' | '\r' | '\u{c}' | '/'))
+    let bare = chars[name_end:end - 1].all(c => {
+      c is (' ' | '\t' | '\n' | '\r' | '\u{c}' | '/')
+    })
     i = end
     if name == "br" {
       guard bare else { raise unsupported }

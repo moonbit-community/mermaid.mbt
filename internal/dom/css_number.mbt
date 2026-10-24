@@ -74,11 +74,11 @@ fn css_number(value : Double) -> String {
     } else {
       exponent_text
     }
-    let mantissa_text = strip(text[:1].to_owned() + "." + text[1:].to_owned())
+    let mantissa_text = strip("\{text[:1]}.\{text[1:]}")
     return "\{sign}\{mantissa_text}e\{if k < 0 { "-" } else { "+" }}\{padded}"
   }
   let fixed = if k >= 0 {
-    text[:k + 1].to_owned() + "." + text[k + 1:].to_owned()
+    "\{text[:k + 1]}.\{text[k + 1:]}"
   } else {
     "0." + "0".repeat(-k - 1) + text
   }

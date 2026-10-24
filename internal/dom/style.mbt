@@ -7,9 +7,9 @@ fn parse_declarations(text : String) -> Array[(String, String)] {
   // Name, serialized value, importance.
   let parsed : Array[(String, String, Bool)] = []
   for part in text.split(";") {
-    guard part.find(":") is Some(colon) else { continue }
-    let name = part[:colon].trim().to_owned()
-    let value = part[colon + 1:].trim().to_owned()
+    guard part.split_once(":") is Some((name, value)) else { continue }
+    let name = name.trim().to_owned()
+    let value = value.trim().to_owned()
     if name != "" && value != "" {
       // Priority is kept apart from the value while it is normalized.
       let lower = value.to_lower()
