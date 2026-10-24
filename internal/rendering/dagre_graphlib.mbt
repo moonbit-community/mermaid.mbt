@@ -207,9 +207,7 @@ fn find_common_edges(graph : DagreGraph, id1 : String?, id2 : String?) -> Int32 
     (if Some(edge.v) == id1 { id2 } else { Some(edge.v) }, edge.w)
   })
   primed
-  .filter(pair => {
-    edges2.iter().any(edge => pair.0 == Some(edge.v) && pair.1 == edge.w)
-  })
+  .filter(pair => edges2.any(edge => pair.0 == Some(edge.v) && pair.1 == edge.w))
   .length()
 }
 

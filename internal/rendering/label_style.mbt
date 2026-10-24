@@ -20,9 +20,9 @@ fn Env::styled(self : Env, style : String, faces~ : Bool = true) -> Env {
   }
   let mut env = self
   for declaration in style.split(";") {
-    guard declaration.find(":") is Some(colon) else { continue }
-    let name = declaration[:colon].trim().to_owned().to_lower()
-    let value = declaration[colon + 1:]
+    guard declaration.split_once(":") is Some((name, value)) else { continue }
+    let name = name.trim().to_owned().to_lower()
+    let value = value
       .to_owned()
       .replace_all(old="!important", new="")
       .trim()
@@ -215,9 +215,9 @@ fn label_font(style : String) -> LabelFont {
   let mut italic = false
   let mut size : Double? = None
   for declaration in style.split(";") {
-    guard declaration.find(":") is Some(colon) else { continue }
-    let name = declaration[:colon].trim().to_owned().to_lower()
-    let value = declaration[colon + 1:]
+    guard declaration.split_once(":") is Some((name, value)) else { continue }
+    let name = name.trim().to_owned().to_lower()
+    let value = value
       .to_owned()
       .replace(old="!important", new="")
       .trim()
@@ -255,9 +255,9 @@ fn label_font(style : String) -> LabelFont {
 /// Whether an inline label style has `white-space: nowrap`.
 fn keeps_on_one_line(style : String) -> Bool {
   for declaration in style.split(";") {
-    guard declaration.find(":") is Some(colon) else { continue }
-    let name = declaration[:colon].trim().to_owned().to_lower()
-    let value = declaration[colon + 1:]
+    guard declaration.split_once(":") is Some((name, value)) else { continue }
+    let name = name.trim().to_owned().to_lower()
+    let value = value
       .to_owned()
       .replace(old="!important", new="")
       .trim()

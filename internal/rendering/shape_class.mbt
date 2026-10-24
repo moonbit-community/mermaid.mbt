@@ -39,7 +39,7 @@ fn class_add_text(
   // Upstream measures the text line by line, and gives up on a line that
   // has no box: one of nothing but white space.
   for line in normalize_breaks(text).split("\n") {
-    if !line.is_empty() && line.iter().all(c => c is (' ' | '\t' | '\r')) {
+    if !line.is_empty() && line.all(c => c is (' ' | '\t' | '\r')) {
       raise LayoutError("svg element not in render tree")
     }
   }

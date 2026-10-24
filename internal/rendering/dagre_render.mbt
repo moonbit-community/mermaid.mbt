@@ -428,7 +428,7 @@ fn DagreState::insert_terminal_labels_in_rounds(
   }
   let texts = edges.map(terminal_label_texts)
   let mut round = 0
-  while texts.iter().any(entries => round < entries.length()) {
+  while texts.any(entries => round < entries.length()) {
     for i, edge in edges {
       if texts[i].get(round) is Some((key, text)) {
         insert_terminal_label(group, edge, env, key, text)

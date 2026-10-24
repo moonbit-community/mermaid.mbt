@@ -334,7 +334,7 @@ fn dash_gaps(style : String) -> (String, String)? {
   }
   guard tokens is ["0", start, _, end, ..] else { return None }
   let numeric = (text : String) => {
-    text != "" && text.iter().all(c => c is ('0'..<='9' | '.'))
+    text != "" && text.all(c => c is ('0'..<='9' | '.'))
   }
   if numeric(start) && numeric(tokens[2]) && numeric(end) {
     Some((start, end))
