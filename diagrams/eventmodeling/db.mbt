@@ -141,12 +141,6 @@ fn State::swimlane_props(self : State, frame : Frame) -> (Int32, String) {
 ///|
 /// `calculateEntityVisualProps`: fill and stroke.
 fn visual_props(frame : Frame, theme : @theme.Theme) -> (String, String) {
-  let variable = (name : String, fallback : String) => {
-    match theme.get(name) {
-      Null => fallback
-      _ => theme.text(name)
-    }
-  }
   let (kind, fill, stroke) = match frame.entity_type {
     Ui => ("Ui", "white", "#dbdada")
     Processor => ("Processor", "#edb3f6", "#b88cbf")
@@ -154,7 +148,10 @@ fn visual_props(frame : Frame, theme : @theme.Theme) -> (String, String) {
     Command => ("Command", "#bcd6fe", "#679ac3")
     Event => ("Event", "#ffb778", "#c19a0f")
   }
-  (variable("em\{kind}Fill", fill), variable("em\{kind}Stroke", stroke))
+  (
+    variable(theme, "em\{kind}Fill", fill),
+    variable(theme, "em\{kind}Stroke", stroke),
+  )
 }
 
 ///|
@@ -192,7 +189,7 @@ fn substring(
 ///|
 /// The index of the last `}`, or -1.
 fn last_closing_brace(text : String) -> Int32 {
-  for index = text.length() - 1; index >= 0; index = index - 1 {
+  for index in (text.length() - 1)>=..0 {
     if text[index] == '}' {
       return index
     }
@@ -215,7 +212,7 @@ fn sanitize(text : String) -> String raise Unsupported {
       continue
     }
     let known = ["lt;", "gt;", "amp;", "quot;", "nbsp;"]
-    if !known.iter().any(reference => rest.has_prefix(reference)) {
+    if !known.any(reference => rest.has_prefix(reference)) {
       raise Unsupported("character references in data: \{text}")
     }
   }
@@ -227,10 +224,7 @@ fn sanitize(text : String) -> String raise Unsupported {
 /// character before the closing one, wrapped, with every blank made a
 /// no-break space.
 fn data_html(data : String, opening : String) -> String raise {
-  let start = match data.find(opening) {
-    Some(index) => index
-    None => -1
-  }
+  let start = data.find(opening).unwrap_or(-1)
   let inner = substring(data, start + opening.length(), data.length())
   let inner = substring(inner, 0, last_closing_brace(inner) - 1)
   wrap_label(sanitize(inner), TEXT_MAX_WIDTH).replace_all(old=" ", new="&nbsp;")
@@ -375,7 +369,7 @@ fn State::position_frame(
 /// `findBoxByLineIndex`: the nearest box at or before `line` that is in
 /// another swimlane than `swimlane`.
 fn State::box_before(self : State, swimlane : Int32, line : Int32) -> Box? {
-  for i = line; i >= 0; i = i - 1 {
+  for i in line>=..0 {
     if self.boxes[i].swimlane.index != swimlane {
       return Some(self.boxes[i])
     }

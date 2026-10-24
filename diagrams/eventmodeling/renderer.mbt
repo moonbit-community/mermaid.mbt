@@ -156,8 +156,7 @@ pub fn draw(model : EventModel, context : @diagram.Context) -> Unit raise {
     // The output is then not sanitized, which is where entity codes are
     // resolved and line breaks rewritten.
     Some("loose") =>
-      if model.entities ||
-        state.boxes.iter().any(box => box.text.contains("<br")) {
+      if model.entities || state.boxes.any(box => box.text.contains("<br")) {
         raise Unsupported("data and entity codes under securityLevel loose")
       }
     // The diagram is then in a frame of its own, where upstream looks
