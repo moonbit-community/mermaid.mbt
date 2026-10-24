@@ -11,12 +11,12 @@ fn ErDb::layout_data(
   let edges : Array[@rendering.Edge] = []
   let sub_graphs = self.sub_graphs
   let parent_db : Map[String, String] = Map([])
-  for i = sub_graphs.length() - 1; i >= 0; i = i - 1 {
+  for i in (sub_graphs.length() - 1)>=..0 {
     for id in sub_graphs[i].nodes {
       parent_db[id] = sub_graphs[i].id
     }
   }
-  for i = sub_graphs.length() - 1; i >= 0; i = i - 1 {
+  for i in (sub_graphs.length() - 1)>=..0 {
     let sub_graph = sub_graphs[i]
     nodes.push(
       @rendering.Node::new(
@@ -38,7 +38,7 @@ fn ErDb::layout_data(
   let mut color_index = 0
   for name, entity in self.entities {
     // A subgraph of the same name stands in for the entity.
-    if sub_graphs.iter().any(sub_graph => sub_graph.id == name) {
+    if sub_graphs.any(sub_graph => sub_graph.id == name) {
       continue
     }
     let class_names = entity.css_classes
