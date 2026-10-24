@@ -127,14 +127,14 @@ fn is_color_function(hsl : Bool, arguments : String) -> Bool {
       _ => false
     }
   }
-  let (channels, alpha) = match arguments.find("/") {
-    Some(slash) => {
-      let alpha = words(arguments[slash + 1:])
+  let (channels, alpha) = match arguments.split_once("/") {
+    Some((before, after)) => {
+      let alpha = words(after)
       guard alpha.length() == 1 &&
         (is_alpha(alpha[0]) || alpha[0] == Some(Nothing)) else {
         return false
       }
-      (words(arguments[:slash]), true)
+      (words(before), true)
     }
     None => (words(arguments[:]), false)
   }

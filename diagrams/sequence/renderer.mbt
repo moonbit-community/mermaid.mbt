@@ -549,9 +549,7 @@ pub fn draw(
   }
   let messages = db.messages
   let has_boxes = db.boxes.length() > 0
-  let has_box_titles = db.boxes
-    .iter()
-    .any(box => box.name is Some(name) && name != "")
+  let has_box_titles = db.boxes.any(box => box.name is Some(name) && name != "")
   let message_widths = self.max_message_width_per_actor()
   conf.height = self.calculate_actor_margins(message_widths)
   self.insert_definitions()
