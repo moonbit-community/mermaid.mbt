@@ -85,7 +85,7 @@ pub fn Journey::actors(self : Journey) -> Array[String] {
 
 ///|
 fn compare_code_units(a : String, b : String) -> Int32 {
-  let n = if a.length() < b.length() { a.length() } else { b.length() }
+  let n = a.length().min(b.length())
   for i in 0..<n {
     let difference = a[i].to_int() - b[i].to_int()
     if difference != 0 {

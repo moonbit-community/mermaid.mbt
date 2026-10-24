@@ -109,7 +109,7 @@ fn css_font_size(text : String) -> String? raise JourneyError {
   // Signs, exponents and anything else CSS reads differently from
   // JavaScript are left alone.
   let plain = value != "" &&
-    value.iter().all(c => c is ('0'..<='9' | '.')) &&
+    value.all(c => c is ('0'..<='9' | '.')) &&
     value.iter().filter(c => c == '.').count() <= 1 &&
     !value.has_suffix(".")
   if !plain {
@@ -158,7 +158,7 @@ fn css_font_family(text : String) -> String raise JourneyError {
         }
         let ok = first != "" &&
           is_start(first.get_char(0).unwrap()) &&
-          word.iter().all(c => is_start(c) || c is ('0'..<='9' | '-'))
+          word.all(c => is_start(c) || c is ('0'..<='9' | '-'))
         if !ok {
           raise unsupported()
         }
