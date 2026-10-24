@@ -111,11 +111,9 @@ fn max_int(values : Array[Int32?]) -> Int32? {
 /// `_.range(start, end)` counting up, empty when `end` is not above
 /// `start`.
 fn range(start : Int32, end : Int32) -> Array[Int32] {
-  let result = []
-  for i in start..<end {
-    result.push(i)
-  }
-  result
+  [
+    for i in start..<end => i
+  ]
 }
 
 ///|

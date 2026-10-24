@@ -10,23 +10,15 @@ fn order(g : LayoutGraph) -> Unit raise LayoutError {
   // a rank they are `_.range(1, NaN)` and `_.range(NaN, -1, -1)`, which
   // count from 1 down to 0 and from 0 down to -1.
   let (down_ranks, up_ranks) = match max_rank {
-    Some(max) => {
-      let up = []
-      for rank = max - 1; rank > -1; rank = rank - 1 {
-        up.push(rank)
-      }
-      (range(1, max + 1), up)
-    }
+    Some(max) => (range(1, max + 1), [ for rank in (max - 1)>=..0 => rank ])
     None => ([1], [0])
   }
-  let down_layer_graphs = []
-  for rank in down_ranks {
-    down_layer_graphs.push(build_layer_graph(g, rank, true))
-  }
-  let up_layer_graphs = []
-  for rank in up_ranks {
-    up_layer_graphs.push(build_layer_graph(g, rank, false))
-  }
+  let down_layer_graphs = [
+    for rank in down_ranks => build_layer_graph(g, rank, true)
+  ]
+  let up_layer_graphs = [
+    for rank in up_ranks => build_layer_graph(g, rank, false)
+  ]
   let mut layering = init_order(g)
   assign_order(g, layering)
   let mut best_cc = @double.infinity

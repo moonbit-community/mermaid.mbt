@@ -17,10 +17,7 @@ fn position_y(g : LayoutGraph) -> Unit raise LayoutError {
   let rank_sep = g.graph().ranksep
   let mut prev_y = 0.0
   for layer in layering {
-    let heights = []
-    for v in layer {
-      heights.push(nd(g, v).height)
-    }
+    let heights = [ for v in layer => nd(g, v).height ]
     // The height of a rank without a node is undefined, and every
     // coordinate from there on not a number.
     let max_height = lodash_max(heights).unwrap_or(@double.not_a_number)
