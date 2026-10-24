@@ -392,7 +392,7 @@ fn create_svg_label(
     } else {
       // A raw markdown block keeps its line breaks in one word, which
       // upstream refuses to break.
-      if line.iter().any(word => word.content.contains("\n")) {
+      if line.any(word => word.content.contains("\n")) {
         upstream_failure.val = Some(
           "splitLineToFitWidth does not support newlines in the line",
         )

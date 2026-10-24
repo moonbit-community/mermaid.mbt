@@ -349,7 +349,7 @@ fn Obstacles::hits_frame(
     x2: box.x2 + clearance,
     y2: box.y2 + clearance,
   }
-  self.frame_segments.iter().any(segment => padded.hit_by(segment.0, segment.1))
+  self.frame_segments.any(segment => padded.hit_by(segment.0, segment.1))
 }
 
 ///|
@@ -364,8 +364,8 @@ fn Obstacles::blocked(
   segment : Int32,
   clearance~ : Double = 0.0,
 ) -> Bool {
-  if self.node_boxes.iter().any(node => box.overlaps(node)) ||
-    self.centre_label_boxes.iter().any(label => box.overlaps(label)) ||
+  if self.node_boxes.any(node => box.overlaps(node)) ||
+    self.centre_label_boxes.any(label => box.overlaps(label)) ||
     self.hits_frame(box, clearance~) {
     return true
   }

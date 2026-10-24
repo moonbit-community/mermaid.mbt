@@ -243,7 +243,7 @@ fn cut_path_at_intersect(points : Array[Point], frame : Bounds) -> Array[Point] 
   for point in points {
     if !outside_node(frame, point) && !is_inside {
       let inter = frame_intersection(frame, last_point_outside, point)
-      if !result.iter().any(e => e.x == inter.x && e.y == inter.y) {
+      if !result.any(e => e.x == inter.x && e.y == inter.y) {
         result.push(inter)
       }
       is_inside = true
