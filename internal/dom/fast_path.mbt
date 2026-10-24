@@ -228,7 +228,7 @@ fn FastPath::reference(self : FastPath, in_attribute : Bool) -> Unit {
     }
     // Decimal digits are checked by `reference_code` only up to its
     // radix.
-    if !hex && digits.iter().any(c => !(c is ('0'..<='9'))) {
+    if !hex && digits.any(c => !(c is ('0'..<='9'))) {
       self.failed = true
       return
     }
@@ -249,7 +249,7 @@ fn FastPath::reference(self : FastPath, in_attribute : Bool) -> Unit {
   // table the text starts with; what follows it is scanned again.
   let input = self.html[start:self.pos]
   let longest = name_span(input)
-  for length = longest; length > 0; length = length - 1 {
+  for length in longest>=..1 {
     guard named_references.contains(input[:length].to_owned()) else { continue }
     if in_attribute &&
       input[length - 1] != ';' &&

@@ -54,7 +54,7 @@ fn resolve_references(
         // longer than 32 characters, semicolon included.
         let longest = name_span(after)
         let mut matched = false
-        for length = longest; length > 0; length = length - 1 {
+        for length in longest>=..1 {
           guard named_references.get(after[:length].to_owned()) is Some(value) else {
             continue
           }

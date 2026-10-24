@@ -91,7 +91,7 @@ fn reserialized_text(text : String) -> String raise SanitizeError {
       // Where none of those starts the run, the ampersand is text.
       let run = after[:length]
       if run.has_prefix("#") ||
-        legacy_reference_names.iter().any(name => run.has_prefix(name)) {
+        legacy_reference_names.any(name => run.has_prefix(name)) {
         raise Unmodelled(text)
       }
       out.write_string("&amp;")
@@ -231,7 +231,7 @@ pub fn sanitize_fragment(text : String) -> String raise SanitizeError {
       name_end += 1
     }
     let name = String::from_array(chars[start:name_end]).to_lower()
-    guard name.iter().all(c => c.to_int() < 0x80) else { raise unsupported }
+    guard name.all(c => c.to_int() < 0x80) else { raise unsupported }
     // A tag the text ends in is dropped with everything in it.
     guard tag_end(chars, name_end) is Some(end) else { break }
     // Without attributes: nothing but white space and slashes after the
