@@ -53,7 +53,7 @@ fn KanbanDb::sanitize_text(
   // Any level but these escapes the text instead of sanitizing it.
   if !(config.text("securityLevel") is Some("strict" | "antiscript" | "loose")) &&
     !(config.get("flowchart.htmlLabels") is False) &&
-    text.iter().any(escaped) {
+    text.any(escaped) {
     raise Unsupported("markup in text with this securityLevel: \{text}")
   }
   guard text.contains("<") else { return text }
@@ -102,7 +102,7 @@ fn KanbanNode::apply_metadata(
   let source = if shape_data.contains("\n") {
     shape_data + "\n"
   } else {
-    "{\n" + shape_data + "\n}"
+    "{\n\{shape_data}\n}"
   }
   let fields = match load_yaml(source) {
     // Reading a property of nothing is a `TypeError`.

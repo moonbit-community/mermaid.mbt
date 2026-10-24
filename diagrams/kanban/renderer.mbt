@@ -142,8 +142,7 @@ fn starts_block(line : String) -> Bool {
       if after(1) {
         return true
       }
-      chars.iter().all(c => c == first || c == ' ') &&
-      chars.iter().filter(c => c == first).count() >= 3
+      chars.all(c => c == first || c == ' ') && chars.count(first) >= 3
     }
     '0'..<='9' => {
       let mut i = 0
@@ -204,7 +203,7 @@ fn check_markdown_text(text : String) -> Unit raise KanbanError {
     [.. rest, ""] => rest
     inner => inner
   }
-  if inner.iter().any(line => line.trim().is_empty()) {
+  if inner.any(line => line.trim().is_empty()) {
     raise refuse()
   }
 }
@@ -318,7 +317,7 @@ fn check_measurable(
   match context.theme().get("fontSize") {
     Number(_, ..) => ()
     String(size) if size.has_suffix("px") &&
-      size[:size.length() - 2].iter().all(c => c is ('0'..<='9' | '.')) => ()
+      size[:size.length() - 2].all(c => c is ('0'..<='9' | '.')) => ()
     size => raise Unsupported("the font size \{size.stringify()}")
   }
   let stacks = [
