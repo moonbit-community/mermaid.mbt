@@ -439,11 +439,11 @@ fn Cy::edge_box(self : Cy, edge : CyEdge) -> Box raise ArchitectureError {
     max3(geometry.start_x, geometry.mid_x, geometry.end_x) + half,
     max3(geometry.start_y, geometry.mid_y, geometry.end_y) + half,
   )
-  if geometry.segment is Some(_) {
+  if geometry.segment is Some(segment) {
     // `linePts`: the start, the bend and the end.
     let points = [
       (geometry.start_x, geometry.start_y),
-      geometry.segment.unwrap(),
+      segment,
       (geometry.end_x, geometry.end_y),
     ]
     for point in points {
