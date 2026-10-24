@@ -68,7 +68,7 @@ fn decode_uri(text : String) -> String {
       return text
     }
     let mut code = lead
-    for k = 1; k < length; k = k + 1 {
+    for k in 1..<length {
       guard byte_at(i + 3 * k) is Some(next) && (next & 0xC0) == 0x80 else {
         return text
       }
@@ -164,13 +164,11 @@ fn normalize_http_url(url : String) -> String? raise Unsupported {
     None => ""
   }
   let is_decimal = (label : String) => {
-    label != "" && label.iter().all(c => c is ('0'..<='9'))
+    label != "" && label.all(c => c is ('0'..<='9'))
   }
   if is_decimal(last) || last.has_prefix("0x") {
     let plain = labels.length() == 4 &&
-      labels
-      .iter()
-      .all(label => {
+      labels.all(label => {
         is_decimal(label) &&
         (label == "0" || !label.has_prefix("0")) &&
         label.length() <= 3 &&
@@ -236,7 +234,7 @@ fn char_code(reference : String) -> Int32? {
     }
   }
   let is_digits = (from : Int32, radix : Int32) => {
-    from < chars.length() && chars[from:].iter().all(c => digit(c) < radix)
+    from < chars.length() && chars[from:].all(c => digit(c) < radix)
   }
   let prefix = if chars.length() > 2 && chars[0] == '0' {
     match chars[1] {
@@ -261,7 +259,7 @@ fn char_code(reference : String) -> Int32? {
     let exponent = chars.search_by(c => c is ('e' | 'E'))
     let mantissa_end = exponent.unwrap_or(chars.length())
     let decimal = mantissa_end > 0 &&
-      chars[:mantissa_end].iter().all(c => c is ('0'..<='9')) &&
+      chars[:mantissa_end].all(c => c is ('0'..<='9')) &&
       (exponent is None || is_digits(mantissa_end + 1, 10))
     if decimal {
       @string.parse_double(reference) catch {
