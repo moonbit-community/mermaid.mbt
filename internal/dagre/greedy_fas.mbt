@@ -96,7 +96,7 @@ fn do_greedy_fas(
       fas_remove_node(g, buckets, zero_idx, entry, None)
     }
     if g.node_count() != 0 {
-      for i = buckets.length() - 2; i > 0; i = i - 1 {
+      for i in (buckets.length() - 2)>=..1 {
         if buckets[i].dequeue() is Some(entry) {
           fas_remove_node(g, buckets, zero_idx, entry, Some(results))
           break

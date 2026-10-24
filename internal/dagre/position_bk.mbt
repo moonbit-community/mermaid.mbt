@@ -176,7 +176,7 @@ fn vertical_alignment(
         })
         let mp = (ws.length() - 1).to_double() / 2.0
         let il = mp.ceil().to_int()
-        for i = mp.floor().to_int(); i <= il; i = i + 1 {
+        for i in mp.floor().to_int()..<=il {
           let w = ws[i]
           guard pos.get(w) is Some(pos_w) else { continue }
           if align.get(v) == Some(v) &&
