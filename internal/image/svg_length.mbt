@@ -52,7 +52,7 @@ fn unit_scale(unit : String, font_size : Float?) -> Result[Double, String]? {
 ///|
 /// A length attribute's value.
 fn svg_length(text : String, font_size : Float?) -> SvgLength {
-  let text = text.trim(chars=" \t\n\r\u{0c}").to_owned()
+  let text = text.trim(chars=" \t\n\r\u{0c}")
   let chars = text.to_array()
   guard svg_number(chars, 0) is Some((value, end)) else {
     // A function (`calc(...)` and its kin) the port does not evaluate.
@@ -65,9 +65,7 @@ fn svg_length(text : String, font_size : Float?) -> SvgLength {
   if unit == "%" {
     return Open
   }
-  guard unit.iter().all(c => c is ('a'..<='z' | 'A'..<='Z')) else {
-    return Open
-  }
+  guard unit.all(c => c is ('a'..<='z' | 'A'..<='Z')) else { return Open }
   match unit_scale(unit.to_lower(), font_size) {
     Some(Ok(scale)) => {
       let pixels = Float::from_double(value * scale)
