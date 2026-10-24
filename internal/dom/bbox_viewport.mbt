@@ -5,10 +5,7 @@
 /// content keeps the box it has, mapped: `getBBox` does not clip it.
 fn Element::viewport_transform(self : Element) -> Transform {
   let number = (name : String) => {
-    match self.get_attr(name) {
-      Some(text) => Some(parse_svg_number(text[:]))
-      None => None
-    }
+    self.get_attr(name).map(text => parse_svg_number(text[:]))
   }
   let x = number("x").unwrap_or(0)
   let y = number("y").unwrap_or(0)

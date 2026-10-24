@@ -73,9 +73,7 @@ fn decode_entities(text : String, in_attribute~ : Bool = false) -> String {
       // `\w` leave them).
       out.write_string(numeric_reference(reference_code(digits, 10)))
     } else {
-      out.write_string(
-        resolve_references("&" + body.to_owned() + ";", in_attribute~),
-      )
+      out.write_string(resolve_references("&\{body};", in_attribute~))
     }
   }
   out.write_view(rest)

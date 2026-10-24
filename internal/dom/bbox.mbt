@@ -348,15 +348,12 @@ fn element_transform(element : Element) -> Transform {
     if rest.is_empty() {
       break
     }
-    guard rest.find("(") is Some(open) else { return identity }
-    guard rest[open:].find(")") is Some(length) else { return identity }
-    let name = rest[:open].trim(chars=" \t\n\r").to_owned()
+    guard rest.split_once("(") is Some((name, after)) else { return identity }
+    guard after.find(")") is Some(close) else { return identity }
+    let name = name.trim(chars=" \t\n\r").to_owned()
     let arguments = []
     for
-      part in rest[open + 1:open + length]
-      .to_owned()
-      .replace_all(old=",", new=" ")
-      .split(" ") {
+      part in after[:close].to_owned().replace_all(old=",", new=" ").split(" ") {
       let part = part.trim(chars=" \t\n\r")
       if !part.is_empty() {
         arguments.push(parse_svg_number(part))
@@ -366,7 +363,7 @@ fn element_transform(element : Element) -> Transform {
       return identity
     }
     transform = next
-    rest = rest[open + length + 1:]
+    rest = after[close + 1:]
   }
   transform
 }
@@ -517,18 +514,15 @@ fn Element::local_bounds(self : Element) -> Bounds? {
       bounds
     }
     "text" =>
-      match self.text_box {
-        Some(box) => {
-          let f = Float::from_double
-          Some({
-            x: f(box.x),
-            y: f(box.y),
-            width: f(box.width),
-            height: f(box.height),
-          })
+      self.text_box.map(box => {
+        let f = Float::from_double
+        {
+          x: f(box.x),
+          y: f(box.y),
+          width: f(box.width),
+          height: f(box.height),
         }
-        None => None
-      }
+      })
     // `defs`, `marker`, `style`, `title` and `desc` are not rendered
     // geometry.
     _ => None
@@ -547,9 +541,9 @@ fn Element::is_display_none(self : Element) -> Bool {
   guard self.get_attr("style") is Some(text) else { return false }
   let mut hidden = false
   for part in text.split(";") {
-    guard part.find(":") is Some(colon) else { continue }
-    if part[:colon].trim().to_owned().to_lower() == "display" {
-      let value = part[colon + 1:].trim().to_owned().to_lower()
+    guard part.split_once(":") is Some((name, value)) else { continue }
+    if name.trim().to_owned().to_lower() == "display" {
+      let value = value.trim().to_owned().to_lower()
       let value = match value.strip_suffix("!important") {
         Some(base) => base.trim().to_owned()
         None => value
