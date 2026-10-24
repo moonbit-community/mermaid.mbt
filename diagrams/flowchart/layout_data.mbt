@@ -136,7 +136,7 @@ fn FlowDb::layout_data(
       collapsed_ancestor[child] = ancestor
     }
   }
-  for i = sub_graphs.length() - 1; i >= 0; i = i - 1 {
+  for i in (sub_graphs.length() - 1)>=..0 {
     let sg = sub_graphs[i]
     if hidden.contains(sg.id) {
       continue
@@ -148,7 +148,7 @@ fn FlowDb::layout_data(
       parent_db[id] = sg.id
     }
   }
-  for i = sub_graphs.length() - 1; i >= 0; i = i - 1 {
+  for i in (sub_graphs.length() - 1)>=..0 {
     let sg = sub_graphs[i]
     if hidden.contains(sg.id) {
       continue

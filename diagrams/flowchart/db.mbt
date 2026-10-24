@@ -471,7 +471,7 @@ fn FlowDb::add_single_link(
   if fields.get("length") is Some(Number(length, ..)) {
     edge.length = Some(if length > 10.0 { 10 } else { length.to_int() })
   }
-  let taken = (id : String) => self.edges.iter().any(e => e.id == id)
+  let taken = (id : String) => self.edges.any(e => e.id == id)
   match id {
     Some(id) if id != "" && !taken(id) => {
       edge.id = id
@@ -599,7 +599,7 @@ pub fn FlowDb::update_link(
         // The array is shared between the links of one statement, as in
         // the JavaScript, so `fill:none` is added to it once.
         edge.style = Some(style)
-        if style.length() > 0 && !style.iter().any(s => s.has_prefix("fill")) {
+        if style.length() > 0 && !style.any(s => s.has_prefix("fill")) {
           style.push("fill:none")
         }
       }
@@ -761,7 +761,7 @@ pub fn FlowDb::unsupported(self : FlowDb) -> String? {
 ///|
 /// Whether a subgraph already lists `id`.
 fn exists(sub_graphs : Array[SubGraph], id : String) -> Bool {
-  sub_graphs.iter().any(sub_graph => sub_graph.nodes.contains(id))
+  sub_graphs.any(sub_graph => sub_graph.nodes.contains(id))
 }
 
 ///|
@@ -786,7 +786,7 @@ fn FlowDb::add_sub_graph(
   }
   // `subgraph some title` without an id: the text is only a title
   // (`/\s/`, JavaScript's white space).
-  if same_text && title_text.iter().any(@diagram.is_js_space) {
+  if same_text && title_text.any(@diagram.is_js_space) {
     sub_graph_id = None
   }
   // Flatten one level, drop directions and blanks, keep first occurrences.
