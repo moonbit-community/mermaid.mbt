@@ -28,7 +28,7 @@ priv struct InlineStyle {
 /// A number as CSS serializes it.
 fn css_number(text : String) -> String? {
   guard text != "" &&
-    text.iter().all(c => c is ('0'..<='9' | '.')) &&
+    text.all(c => c is ('0'..<='9' | '.')) &&
     text.iter().filter(c => c == '.').count() <= 1 &&
     !text.has_suffix(".") else {
     return None
@@ -113,9 +113,9 @@ fn normalize(name : String, value : String) -> String? {
 fn InlineStyle::parse(raw : String) -> InlineStyle {
   let parsed : Array[Declaration] = []
   for part in raw.split(";") {
-    guard part.find(":") is Some(colon) else { continue }
-    let name = part[:colon].trim().to_owned().to_lower()
-    let value = part[colon + 1:].trim().to_owned()
+    guard part.split_once(":") is Some((raw_name, raw_value)) else { continue }
+    let name = raw_name.trim().to_owned().to_lower()
+    let value = raw_value.trim().to_owned()
     let (value, important) = match value.to_lower().strip_suffix("!important") {
       Some(_) => (value[:value.length() - 10].trim().to_owned(), true)
       None => (value, false)
@@ -131,7 +131,7 @@ fn InlineStyle::parse(raw : String) -> InlineStyle {
     let kept : Array[Declaration] = []
     for declaration in parsed.rev() {
       if declaration.important == important &&
-        !kept.iter().any(other => other.name == declaration.name) {
+        !kept.any(other => other.name == declaration.name) {
         kept.push(declaration)
       }
     }
@@ -140,7 +140,7 @@ fn InlineStyle::parse(raw : String) -> InlineStyle {
   }
   let important = last(true)
   let normal = last(false).filter(declaration => {
-    !important.iter().any(other => other.name == declaration.name)
+    !important.any(other => other.name == declaration.name)
   })
   { raw, declarations: [..normal, ..important], changed: false, }
 }
