@@ -178,8 +178,7 @@ fn GanttDb::add_task(
   let mut matched = true
   while matched {
     matched = false
-    for entry in tags {
-      let (tag, pattern) = entry
+    for (tag, pattern) in tags {
       // Upstream reads the first field without checking there is one.
       guard fields.get(0) is Some(first) else {
         raise GanttError(

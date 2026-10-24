@@ -113,7 +113,7 @@ fn max_intersections(
         by_start
       }
     },
-    consistent=tasks.iter().all(has_start),
+    consistent=tasks.all(has_start),
   )
   let mut max = 0
   for task in sorted {
@@ -314,7 +314,7 @@ pub fn draw(db : GanttDb, context : @diagram.Context) -> Unit raise GanttError {
         0.0
       }
     },
-    consistent=tasks.iter().all(has_start),
+    consistent=tasks.all(has_start),
   )
   let gap = bar_height + bar_gap
   // The days excluded from the chart, as bands behind everything else.
@@ -584,8 +584,7 @@ pub fn draw(db : GanttDb, context : @diagram.Context) -> Unit raise GanttError {
     (key, category_heights[key].to_double())
   })
   let mut previous_rows = 0.0
-  for i, entry in occurrences {
-    let (name, count) = entry
+  for i, (name, count) in occurrences {
     let lines = line_break.split(name)
     let label = labels
       .append("text")
@@ -708,8 +707,7 @@ fn draw_exclude_days(
   // A run still open at the end of the chart is left out, as upstream.
   let n = @dom.number
   let group = svg.append("g")
-  for i, entry in ranges {
-    let (start, end) = entry
+  for i, (start, end) in ranges {
     let name = start.format("YYYY-MM-DD") catch {
       @dayjs.DayjsError(message) => raise GanttError(message)
     }
