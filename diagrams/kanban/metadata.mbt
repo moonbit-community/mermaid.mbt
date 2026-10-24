@@ -62,9 +62,7 @@ fn Meta::js_string(self : Meta) -> String {
 fn parse_digits(digits : StringView, radix : Double) -> Double? {
   // Decimal digits are rounded once, however many there are.
   if radix == 10.0 {
-    return Some(@string.parse_double(digits.to_owned() + ".0")) catch {
-      _ => None
-    }
+    return Some(@string.parse_double("\{digits}.0")) catch { _ => None }
   }
   let mut value = 0.0
   for c in digits {
@@ -96,7 +94,7 @@ fn yaml_integer(data : String) -> Result[Double?, Unit] {
   }
   guard index < max else { return Ok(None) }
   let digits_from = (start : Int32, accepts : (Char) -> Bool) => {
-    start < max && chars[start:].iter().all(accepts)
+    start < max && chars[start:].all(accepts)
   }
   let (start, radix) = if chars[index] == '0' {
     if index + 1 == max {
@@ -169,7 +167,7 @@ fn yaml_float(data : String) -> Double? {
   let text = match text.find(".") {
     Some(point) =>
       if point + 1 == text.length() || text[point + 1] is ('e' | 'E') {
-        text[:point + 1].to_owned() + "0" + text[point + 1:].to_owned()
+        "\{text[:point + 1]}0\{text[point + 1:]}"
       } else {
         text
       }
