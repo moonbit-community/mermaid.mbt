@@ -104,7 +104,7 @@ fn alignments(
     }
   }
   let keep = (lines : Array[Array[String]]) => {
-    lines.filter(line => !line.iter().any(id => declared.contains(id)))
+    lines.filter(line => !line.any(id => declared.contains(id)))
   }
   let horizontal = keep(horizontal)
   let vertical = keep(vertical)
@@ -160,8 +160,7 @@ fn relative_constraints(
       visited[key(cx, cy)] = ()
       guard at.get(key(cx, cy)) is Some(current) else { continue }
       // `Object.entries(directions)`: L, R, T, B.
-      for entry in [(L, -1, 0), (R, 1, 0), (T, 0, 1), (B, 0, -1)] {
-        let (dir, dx, dy) = entry
+      for (dir, dx, dy) in [(L, -1, 0), (R, 1, 0), (T, 0, 1), (B, 0, -1)] {
         let (nx, ny) = (cx + dx, cy + dy)
         guard at.get(key(nx, ny)) is Some(neighbor) &&
           !visited.contains(key(nx, ny)) else {
@@ -229,7 +228,7 @@ fn build_cy(db : Db, config : LayoutConfig) -> Cy raise ArchitectureError {
   for edge in db.edges {
     let id = "\{edge.lhs_id}-\{edge.rhs_id}"
     // cytoscape refuses a second element with an id, a node's as well.
-    if cy.by_id.contains(id) || cy.edges.iter().any(e => e.id == id) {
+    if cy.by_id.contains(id) || cy.edges.any(e => e.id == id) {
       raise Invalid("Can not create second element with ID `\{id}`")
     }
     cy.edges.push({
@@ -285,12 +284,7 @@ fn run_fcose(
   let box = cy.bounding_box()
   let center_x = box.x1 + box.w / 2.0
   let center_y = box.y1 + box.h / 2.0
-  let roots = []
-  for index, node in cy.nodes {
-    if node.parent is None {
-      roots.push(index)
-    }
-  }
+  let roots = [ for index, node in cy.nodes if node.parent is None => index ]
   let fcose_tracer = tracer.map(t => t.fcose)
   let random = @fcose.SeededRandom::new(to_uint32(config.seed))
   let nodes = if config.randomize {
@@ -607,12 +601,9 @@ fn spectral_graph(cy : Cy) -> @fcose.SpectralGraph {
   {
     nodes: cy.nodes.map(node => {
       let index = cy.by_id[node.id]
-      let connected = []
-      for i, edge in edges {
-        if edge.0 == index || edge.1 == index {
-          connected.push(i)
-        }
-      }
+      let connected = [
+        for i, edge in edges if edge.0 == index || edge.1 == index => i
+      ]
       {
         id: node.id,
         parent: node.parent.map(parent => cy.by_id[parent]),

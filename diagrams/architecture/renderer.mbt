@@ -298,7 +298,7 @@ fn draw_edges(
       .attr("dominant-baseline", "middle")
       .attr("text-anchor", "middle")
       |> ignore
-      let translate = "translate(" + n(mid_x) + ", " + n(mid_y) + ")"
+      let translate = "translate(\{n(mid_x)}, \{n(mid_y)})"
       match axis {
         Some(true) => text_elem.attr("transform", translate) |> ignore
         Some(false) =>
@@ -482,10 +482,7 @@ pub fn draw(
       continue
     }
     if elements.get(node.id) is Some(element) {
-      element.attr(
-        "transform",
-        "translate(" + n(node.x) + "," + n(node.y) + ")",
-      )
+      element.attr("transform", "translate(\{n(node.x)},\{n(node.y)})")
       |> ignore
     }
   }
