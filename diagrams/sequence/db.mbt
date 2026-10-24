@@ -455,7 +455,7 @@ fn js_keys(object : Map[String, Json]) -> Array[String] {
   let others = []
   for key, _ in object {
     let is_index = key != "" &&
-      key.iter().all(c => c is ('0'..<='9')) &&
+      key.all(c => c is ('0'..<='9')) &&
       (key == "0" || !key.has_prefix("0")) &&
       key.length() <= 9
     if is_index {

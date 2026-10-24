@@ -68,9 +68,7 @@ fn serialize_font_family(value : String) -> String? {
       .collect()
     // An unquoted name is a run of identifiers.
     for word in words {
-      guard word
-        .iter()
-        .all(c => {
+      guard word.all(c => {
           c.is_ascii_alphabetic() ||
           c.is_ascii_digit() ||
           c == '-' ||

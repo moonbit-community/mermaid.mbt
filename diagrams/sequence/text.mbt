@@ -239,7 +239,7 @@ fn break_string(
   max_width : Double,
   font : TextFont,
 ) -> (Array[String], String) raise SequenceError {
-  let characters = word.iter().collect()
+  let characters = word.to_array()
   let lines = []
   let mut current = ""
   for index, character in characters {
