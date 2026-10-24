@@ -303,7 +303,7 @@ pub fn draw(
       "display: none;"
     } else {
       let split = split_styles(node.data.css_compiled_styles)
-      split.node_styles + ";" + split.border_styles.join(";")
+      "\{split.node_styles};\{split.border_styles.join(";")}"
     }
     sections[i]
     .append("rect")
