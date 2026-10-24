@@ -197,9 +197,9 @@ fn pair_search_groups(
       if component_set.contains(edge) {
         continue
       }
-      if endpoint_ids(visible[edge])
-        .iter()
-        .any(fn(id) { component_endpoint_ids.contains(id) }) {
+      if endpoint_ids(visible[edge]).any(fn(id) {
+          component_endpoint_ids.contains(id)
+        }) {
         group.push(edge)
       }
     }
@@ -231,9 +231,7 @@ fn CrossingContext::path_hits_node(
   path : Array[@model.Pt],
 ) -> Bool {
   let endpoints = endpoint_ids(edge)
-  segments_for(path)
-  .iter()
-  .any(fn(segment) {
+  segments_for(path).any(fn(segment) {
     segment_hits_nodes(segment, endpoints, self.real_node_rects, None)
   })
 }
@@ -553,8 +551,7 @@ fn CrossingContext::best_paired_replacement(
   }
   for group in groups {
     let options = group.filter(fn(edge) { options_by_edge.contains(edge) })
-    for i in 0..<options.length() {
-      let first = options[i]
+    for i, first in options {
       for j in (i + 1)..<options.length() {
         let second = options[j]
         // `crossingEdgeSet`: the edges of the group that cross.

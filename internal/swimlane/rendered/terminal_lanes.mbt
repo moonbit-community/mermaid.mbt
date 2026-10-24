@@ -313,18 +313,16 @@ fn separate_first_conflict(
             is Some(next_lane) else {
             continue
           }
-          let conflicts = lanes
-            .iter()
-            .any(fn(other) {
-              !physical_equal(other.edge, lane.edge) &&
+          let conflicts = lanes.any(fn(other) {
+            !physical_equal(other.edge, lane.edge) &&
+            (
+              exact_terminal_lane_conflict(next_lane, other) ||
               (
-                exact_terminal_lane_conflict(next_lane, other) ||
-                (
-                  fixing_near_conflict &&
-                  near_terminal_lane_conflict(next_lane, other)
-                )
+                fixing_near_conflict &&
+                near_terminal_lane_conflict(next_lane, other)
               )
-            })
+            )
+          })
           if conflicts {
             continue
           }

@@ -144,7 +144,7 @@ pub fn collapse_redundant_rectangular_doglegs(
         continue
       }
       let points = route_of(edge)
-      for i = 0; i <= points.length() - 5; i = i + 1 {
+      for i in 0..<=(points.length() - 5) {
         guard without_dogleg(points, i) is Some(candidate) else { continue }
         if !dogleg_candidate_is_safe(
             edge, candidate, edges, real_node_rects, label_rects,

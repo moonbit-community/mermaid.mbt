@@ -139,7 +139,7 @@ fn rail_components(rails : Array[ExternalRail]) -> Array[Array[ExternalRail]] {
 fn unique_coords_for(component : Array[ExternalRail]) -> Array[Double] {
   let coords : Array[Double] = []
   for rail in component {
-    if !coords.iter().any(fn(coord) { (coord - rail.coord).abs() < EPS_LOCAL }) {
+    if !coords.any(fn(coord) { (coord - rail.coord).abs() < EPS_LOCAL }) {
       coords.push(rail.coord)
     }
   }

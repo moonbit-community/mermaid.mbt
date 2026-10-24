@@ -63,13 +63,11 @@ fn CrossingContext::outward_tracks_for_side(
   side : @model.Side,
 ) -> Array[Double] {
   let outward = outward_sign(side)
-  let tracks = []
-  for channel in 0..<=EXTRA_CHANNEL_COUNT {
-    tracks.push(
-      self.outside_track(side) + outward * ANCHOR * channel.to_double(),
-    )
-  }
-  tracks
+  [
+    for channel in 0..<=EXTRA_CHANNEL_COUNT => {
+      self.outside_track(side) + outward * ANCHOR * channel.to_double()
+    }
+  ]
 }
 
 ///|
