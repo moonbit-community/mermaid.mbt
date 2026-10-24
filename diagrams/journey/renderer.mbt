@@ -38,9 +38,7 @@ fn legend_order(names : Array[String], conf : Conf) -> Array[Actor] {
 /// The value of a property name that is an array index: a canonical
 /// decimal integer below 2^32 - 1.
 fn array_index(name : String) -> Double? {
-  if name == "" ||
-    name.length() > 10 ||
-    !name.iter().all(c => c is ('0'..<='9')) {
+  if name == "" || name.length() > 10 || !name.all(c => c is ('0'..<='9')) {
     return None
   }
   if name.length() > 1 && name.has_prefix("0") {
