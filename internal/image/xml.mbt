@@ -259,7 +259,7 @@ fn XmlParser::declaration(self : XmlParser) -> Unit raise XmlError {
   let version = self.literal()
   guard version.length() > 2 &&
     version.has_prefix("1.") &&
-    version[2:].iter().all(c => c is ('0'..<='9')) else {
+    version[2:].all(c => c is ('0'..<='9')) else {
     raise Malformed
   }
   let mut spaced = self.skip_space()
@@ -536,8 +536,7 @@ fn bind_namespaces(
     }
     scope[prefix] = uri
   }
-  for attribute in attributes {
-    let (attribute, value) = attribute
+  for (attribute, value) in attributes {
     if attribute == "xmlns" {
       bind("", value)
     } else if attribute.strip_prefix("xmlns:") is Some(prefix) {
@@ -574,8 +573,7 @@ fn bind_namespaces(
   }
   let plain = Map([])
   let qualified = Set([])
-  for attribute in attributes {
-    let (attribute, value) = attribute
+  for (attribute, value) in attributes {
     if attribute == "xmlns" || attribute.has_prefix("xmlns:") {
       continue
     }
