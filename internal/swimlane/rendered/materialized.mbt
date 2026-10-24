@@ -142,12 +142,8 @@ fn total_bends(
 /// Whether two sets of segments run along the same track for at least
 /// `MIN_SHARED`.
 fn share_track(first : Array[@model.Seg], second : Array[@model.Seg]) -> Bool {
-  first
-  .iter()
-  .any(fn(a) {
-    second
-    .iter()
-    .any(fn(b) {
+  first.any(fn(a) {
+    second.any(fn(b) {
       @model.same_axis_segment_overlap_length(a, b, epsilon=0.5) >= MIN_SHARED
     })
   })

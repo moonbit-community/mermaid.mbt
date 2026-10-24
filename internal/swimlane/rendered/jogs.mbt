@@ -86,9 +86,9 @@ fn shortcut_candidates_at(
     if segments_for(candidate).length() != candidate.length() - 1 {
       continue
     }
-    if !candidate
-      .iter()
-      .any(fn(point) { @model.same_point(point, p3, epsilon=EPS_LOCAL) }) {
+    if !candidate.any(fn(point) {
+        @model.same_point(point, p3, epsilon=EPS_LOCAL)
+      }) {
       continue
     }
     let key = route_key(candidate)
@@ -134,9 +134,9 @@ fn jog_candidate_is_clear(
       ) {
       return false
     }
-    if endpoint_rects
-      .iter()
-      .any(fn(rect) { segment_runs_along_rect_border(segment, rect) }) {
+    if endpoint_rects.any(fn(rect) {
+        segment_runs_along_rect_border(segment, rect)
+      }) {
       return false
     }
   }
@@ -176,7 +176,7 @@ pub fn shortcut_redundant_orthogonal_jogs(
         epsilon=EPS_LOCAL,
       )
       let current_length = euclidean_route_length(current_points)
-      for index = 0; index <= current_points.length() - 4; index = index + 1 {
+      for index in 0..<=(current_points.length() - 4) {
         for candidate in shortcut_candidates_at(current_points, index) {
           let candidate_bends = @model.count_orthogonal_bends(
             candidate,
