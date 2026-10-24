@@ -166,7 +166,7 @@ fn group_alignment_key(a : String, b : String) -> String {
 /// The order of `Array.prototype.sort` without a comparator: by UTF-16 code
 /// units.
 fn utf16_less(a : String, b : String) -> Bool {
-  let n = if a.length() < b.length() { a.length() } else { b.length() }
+  let n = a.length().min(b.length())
   for i in 0..<n {
     if a[i] != b[i] {
       return a[i] < b[i]
