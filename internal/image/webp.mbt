@@ -86,8 +86,7 @@ fn webp_size(data : Bytes) -> Decoded {
   if (flags & 0x02) != 0 {
     return Size(width, height)
   }
-  for chunk in chunks[1:] {
-    let (kind, chunk_data) = chunk
+  for (kind, chunk_data) in chunks[1:] {
     if kind == b"VP8 "[:] || kind == b"VP8L"[:] {
       return match bitstream(kind, chunk_data) {
         Some(size) if size == (width, height) => Size(width, height)

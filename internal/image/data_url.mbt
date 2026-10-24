@@ -31,7 +31,7 @@ pub fn data_url_size(url : String) -> Decoded? {
     None => url[5:]
   }
   guard rest.find(",") is Some(comma) else { return Some(Undecodable) }
-  let mut mime = rest[:comma].to_owned().trim(chars=" \t\n\r\u{0c}").to_owned()
+  let mut mime = rest[:comma].trim(chars=" \t\n\r\u{0c}").to_owned()
   let body = percent_decode(rest[comma + 1:].to_owned())
   // `;base64` ends the type, possibly after spaces.
   let base64 = {
@@ -97,12 +97,7 @@ fn percent_decode(text : String) -> Bytes {
 /// The infra standard's forgiving-base64 decode: whitespace ignored, the
 /// padding optional, anything else outside the alphabet a failure.
 fn forgiving_base64(data : Bytes) -> Bytes? {
-  let digits = []
-  for b in data {
-    if !is_ascii_whitespace(b.to_char()) {
-      digits.push(b)
-    }
-  }
+  let digits = [ for b in data if !is_ascii_whitespace(b.to_char()) => b ]
   let mut length = digits.length()
   if length % 4 == 0 && length > 0 && digits[length - 1] == b'=' {
     length -= 1

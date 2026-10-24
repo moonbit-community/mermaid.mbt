@@ -143,8 +143,7 @@ fn parse_exif(data : BytesView) -> Exif {
     return no_exif
   }
   let mut exif = no_exif
-  for entry in tiff.directory(first) {
-    let (tag, kind, at) = entry
+  for (tag, kind, at) in tiff.directory(first) {
     match tag {
       TAG_ORIENTATION =>
         if tiff.integer(kind, at) is Some(value) && value >= 1L && value <= 8L {
@@ -161,8 +160,7 @@ fn parse_exif(data : BytesView) -> Exif {
         exif = { ..exif, y_resolution: tiff.rational(kind, at), }
       TAG_EXIF_DIRECTORY =>
         if tiff.integer(kind, at) is Some(offset) {
-          for sub in tiff.directory(offset) {
-            let (tag, kind, at) = sub
+          for (tag, kind, at) in tiff.directory(offset) {
             let value = tiff
               .integer(kind, at)
               .filter(value => value <= 0x7fffffffL)

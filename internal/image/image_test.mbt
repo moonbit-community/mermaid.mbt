@@ -6,8 +6,7 @@
 /// The cases whose size differs from Chrome's: name, port, Chrome.
 fn differences(cases : Array[(String, String, String)]) -> Array[String] {
   let failed = []
-  for case in cases {
-    let (name, url, expected) = case
+  for (name, url, expected) in cases {
     let actual = match @image.data_url_size(url) {
       Some(Size(width, height)) => "\{width}x\{height}"
       Some(Undecodable) => "undecodable"
