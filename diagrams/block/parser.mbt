@@ -123,7 +123,7 @@ fn BlockDb::reduce(
         _ => Block::new()
       }
       let edge = Block::new(
-        id=first.id_text() + "-" + id,
+        id="\{first.id_text()}-\{id}",
         start?=first.id,
         end=id,
         label~,
