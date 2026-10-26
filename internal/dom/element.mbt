@@ -136,9 +136,7 @@ pub fn Element::attr(self : Element, name : String, value : String) -> Element {
     // replaces them with what the new text declares.
     self.sync_style()
     self.declarations.clear()
-    for declaration in parse_declarations(value) {
-      self.declarations.push(declaration)
-    }
+    self.declarations.append(parse_declarations(value))
   }
   for i, attribute in self.attributes {
     if attribute.0 == name {
