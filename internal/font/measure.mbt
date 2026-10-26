@@ -909,7 +909,7 @@ fn listed_faces(family : String, bold : Bool, italic : Bool) -> Array[Face] {
         )
       _ => None
     }
-    if face is Some(face) && !faces.iter().any(f => physical_equal(f, face)) {
+    if face is Some(face) && !faces.any(f => physical_equal(f, face)) {
       faces.push(face)
     }
   }
@@ -938,7 +938,7 @@ pub fn Stack::for_family(
 pub fn Stack::for_css(family : String, bold~ : Bool = false) -> Stack {
   let faces = listed_faces(family, bold, false)
   let standard = if bold { times_bold } else { times_regular }
-  if !faces.iter().any(face => physical_equal(face, standard)) {
+  if !faces.any(face => physical_equal(face, standard)) {
     faces.push(standard)
   }
   { faces, }
