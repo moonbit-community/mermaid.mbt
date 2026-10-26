@@ -149,17 +149,11 @@ fn assign_layers_longest_path(
         rank_of[v] = rank_of.get(u).unwrap_or(0) + 1
       }
     } else {
-      let mut mx = None
+      let mut mx = 0
       for e in inc {
-        let r = rank_of.get(e.src).unwrap_or(0) + 1
-        mx = Some(
-          match mx {
-            Some(m) => @cmp.maximum(m, r)
-            None => r
-          },
-        )
+        mx = @cmp.maximum(mx, rank_of.get(e.src).unwrap_or(0) + 1)
       }
-      rank_of[v] = mx.unwrap_or(0)
+      rank_of[v] = mx
     }
   }
   if optimize_ranks_by_crossings {
@@ -323,10 +317,7 @@ fn make_proper_layering(
   let g = normalize_graph(g_acyclic)
   let rank_of = layering.rank_of
   let layers = layering.layers.map(l => l.copy())
-  let dummy_set : Set[String] = Set([])
-  for id in layering.dummy {
-    dummy_set.add(id)
-  }
+  let dummy_set : Set[String] = Set(layering.dummy)
   let mut dummy_seq = 0
   let node_by_id = g.node_by_id.copy()
   let add_dummy_at = (l : Int32) => {
@@ -389,7 +380,7 @@ fn make_proper_layering(
       nodes.push(id)
     }
   }
-  let dummy = dummy_set.iter().collect()
+  let dummy = dummy_set.to_array()
   (
     { layers, rank_of, dummy, },
     { nodes, edges: new_edges, layout: g.layout, node_by_id, },

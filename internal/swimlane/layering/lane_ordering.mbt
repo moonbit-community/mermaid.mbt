@@ -180,8 +180,8 @@ fn seed_for_restart(
       @model.locale_compare(x.a, y.a)
     }
   })
-  let signature = sorted.map(w => "\{w.a}:\{w.b}:\{w.weight}").iter().join("|")
-  hash_string("\{source_order.iter().join("|")}#\{signature}#\{restart_index}")
+  let signature = sorted.map(w => "\{w.a}:\{w.b}:\{w.weight}").join("|")
+  hash_string("\{source_order.join("|")}#\{signature}#\{restart_index}")
 }
 
 ///|

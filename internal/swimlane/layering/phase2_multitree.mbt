@@ -70,7 +70,7 @@ fn build_driving_tree(
       root_set.add(node)
     }
   }
-  let roots = root_set.iter().collect()
+  let roots = root_set.to_array()
   @d3.js_sort(roots, (a, b) => {
     let ta = topo_index.get(a).unwrap_or(0)
     let tb = topo_index.get(b).unwrap_or(0)
@@ -494,21 +494,14 @@ fn count_crossings_between_layers(
   lower : Array[String],
   edges : Array[GEdge],
 ) -> Int32 {
-  let upper_set : Set[String] = Set([])
-  for id in upper {
-    upper_set.add(id)
-  }
-  let lower_set : Set[String] = Set([])
-  for id in lower {
-    lower_set.add(id)
-  }
+  let upper_set : Set[String] = Set(upper)
+  let lower_set : Set[String] = Set(lower)
   let li = build_layer_index(lower)
-  let vs = []
-  for e in edges {
-    if upper_set.contains(e.src) && lower_set.contains(e.dst) {
-      vs.push(li[e.dst])
+  let vs = [
+    for e in edges if upper_set.contains(e.src) && lower_set.contains(e.dst) => {
+      li[e.dst]
     }
-  }
+  ]
   count_inversions(vs)
 }
 
