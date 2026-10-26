@@ -231,7 +231,7 @@ fn svd(a : Array[Array[Double]]) -> Svd {
     }
     u[j][j] = 1.0
   }
-  for k = nct - 1; k >= 0; k = k - 1 {
+  for k in (nct - 1)>=..0 {
     if s[k] != 0.0 {
       for j in (k + 1)..<nu {
         let mut t = 0.0
@@ -258,7 +258,7 @@ fn svd(a : Array[Array[Double]]) -> Svd {
       u[k][k] = 1.0
     }
   }
-  for k = n - 1; k >= 0; k = k - 1 {
+  for k in (n - 1)>=..0 {
     if k < nrt && e[k] != 0.0 {
       for j in (k + 1)..<nu {
         let mut t = 0.0
@@ -323,7 +323,7 @@ fn svd(a : Array[Array[Double]]) -> Svd {
       1 => {
         let mut f = e[p - 2]
         e[p - 2] = 0.0
-        for j = p - 2; j >= k; j = j - 1 {
+        for j in (p - 2)>=..k {
           let mut t = svd_hypot(s[j], f)
           let cs = s[j] / t
           let sn = f / t
