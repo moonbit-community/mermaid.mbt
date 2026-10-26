@@ -39,12 +39,10 @@ fn css_pixels(size : String?) -> Double raise SequenceError {
   // Without a size the text takes the one it inherits, the browser's
   // default.
   guard size is Some(size) else { return 16.0 }
-  let text = size.trim(chars=" \t\n").to_owned().to_lower()
+  let text = size.trim(chars=" \t\n").to_lower()
   let unsupported = SequenceError("Unsupported font size: \{size}")
   guard text.strip_suffix("px") is Some(digits) else { raise unsupported }
-  let value = @string.parse_double(digits.to_owned()) catch {
-    _ => raise unsupported
-  }
+  let value = @string.parse_double(digits) catch { _ => raise unsupported }
   guard value > 0.0 else { raise unsupported }
   value
 }
@@ -56,7 +54,7 @@ fn is_bold(weight : Json) -> Bool {
   match weight {
     Number(n, ..) => n >= 600.0 && n <= 1000.0
     String(text) =>
-      match text.trim(chars=" \t\n").to_owned().to_lower() {
+      match text.trim(chars=" \t\n").to_lower() {
         "bold" | "bolder" => true
         digits => {
           let n = @string.parse_double(digits) catch { _ => return false }

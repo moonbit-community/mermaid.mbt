@@ -52,7 +52,7 @@ fn serialize_font_family(value : String) -> String? {
   }
   let names = []
   for part in value.split(",") {
-    let name = part.trim(chars=" \t\n").to_owned()
+    let name = part.trim(chars=" \t\n")
     if name.length() >= 2 &&
       (
         (name.has_prefix("\"") && name.has_suffix("\"")) ||
