@@ -98,9 +98,10 @@ fn css_font_size(text : String) -> String? raise JourneyError {
   let units = ["px", "em", "rem", "ex", "pt", "pc", "cm", "mm", "in", "%"]
   let mut value = text
   let mut unit = "px"
+  let lower = text.to_lower()
   for candidate in units {
-    if text.to_lower().has_suffix(candidate) &&
-      !(candidate == "em" && text.to_lower().has_suffix("rem")) {
+    if lower.has_suffix(candidate) &&
+      !(candidate == "em" && lower.has_suffix("rem")) {
       value = text[:text.length() - candidate.length()].to_owned()
       unit = candidate
       break
@@ -125,7 +126,7 @@ fn css_font_size(text : String) -> String? raise JourneyError {
 fn css_font_family(text : String) -> String raise JourneyError {
   let families = []
   for part in text.split(",") {
-    let name = part.trim(chars=" \t\n\r\u{0c}").to_owned()
+    let name = part.trim(chars=" \t\n\r\u{0c}")
     let unsupported = () => {
       JourneyError("journey.taskFontFamily \{text} is not a plain list")
     }
@@ -134,7 +135,7 @@ fn css_font_family(text : String) -> String raise JourneyError {
         (name.has_prefix("\"") && name.has_suffix("\"")) ||
         (name.has_prefix("'") && name.has_suffix("'"))
       ) {
-      let inner = name[1:name.length() - 1].to_owned()
+      let inner = name[1:name.length() - 1]
       if inner.contains("\"") || inner.contains("'") || inner.contains("\\") {
         raise unsupported()
       }
@@ -148,11 +149,8 @@ fn css_font_family(text : String) -> String raise JourneyError {
           continue
         }
         let word = word.to_owned()
-        let first = if word.has_prefix("-") {
-          word[1:].to_owned()
-        } else {
-          word
-        }
+        // One leading hyphen is not part of the first identifier character.
+        let first = word.strip_prefix("-").unwrap_or(word[:])
         let is_start = (c : Char) => {
           c is ('a'..<='z' | 'A'..<='Z' | '_') || c.to_int() >= 0x80
         }
