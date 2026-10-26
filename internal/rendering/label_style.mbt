@@ -252,11 +252,7 @@ fn keeps_on_one_line(style : String) -> Bool {
   for declaration in style.split(";") {
     guard declaration.split_once(":") is Some((name, value)) else { continue }
     let name = name.trim().to_lower()
-    let value = value
-      .replace(old="!important", new="")
-      .trim()
-      .to_owned()
-      .to_lower()
+    let value = value.replace(old="!important", new="").trim().to_lower()
     if name == "white-space" && value == "nowrap" {
       return true
     }

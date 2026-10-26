@@ -354,10 +354,7 @@ fn DagreState::extractor(
     return
   }
   let nodes = graph.nodes()
-  let mut has_children = false
-  for node in nodes {
-    has_children = has_children || !graph.children(node).is_empty()
-  }
+  let has_children = nodes.any(node => !graph.children(node).is_empty())
   if !has_children {
     return
   }
