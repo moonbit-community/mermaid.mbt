@@ -105,9 +105,8 @@ fn arc_to_cubic_curves(
       }
     }
   }
-  let mut df = f2 - f1
   // More than 120 degrees: the rest of the arc is split off.
-  if df.abs() > PI * 120.0 / 180.0 {
+  if (f2 - f1).abs() > PI * 120.0 / 180.0 {
     let f2old = f2
     let x2old = x2
     let y2old = y2
@@ -131,7 +130,7 @@ fn arc_to_cubic_curves(
       recursive=(f2, f2old, cx, cy),
     )
   }
-  df = f2 - f1
+  let df = f2 - f1
   let c1 = @jsmath.cos(f1)
   let s1 = @jsmath.sin(f1)
   let c2 = @jsmath.cos(f2)

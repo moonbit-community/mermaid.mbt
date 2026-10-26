@@ -87,16 +87,10 @@ fn tokenize(d : String) -> Array[Token]? {
         j = k
       }
     }
-    let text = String::from_array(chars[start:j])
+    let text : StringView = String::from_array(chars[start:j])
     // A trailing dot is fine for JavaScript's parseFloat.
-    let text = match text.strip_suffix(".") {
-      Some(prefix) => prefix.to_owned()
-      None => text
-    }
-    let text = match text.strip_prefix("+") {
-      Some(rest) => rest.to_owned()
-      None => text
-    }
+    let text = text.strip_suffix(".").unwrap_or(text)
+    let text = text.strip_prefix("+").unwrap_or(text)
     tokens.push(Number(@string.parse_double(text) catch { _ => return None }))
     i = j
   }
@@ -107,10 +101,8 @@ fn tokenize(d : String) -> Array[Token]? {
 /// Parse path data into its commands.
 fn parse_path(d : String) -> Array[Segment] {
   guard tokenize(d) is Some(tokens) else { return [] }
-  if tokens is [Command(c), ..] && !(c is ('M' | 'm')) {
-    return parse_path("M0,0" + d)
-  }
-  if tokens is [Number(_), ..] {
+  if (tokens is [Command(c), ..] && !(c is ('M' | 'm'))) ||
+    tokens is [Number(_), ..] {
     return parse_path("M0,0" + d)
   }
   let segments = []
