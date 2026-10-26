@@ -38,12 +38,12 @@ fn try_swap_segments_across_tracks(
   t1 : Track,
   t2 : Track,
 ) -> Bool {
-  let can_s1_go_t2 = !t2.segments
-    .iter()
-    .any(r => !r.is_of(s2) && spans_overlap(r.from, r.to, s1.from, s1.to))
-  let can_s2_go_t1 = !t1.segments
-    .iter()
-    .any(r => !r.is_of(s1) && spans_overlap(r.from, r.to, s2.from, s2.to))
+  let can_s1_go_t2 = !t2.segments.any(r => {
+    !r.is_of(s2) && spans_overlap(r.from, r.to, s1.from, s1.to)
+  })
+  let can_s2_go_t1 = !t1.segments.any(r => {
+    !r.is_of(s1) && spans_overlap(r.from, r.to, s2.from, s2.to)
+  })
   if can_s1_go_t2 && can_s2_go_t1 {
     s1.track_index = t2.index
     s2.track_index = t1.index
@@ -134,9 +134,9 @@ fn have_any_crossing(seg_a : RoutedSeg, seg_b : RoutedSeg) -> Bool {
 /// The first track of the pipe the segment fits on: `findAvailableTrack`.
 fn find_available_track(pipe : Pipe, seg : RoutedSeg) -> Int32 {
   for track in pipe.tracks {
-    let overlap = track.segments
-      .iter()
-      .any(r => !r.is_of(seg) && spans_overlap(r.from, r.to, seg.from, seg.to))
+    let overlap = track.segments.any(r => {
+      !r.is_of(seg) && spans_overlap(r.from, r.to, seg.from, seg.to)
+    })
     if !overlap {
       return track.index
     }
@@ -157,7 +157,7 @@ fn Router::segments_conflict(
   }
   let adj1 = self.adjacent_segments_along_edge(s1)
   let adj2 = self.adjacent_segments_along_edge(s2)
-  adj1.iter().any(a1 => adj2.iter().any(a2 => have_any_crossing(a1, a2)))
+  adj1.any(a1 => adj2.any(a2 => have_any_crossing(a1, a2)))
 }
 
 ///|
@@ -405,7 +405,7 @@ fn Router::fix_pipe_crossings(self : Router) -> Int32 {
 /// times.
 fn Router::untangle(self : Router) -> Unit {
   let max_iter = 10
-  for iterations = 0; iterations < max_iter; iterations = iterations + 1 {
+  for _iteration in 0..<max_iter {
     let mut changed = 0
     changed += self.fix_source_handle_crossings()
     changed += self.fix_target_handle_crossings()

@@ -43,9 +43,7 @@ fn Router::is_segment_blocked(
   let seg_max_x = @model.js_max(p1.x, p2.x)
   let seg_min_y = @model.js_min(p1.y, p2.y)
   let seg_max_y = @model.js_max(p1.y, p2.y)
-  self.obstacles
-  .iter()
-  .any(obs => {
+  self.obstacles.any(obs => {
     if exclude_start != "" && obs.node_id == exclude_start {
       return false
     }

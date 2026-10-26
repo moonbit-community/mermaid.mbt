@@ -44,7 +44,7 @@ fn Router::segment_coords(self : Router) -> Map[(Int32, Int32), Double] {
         track_scores.set(s.2, track_scores.get(s.2).unwrap_or(0.0) + info.delta)
       }
       let score = t => track_scores.get(t).unwrap_or(0.0)
-      let used = used_tracks.iter().collect()
+      let used = used_tracks.to_array()
       let left_tracks = used.filter(t => score(t) < -1.0)
       let right_tracks = used.filter(t => score(t) > 1.0)
       let neutral_tracks = used.filter(t => score(t).abs() <= 1.0)
@@ -73,7 +73,7 @@ fn Router::segment_coords(self : Router) -> Map[(Int32, Int32), Double] {
         )
       }
       if neutral_tracks.length() == 0 && used_tracks.length() > 0 {
-        let by_abs_score = used_tracks.iter().collect()
+        let by_abs_score = used_tracks.to_array()
         @d3.js_sort(by_abs_score, (a, b) => score(a).abs() - score(b).abs())
         let best_track = by_abs_score[0]
         if left_tracks.search(best_track) is Some(left_idx) {
