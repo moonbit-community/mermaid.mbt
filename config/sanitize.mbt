@@ -31,9 +31,7 @@ fn is_unsafe_key(key : String) -> Bool {
 /// `[\d "#%(),.;A-Za-z]+`.
 fn is_plain_theme_value(value : String) -> Bool {
   value != "" &&
-  value
-  .iter()
-  .all(c => {
+  value.all(c => {
     c
     is ('0'..<='9'
     | 'A'..<='Z'
@@ -64,23 +62,23 @@ fn dictionary_value_ok(key : String, value : String) -> Bool? {
       let hex = lower.strip_prefix("#") is Some(digits) &&
         digits.length() >= 3 &&
         digits.length() <= 8 &&
-        digits.iter().all(c => c is ('0'..<='9' | 'a'..<='f'))
+        digits.all(c => c is ('0'..<='9' | 'a'..<='f'))
       let function = (name : String) => {
         lower.strip_prefix(name) is Some(rest) &&
         rest.strip_suffix(")") is Some(arguments) &&
         arguments.length() > 0 &&
-        arguments
-        .iter()
-        .all(c => c is ('0'..<='9' | ' ' | '\t' | '\n' | '%' | ',' | '.'))
+        arguments.all(c => {
+          c is ('0'..<='9' | ' ' | '\t' | '\n' | '%' | ',' | '.')
+        })
       }
-      let keyword = lower != "" && lower.iter().all(c => c is ('a'..<='z'))
+      let keyword = lower != "" && lower.all(c => c is ('a'..<='z'))
       Some(hex || function("rgb(") || function("hsl(") || keyword)
     }
     "filenameIcons" | "extensionIcons" => {
       let parts = value.split(":").collect()
       Some(
         parts.length() is (1 | 2) &&
-        parts.iter().all(part => part.length() > 0 && part.iter().all(word)),
+        parts.all(part => part.length() > 0 && part.all(word)),
       )
     }
     _ => None
@@ -112,10 +110,9 @@ pub fn sanitize_directive(directive : Json) -> Json {
             Json::object(kept)
           }
           Object(_) | Array(_) => sanitize_directive(value)
-          String(text) if ["themeCSS", "fontFamily", "altFontFamily"]
-            .iter()
-            .any(css_key => key.contains(css_key)) =>
-            Json::string(sanitize_css(text))
+          String(text) if ["themeCSS", "fontFamily", "altFontFamily"].any(css_key => {
+              key.contains(css_key)
+            }) => Json::string(sanitize_css(text))
           _ => value
         }
       }
