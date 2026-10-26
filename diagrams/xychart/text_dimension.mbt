@@ -77,8 +77,8 @@ fn Measurer::new(
   font_size~ : String = "16px",
 ) -> Measurer {
   let inherited_size = match font_size.strip_suffix("px") {
-    Some(number) if number.iter().all(c => c is ('0'..<='9' | '.')) => {
-      let size = @string.parse_double(number.to_owned()) catch { _ => 0.0 }
+    Some(number) if number.all(c => c is ('0'..<='9' | '.')) => {
+      let size = @string.parse_double(number) catch { _ => 0.0 }
       if size > 0.0 {
         Some(size)
       } else {
@@ -125,7 +125,7 @@ fn is_measurable_family(family : String) -> Bool {
     return true
   }
   for name in family.split(",") {
-    match name.trim(chars=" \t\n\"';").to_owned().to_lower() {
+    match name.trim(chars=" \t\n\"';").to_lower() {
       // The font of the redux themes, which the reference machine lacks.
       "recursive variable" => continue
       "trebuchet ms" | "verdana" | "arial" => return true

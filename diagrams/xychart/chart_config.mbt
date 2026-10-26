@@ -80,8 +80,8 @@ fn ChartConfig::new(
   config : @config.Config,
   chart : XYChart,
 ) -> ChartConfig raise Unsupported {
-  let number = (name : String) => config_number(config, "xyChart." + name)
-  let flag = (name : String) => config.flag("xyChart." + name)
+  let number = (name : String) => config_number(config, "xyChart.\{name}")
+  let flag = (name : String) => config.flag("xyChart.\{name}")
   let orientation = match chart.orientation {
     Some(orientation) => orientation
     None => config.text("xyChart.chartOrientation").unwrap_or("")
