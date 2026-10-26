@@ -278,7 +278,7 @@ fn order_layers(
         top_lane_of,
       )
     }
-    for i = layers.length() - 2; i >= 0; i = i - 1 {
+    for i in (layers.length() - 2)>=..0 {
       layers[i] = reorder_layer(
         layers[i + 1],
         layers[i],
