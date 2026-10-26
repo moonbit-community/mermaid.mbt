@@ -170,9 +170,7 @@ fn format_rounded(x : Double, p : Int32) -> String {
   if exponent < 0 {
     "0." + "0".repeat(-exponent - 1) + coefficient
   } else if coefficient.length() > exponent + 1 {
-    coefficient[:exponent + 1].to_owned() +
-    "." +
-    coefficient[exponent + 1:].to_owned()
+    "\{coefficient[:exponent + 1]}.\{coefficient[exponent + 1:]}"
   } else {
     coefficient + "0".repeat(exponent - coefficient.length() + 1)
   }
@@ -194,7 +192,7 @@ fn format_prefix_auto(x : Double, p : Int32) -> (String, Int32) {
   } else if i > n {
     coefficient + "0".repeat(i - n)
   } else if i > 0 {
-    coefficient[:i].to_owned() + "." + coefficient[i:].to_owned()
+    "\{coefficient[:i]}.\{coefficient[i:]}"
   } else {
     // Less than 1y.
     "0." +
@@ -338,7 +336,7 @@ pub fn Format::apply(self : Format, value : Double) -> String {
         let c = text[i]
         if c < '0' || c > '9' {
           value_suffix = (if c == '.' {
-              "." + text[i + 1:].to_owned()
+              ".\{text[i + 1:]}"
             } else {
               text[i:].to_owned()
             }) +
@@ -378,11 +376,7 @@ pub fn Format::apply(self : Format, value : Double) -> String {
     "=" => value_prefix + padding + text + value_suffix
     "^" => {
       let half = padding.length() >> 1
-      padding[:half].to_owned() +
-      value_prefix +
-      text +
-      value_suffix +
-      padding[half:].to_owned()
+      "\{padding[:half]}\{value_prefix}\{text}\{value_suffix}\{padding[half:]}"
     }
     _ => padding + value_prefix + text + value_suffix
   }
