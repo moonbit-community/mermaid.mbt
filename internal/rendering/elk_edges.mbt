@@ -132,7 +132,7 @@ fn apply_end_intersection(
   node : ElkNode,
   bounds : Bounds,
 ) -> Unit {
-  for index = points.length() - 1; index >= 0; index = index - 1 {
+  for index in (points.length() - 1)>=..0 {
     if outside_node(bounds, points[index]) {
       let value = compute_node_intersection(
         node.node.intersect,
@@ -207,7 +207,7 @@ fn cutter2(
     replace_endpoint(points, true, value)
   }
   let mut outside_index = -1
-  for index = points.length() - 1; index >= 0; index = index - 1 {
+  for index in (points.length() - 1)>=..0 {
     if outside_node(end_bounds, points[index]) {
       outside_index = index
       break

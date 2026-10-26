@@ -22,9 +22,7 @@ fn js_replace_first(
   pattern : String,
   replacement : String,
 ) -> String {
-  guard text.find(pattern) is Some(at) else { return text }
-  let before = text[:at]
-  let after = text[at + pattern.length():]
+  guard text.split_once(pattern) is Some((before, after)) else { return text }
   let out = StringBuilder()
   out.write_view(before)
   let chars = replacement.to_array()
