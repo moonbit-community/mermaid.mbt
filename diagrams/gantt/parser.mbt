@@ -28,7 +28,7 @@ fn sanitize_text(text : String) -> String raise GanttError {
   let mut i = 0
   while i < length {
     let c = text.unsafe_get(i)
-    if !(c == '<' || c == '>' || c == '&' || c == '\u{a0}') {
+    if !(c is ('<' | '>' | '&' | '\u{a0}')) {
       i += 1
       continue
     }
@@ -36,16 +36,8 @@ fn sanitize_text(text : String) -> String raise GanttError {
     copied = i + 1
     if c == '<' {
       // A tag starts with a letter, a slash, a bang or a question mark.
-      let next = if i + 1 < length {
-        text.unsafe_get(i + 1).to_int()
-      } else {
-        0
-      }
-      if (next >= 'a' && next <= 'z') ||
-        (next >= 'A' && next <= 'Z') ||
-        next == '/' ||
-        next == '!' ||
-        next == '?' {
+      let next = if i + 1 < length { text.unsafe_get(i + 1) } else { '\u{0}' }
+      if next is ('a'..<='z' | 'A'..<='Z' | '/' | '!' | '?') {
         raise Unsupported("HTML in a title or description")
       }
       out.write_string("&lt;")
