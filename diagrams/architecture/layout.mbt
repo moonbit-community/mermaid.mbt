@@ -37,8 +37,8 @@ fn alignments(
       let dir = coordinate.to_string()
       let mut count = 0
       let entries = by_group.to_array()
-      if entries.length() == 1 {
-        flattened[dir] = entries[0].1
+      if entries is [(_, ids)] {
+        flattened[dir] = ids
         continue
       }
       for i in 0..<(entries.length() - 1) {
@@ -585,8 +585,8 @@ pub fn layout_report(
   if trace {
     for run in runs {
       // The trace keeps the final positions, as upstream's does.
-      if run.get("ticks") is Some(Array(ticks)) && ticks.length() > 0 {
-        run["final"] = ticks[ticks.length() - 1]
+      if run.get("ticks") is Some(Array([.., last])) {
+        run["final"] = last
       }
     }
     report["runs"] = Json::array(runs.map(Json::object))

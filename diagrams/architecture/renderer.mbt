@@ -413,11 +413,7 @@ fn draw_groups(
       )
       bkg_elem.attr(
         "transform",
-        "translate(" +
-        n(shifted_x1 + half_icon_size + 1.0) +
-        ", " +
-        n(shifted_y1 + half_icon_size + 1.0) +
-        ")",
+        "translate(\{n(shifted_x1 + half_icon_size + 1.0)}, \{n(shifted_y1 + half_icon_size + 1.0)})",
       )
       |> ignore
       shifted_x1 += group_icon_size
@@ -440,11 +436,7 @@ fn draw_groups(
       .attr("text-anchor", "start")
       .attr(
         "transform",
-        "translate(" +
-        n(shifted_x1 + half_icon_size + 4.0) +
-        ", " +
-        n(shifted_y1 + half_icon_size + 2.0) +
-        ")",
+        "translate(\{n(shifted_x1 + half_icon_size + 4.0)}, \{n(shifted_y1 + half_icon_size + 2.0)})",
       )
       |> ignore
     }
