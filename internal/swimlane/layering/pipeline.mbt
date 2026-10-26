@@ -254,10 +254,7 @@ fn write_back(
     // Adjacent lanes meet halfway between their centres: with widths
     // w[i], w[i] + w[i+1] = 2 d[i]. The free parameter is picked to keep
     // every lane at least as wide as its content where possible.
-    let d = []
-    for i in 0..<(count - 1) {
-      d.push(centers[i + 1] - centers[i])
-    }
+    let d = [ for i in 0..<(count - 1) => centers[i + 1] - centers[i] ]
     let u = Array::make(count, 0.0)
     for i in 0..<(count - 1) {
       u[i + 1] = 2.0 * d[i] - u[i]

@@ -194,22 +194,10 @@ fn transpose_improve(
   top_lane_of : (String) -> String?,
 ) -> Array[String] {
   let best = current.copy()
-  let upper_set : Set[String] = Set([])
-  for id in upper {
-    upper_set.add(id)
-  }
-  let layer_set : Set[String] = Set([])
-  for id in current {
-    layer_set.add(id)
-  }
+  let upper_set : Set[String] = Set(upper)
+  let layer_set : Set[String] = Set(current)
   let next_set : Set[String]? = match next {
-    Some(next) => {
-      let set = Set([])
-      for id in next {
-        set.add(id)
-      }
-      Some(set)
-    }
+    Some(next) => Some(Set(next))
     None => None
   }
   let edges_in = edges.filter(e => {

@@ -120,7 +120,7 @@ fn build_top_lane_order(g : Graph) -> Array[String] {
       seen.add(node.id)
     }
   }
-  let lanes = seen.iter().collect()
+  let lanes = seen.to_array()
   lanes.rev_in_place()
   lanes
 }
