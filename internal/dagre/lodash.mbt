@@ -160,8 +160,7 @@ fn[T] js_sort(items : Array[T], compare : (T, T) -> Int32) -> Unit {
   let mut run = 2
   let descending = compare(items[1], items[0]) < 0
   let mut previous = items[1]
-  for i in 2..<n {
-    let current = items[i]
+  for current in items[2:] {
     let order = compare(current, previous)
     if descending {
       if !(order < 0) {

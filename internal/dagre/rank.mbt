@@ -192,8 +192,8 @@ fn init_cut_values(
   g : RankGraph[SimpleEdge],
 ) -> Unit raise LayoutError {
   let vs = tree_dfs(t, t.nodes(), true)
-  for i in 0..<(vs.length() - 1) {
-    assign_cut_value(t, g, vs[i])
+  for v in vs[:vs.length() - 1] {
+    assign_cut_value(t, g, v)
   }
 }
 
@@ -363,8 +363,7 @@ fn update_ranks(t : Tree, g : RankGraph[SimpleEdge]) -> Unit raise LayoutError {
     raise LayoutError("the tree has no node")
   }
   let vs = tree_dfs(t, [root], false)
-  for i in 1..<vs.length() {
-    let v = vs[i]
+  for v in vs[1:] {
     guard tree_node(t, v).parent is Some(parent) else {
       raise LayoutError("the node \{v} has no parent in the tree")
     }
