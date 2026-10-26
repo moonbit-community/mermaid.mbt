@@ -133,7 +133,7 @@ fn Parts::store(self : Parts, token : String, found : String) -> Unit? {
       self.day = Some((to_number(number.text()), true))
       for day in 1..<32 {
         let name = ordinal(day.to_double())
-        if name.unsafe_substring(start=1, end=name.length() - 1) == found {
+        if name[1:name.length() - 1] == found {
           self.day = Some((day.to_double(), true))
         }
       }
@@ -141,10 +141,7 @@ fn Parts::store(self : Parts, token : String, found : String) -> Unit? {
     "w" | "ww" => self.week = Some(to_number(found))
     "M" | "MM" => self.month = Some(to_number(found))
     "MMM" => {
-      guard months.search_by(name => {
-          name.unsafe_substring(start=0, end=3) == found
-        })
-        is Some(index) else {
+      guard months.search_by(name => name[:3] == found) is Some(index) else {
         return None
       }
       self.month = Some((index + 1).to_double())
@@ -238,10 +235,8 @@ fn tail(text : String, start : Int32) -> String {
 ///|
 /// `text.replace(part, "")`: drop the first occurrence.
 fn remove_first(text : String, part : String) -> String {
-  match text.find(part) {
-    Some(at) =>
-      text.unsafe_substring(start=0, end=at) +
-      text.unsafe_substring(start=at + part.length(), end=text.length())
+  match text.split_once(part) {
+    Some((head, rest)) => "\{head}\{rest}"
     None => text
   }
 }
