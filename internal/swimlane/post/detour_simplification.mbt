@@ -74,7 +74,7 @@ fn face_is_claimed(
 ) -> Bool {
   match face_claims.get(node_id) {
     Some(claims) =>
-      claims.iter().any(c => c.edge_id != ignore_edge_id && c.side == side)
+      claims.any(c => c.edge_id != ignore_edge_id && c.side == side)
     None => false
   }
 }
