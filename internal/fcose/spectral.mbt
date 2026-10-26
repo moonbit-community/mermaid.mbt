@@ -213,7 +213,7 @@ pub fn spectral_layout(
   let representative : Map[Int32, String] = Map([])
   for parent in parents {
     let mut children = graph.nodes[parent].children
-    while !children.iter().any(c => !graph.is_parent(c)) {
+    while !children.any(c => !graph.is_parent(c)) {
       children = graph.nodes[children[0]].children
     }
     let childless = children.filter(c => !graph.is_parent(c))

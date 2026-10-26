@@ -422,11 +422,9 @@ fn Layout::init_spring_embedder(self : Layout) -> Unit {
 ///|
 /// `FDLayout.isConverged`.
 fn Layout::is_converged(self : Layout) -> Bool {
-  let mut oscillating = false
-  if self.total_iterations.to_double() > self.max_iterations / 3.0 {
-    oscillating = (self.total_displacement - self.old_total_displacement).abs() <
-      2.0
-  }
+  let oscillating = self.total_iterations.to_double() >
+    self.max_iterations / 3.0 &&
+    (self.total_displacement - self.old_total_displacement).abs() < 2.0
   let converged = self.total_displacement < self.total_displacement_threshold
   self.old_total_displacement = self.total_displacement
   converged || oscillating
