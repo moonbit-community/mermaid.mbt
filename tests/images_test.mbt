@@ -43,20 +43,20 @@ fn remote_fixture(name : String) -> (String, Bytes, String) raise {
     source[start + 6:].find("\"") is Some(length) else {
     fail("\{name} has no data: URL")
   }
-  let url = source[start + 6:start + 6 + length].to_owned()
-  guard url.find(",") is Some(comma) else { fail("\{url} has no data") }
-  let data = if url[:comma].has_suffix(";base64") {
-    base64_bytes(url[comma + 1:])
+  let url = source[start + 6:start + 6 + length]
+  guard url.split_once(",") is Some((header, payload)) else {
+    fail("\{url} has no data")
+  }
+  let data = if header.has_suffix(";base64") {
+    base64_bytes(payload)
   } else {
-    @utf8.encode(url[comma + 1:])
+    @utf8.encode(payload)
   }
   guard expected.find("<image href=\"") is Some(href) &&
     expected[href + 13:].find("\"") is Some(href_length) else {
     fail("\{name}.svg has no image")
   }
-  let expected = expected[:href + 13].to_owned() +
-    REMOTE +
-    expected[href + 13 + href_length:].to_owned()
+  let expected = "\{expected[:href + 13]}\{REMOTE}\{expected[href + 13 + href_length:]}"
   (source.replace(old=url, new=REMOTE), data, expected)
 }
 
