@@ -348,7 +348,7 @@ fn FastPath::container(
     self.failed = true
     return
   }
-  let end_name = html[self.pos:self.pos + name.length()].to_owned().to_lower()
+  let end_name = html[self.pos:self.pos + name.length()].to_lower()
   self.pos += name.length()
   if end_name != name {
     self.failed = true

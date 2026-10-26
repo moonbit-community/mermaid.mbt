@@ -53,10 +53,8 @@ pub fn is_allowed_uri(value : String) -> Bool {
     end += 1
   }
   guard text[0:1] is ['a'..<='z', ..] else { return true }
-  guard end < text.length() && text[end:end + 1] is [':', ..] else {
-    return true
-  }
-  text[:end].to_owned()
+  guard text[end:] is [':', ..] else { return true }
+  text[:end]
   is ("ftp"
   | "ftps"
   | "http"
