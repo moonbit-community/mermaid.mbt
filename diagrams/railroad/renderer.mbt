@@ -345,7 +345,7 @@ fn Renderer::expression(
     Choice(alternatives) => self.choice(alternatives)
     Optional(element) => self.optional(element)
     Repetition(element, min~, ..) => self.repetition(element, min == 0.0)
-    Special(text) => self.boxed("railroad-special", "? " + text + " ?")
+    Special(text) => self.boxed("railroad-special", "? \{text} ?")
   }
 }
 
@@ -470,7 +470,7 @@ pub fn draw(
 fn theme_css_restyles_text(config : @config.Config) -> Bool {
   guard config.text("themeCSS") is Some(css) else { return false }
   let css = css.to_lower()
-  ["font", "spacing", "text-transform", "white-space", "writing-mode"]
-  .iter()
-  .any(property => css.contains(property))
+  ["font", "spacing", "text-transform", "white-space", "writing-mode"].any(property => {
+    css.contains(property)
+  })
 }
