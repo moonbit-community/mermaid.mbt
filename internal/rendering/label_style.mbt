@@ -21,12 +21,8 @@ fn Env::styled(self : Env, style : String, faces~ : Bool = true) -> Env {
   let mut env = self
   for declaration in style.split(";") {
     guard declaration.split_once(":") is Some((name, value)) else { continue }
-    let name = name.trim().to_owned().to_lower()
-    let value = value
-      .to_owned()
-      .replace_all(old="!important", new="")
-      .trim()
-      .to_owned()
+    let name = name.trim().to_lower()
+    let value = value.replace_all(old="!important", new="").trim().to_owned()
     match name {
       "font-weight" if faces => {
         let bold = match value.to_lower() {
@@ -216,9 +212,8 @@ fn label_font(style : String) -> LabelFont {
   let mut size : Double? = None
   for declaration in style.split(";") {
     guard declaration.split_once(":") is Some((name, value)) else { continue }
-    let name = name.trim().to_owned().to_lower()
+    let name = name.trim().to_lower()
     let value = value
-      .to_owned()
       .replace(old="!important", new="")
       .trim()
       .to_owned()
@@ -256,9 +251,8 @@ fn label_font(style : String) -> LabelFont {
 fn keeps_on_one_line(style : String) -> Bool {
   for declaration in style.split(";") {
     guard declaration.split_once(":") is Some((name, value)) else { continue }
-    let name = name.trim().to_owned().to_lower()
+    let name = name.trim().to_lower()
     let value = value
-      .to_owned()
       .replace(old="!important", new="")
       .trim()
       .to_owned()

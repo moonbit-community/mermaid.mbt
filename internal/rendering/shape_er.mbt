@@ -19,11 +19,7 @@ pub fn parse_generic_types(input : String) -> String {
       return set
     }
     let starting = tildes % 2 != 0 && set.has_prefix("~")
-    let chars = if starting {
-      set[1:].to_owned().to_array()
-    } else {
-      set.to_array()
-    }
+    let chars = if starting { set[1:].to_array() } else { set.to_array() }
     while true {
       let first = chars.search('~')
       let mut last = None
