@@ -108,7 +108,7 @@ fn chart(
     }
   }
   let data = data.filter(datum => {
-    !datum.sets.iter().any(set => to_remove.contains(set))
+    !datum.sets.any(set => to_remove.contains(set))
   })
   let solution = if data.length() > 0 {
     // The chart's own padding is 15.

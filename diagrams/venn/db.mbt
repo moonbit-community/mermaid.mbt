@@ -178,8 +178,7 @@ fn Venn::add_style(
   fields : Array[(String, String)],
 ) -> Unit {
   let styles : Map[String, String] = Map([])
-  for field in fields {
-    let (key, value) = field
+  for (key, value) in fields {
     // `normalizeStyleValue(value) ?? value`: an empty value stays empty.
     styles[key] = if value == "" { value } else { normalize_text(value) }
   }

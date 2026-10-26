@@ -76,8 +76,7 @@ fn add_missing_areas(areas : Array[Area]) -> Array[Area] {
     }
   }
   @d3.js_sort(ids, (a, b) => compare_code_units(a, b).to_double())
-  for i in 0..<ids.length() {
-    let a = ids[i]
+  for i, a in ids {
     for j in (i + 1)..<ids.length() {
       let b = ids[j]
       if !pairs.contains("\{a};\{b}") {

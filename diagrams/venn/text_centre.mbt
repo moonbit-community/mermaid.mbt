@@ -118,8 +118,7 @@ fn overlapping_circles(circles : Dict[Circle]) -> Map[String, Array[String]] {
   for circleid in circleids {
     ret[circleid] = []
   }
-  for i in 0..<circleids.length() {
-    let ci = circleids[i]
+  for i, ci in circleids {
     let a = circle_of(circles, ci)
     for j in (i + 1)..<circleids.length() {
       let cj = circleids[j]
