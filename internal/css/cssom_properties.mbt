@@ -676,7 +676,7 @@ fn transform_value(values : Array[Component]) -> String raise CssomError {
     let parts = split_commas(arguments[:]).map(part => trim_components(part[:]))
     guard parts.length() >= least &&
       parts.length() <= most &&
-      parts.iter().all(part => part.length() == 1) else {
+      parts.all(part => part.length() == 1) else {
       raise Invalid
     }
     let serialized = parts.map(part => {
