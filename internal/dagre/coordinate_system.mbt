@@ -73,10 +73,9 @@ fn swap_xy(g : LayoutGraph) -> Unit raise LayoutError {
         point.y = x
       }
     }
-    if edge.x is Some(_) {
-      let x = edge.x
+    if edge.x is Some(x) {
       edge.x = edge.y
-      edge.y = x
+      edge.y = Some(x)
     }
   }
 }
