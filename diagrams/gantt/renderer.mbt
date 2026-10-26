@@ -58,7 +58,7 @@ fn collapsed(text : String) -> String {
   let out = StringBuilder()
   let mut pending = false
   for c in text {
-    if c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\u{0c}' {
+    if c is (' ' | '\t' | '\n' | '\r' | '\u{0c}') {
       pending = true
     } else {
       if pending && !out.is_empty() {

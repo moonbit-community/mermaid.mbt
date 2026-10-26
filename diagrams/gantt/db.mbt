@@ -149,10 +149,7 @@ fn GanttDb::add_section(self : GanttDb, text : String) -> Unit {
 /// The task with this id, the way upstream looks it up: in a plain object
 /// keyed by id, which `__proto__` can never be a key of.
 fn GanttDb::find_task(self : GanttDb, id : String) -> Task? {
-  match self.positions.get(id) {
-    Some(position) => Some(self.tasks[position])
-    None => None
-  }
+  self.positions.get(id).map(position => self.tasks[position])
 }
 
 ///|
