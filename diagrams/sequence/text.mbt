@@ -281,7 +281,7 @@ fn wrap_label(
       completed.push(next_line)
       next_line = word
     } else {
-      next_line = if next_line == "" { word } else { next_line + " " + word }
+      next_line = if next_line == "" { word } else { "\{next_line} \{word}" }
     }
     if index + 1 == words.length() {
       completed.push(next_line)

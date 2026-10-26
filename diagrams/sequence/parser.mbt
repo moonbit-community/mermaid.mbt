@@ -362,9 +362,7 @@ fn SequenceDb::reduce(
     106 => {
       // The text follows a colon.
       let text = js_trim(string_of(v(0)))
-      Some(
-        parse_message(if text.length() > 1 { text[1:].to_owned() } else { "" }),
-      )
+      Some(parse_message(if text.length() > 1 { text[1:] } else { "" }))
     }
     _ => None
   }

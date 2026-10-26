@@ -158,7 +158,7 @@ fn extract_wrap(text : String) -> (String, Bool?) {
 ///|
 /// A text with its wrap setting, as the grammar's actions pass it around:
 /// `{ text, wrap }` with `wrap` left out when the text does not say.
-fn parse_message(text : String) -> Json {
+fn parse_message(text : StringView) -> Json {
   let (cleaned, wrap) = extract_wrap(js_trim(text))
   let fields : Map[String, Json] = { "text": Json::string(cleaned) }
   if wrap is Some(wrap) {
