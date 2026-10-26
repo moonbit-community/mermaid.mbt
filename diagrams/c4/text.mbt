@@ -105,7 +105,7 @@ fn text_dimensions(text : String, font : Font) -> (Double, Double) raise {
 /// the embedded ones, in a face the port has.
 fn measurable_family(family : String, weight : String) -> Bool {
   for name in family.split(",") {
-    let name = name.trim(chars=" \t\n\"'").to_owned().to_lower()
+    let name = name.trim(chars=" \t\n\"'").to_lower()
     match name {
       "trebuchet ms" | "verdana" | "arial" | "times" | "serif" => return true
       // Helvetica, which is also the generic sans-serif there, has a
@@ -143,7 +143,7 @@ fn break_string(
   let lines = []
   let mut current = ""
   for index, character in characters {
-    let next = current + character.to_string()
+    let next = "\{current}\{character}"
     if text_width(next, font) >= max_width {
       let last = characters.length() == index + 1
       lines.push(if last { next } else { next + "-" })
@@ -181,7 +181,7 @@ fn wrap_label(label : String, max_width : Double, font : Font) -> String raise {
       completed.push(next_line)
       next_line = word
     } else {
-      next_line = if next_line == "" { word } else { next_line + " " + word }
+      next_line = if next_line == "" { word } else { "\{next_line} \{word}" }
     }
     if index + 1 == words.length() {
       completed.push(next_line)

@@ -415,14 +415,7 @@ fn set_style_slot(
 /// shadowing?, shape?, sprite?, techn?, legendText?, legendSprite?)`
 fn C4Db::update_el_style(self : C4Db, args : Array[Json]) -> Unit {
   guard args.get(0) is Some(String(name)) else { return }
-  let element = match self.shapes.search_by(shape => shape.name() == name) {
-    Some(index) => self.shapes[index]
-    None =>
-      match self.boundaries.search_by(boundary => boundary.name() == name) {
-        Some(index) => self.boundaries[index]
-        None => return
-      }
-  }
+  guard self.element(name) is Some(element) else { return }
   let fields = [
     "bgColor", "fontColor", "borderColor", "shadowing", "shape", "sprite", "techn",
     "legendText", "legendSprite",
@@ -435,7 +428,7 @@ fn C4Db::update_el_style(self : C4Db, args : Array[Json]) -> Unit {
 ///|
 /// JavaScript's `parseInt` of a string, `None` for `NaN`.
 fn js_parse_int(text : String) -> Double? {
-  let chars = text.trim().to_owned().to_array()
+  let chars = text.trim().to_array()
   let mut index = 0
   let mut negative = false
   if index < chars.length() && chars[index] is ('+' | '-') {
@@ -549,10 +542,9 @@ fn C4Db::element(self : C4Db, name : String) -> Element? {
   match self.shapes.search_by(shape => shape.name() == name) {
     Some(index) => Some(self.shapes[index])
     None =>
-      match self.boundaries.search_by(boundary => boundary.name() == name) {
-        Some(index) => Some(self.boundaries[index])
-        None => None
-      }
+      self.boundaries
+      .search_by(boundary => boundary.name() == name)
+      .map(index => self.boundaries[index])
   }
 }
 

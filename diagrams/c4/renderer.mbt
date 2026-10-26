@@ -243,10 +243,7 @@ fn Renderer::draw_rels(self : Renderer) -> Unit raise {
       measure_text(text, wrap, font, text_width(text, font))
     }
     let label = measure(label_text)
-    let technology = match text("techn") {
-      Some(text) => Some(measure(text))
-      None => None
-    }
+    let technology = text("techn").map(measure)
     // The description is measured and not shown.
     if text("descr") is Some(text) {
       measure(text) |> ignore

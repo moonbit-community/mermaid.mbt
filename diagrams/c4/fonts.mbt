@@ -109,7 +109,7 @@ fn font_size_px(value : Json) -> Double? {
   match value {
     Number(number, ..) if number > 0.0 => Some(number)
     String(text) => {
-      let text = text.trim(chars=" \t\n").to_owned().to_lower()
+      let text = text.trim(chars=" \t\n").to_lower()
       guard text.has_suffix("px") else { return None }
       let number = @string.parse_double(text[:text.length() - 2].to_owned()) catch {
         _ => return None
