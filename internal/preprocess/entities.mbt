@@ -16,12 +16,12 @@ pub fn encode_entities(text : String) -> String {
   let text = class_def.replace_all(text, drop_last)
   entity.replace_all(text, found => {
     let matched = found.text()
-    let inner = matched[1:matched.length() - 1].to_owned()
-    let digits = inner.strip_prefix("+").map(v => v.to_owned()).unwrap_or(inner)
+    let inner = matched[1:matched.length() - 1]
+    let digits = inner.strip_prefix("+").unwrap_or(inner)
     if digits != "" && digits.iter().all(c => c is ('0'..<='9')) {
-      "ﬂ°°" + inner + "¶ß"
+      "ﬂ°°\{inner}¶ß"
     } else {
-      "ﬂ°" + inner + "¶ß"
+      "ﬂ°\{inner}¶ß"
     }
   })
 }

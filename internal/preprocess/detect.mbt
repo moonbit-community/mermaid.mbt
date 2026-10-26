@@ -53,7 +53,7 @@ fn starts_with(
 /// first detector to match wins. `text` must already be free of
 /// frontmatter, directives and comments.
 fn detect(text : String) -> String? {
-  if text.to_lower().trim().to_owned() == "error" {
+  if text.to_lower().trim() == "error" {
     return Some("error")
   }
   if starts_with(text, "---") {
