@@ -60,10 +60,7 @@ pub fn insert_title(
   let config = context.config
   let svg = context.svg
   let bounds = svg.bbox()
-  let margin = match config.number(section + ".titleTopMargin") {
-    Some(margin) => margin
-    None => 0.0
-  }
+  let margin = config.number(section + ".titleTopMargin").unwrap_or(0.0)
   let x = bounds.x + bounds.width / 2.0
   let y = -margin
   let text = svg
