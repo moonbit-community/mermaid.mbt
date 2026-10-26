@@ -54,10 +54,10 @@ fn serialize_font_family(value : String) -> String? {
         return None
       }
       let inner = chars[1:chars.length() - 1]
-      guard !inner.iter().any(c => c is ('"' | '\'' | '\\' | '\n')) else {
+      guard !inner.any(c => c is ('"' | '\'' | '\\' | '\n')) else {
         return None
       }
-      names.push("\"" + String::from_array(inner) + "\"")
+      names.push("\"\{String::from_array(inner)}\"")
     } else {
       // A sequence of identifiers.
       let words = []
@@ -65,9 +65,7 @@ fn serialize_font_family(value : String) -> String? {
         guard !word.is_empty() else { continue }
         let word = word.to_owned()
         let letters = word.to_array()
-        guard letters
-          .iter()
-          .all(c => {
+        guard letters.all(c => {
             c is ('a'..<='z' | 'A'..<='Z' | '0'..<='9' | '-' | '_') ||
             c.to_int() >= 0x80
           }) &&
