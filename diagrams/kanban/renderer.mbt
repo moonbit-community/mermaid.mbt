@@ -50,7 +50,7 @@ fn viewbox_options(config : @config.Config) -> (Double, Bool) raise KanbanError 
 /// at all leaves the text in the font of the page.
 fn is_measurable_family(family : String) -> Bool {
   for name in family.split(",") {
-    match name.trim(chars=" \t\n\"';").to_owned().to_lower() {
+    match name.trim(chars=" \t\n\"';").to_lower() {
       // The font of the redux themes, which the reference machine lacks.
       "recursive variable" => continue
       "trebuchet ms" | "verdana" | "arial" => return true
@@ -125,12 +125,13 @@ fn label_text(text : String) -> String raise KanbanError {
 /// Whether a line of markdown may start a block other than a paragraph
 /// (a heading, a list, a quote, code), which text labels take over as
 /// written, white space and line breaks included.
-fn starts_block(line : String) -> Bool {
-  let indent = line.length() - line.trim_start(chars=" ").length()
+fn starts_block(line : StringView) -> Bool {
+  let trimmed = line.trim_start(chars=" ")
+  let indent = line.length() - trimmed.length()
   if indent >= 4 || line.contains("\t") {
     return true
   }
-  let chars = line.trim_start(chars=" ").to_array()
+  let chars = trimmed.to_array()
   guard chars is [first, ..] else { return false }
   let after = (i : Int32) => i >= chars.length() || chars[i] is (' ' | '\t')
   match first {
@@ -186,11 +187,9 @@ fn check_markdown_text(text : String) -> Unit raise KanbanError {
   }
   // Text labels take such a block as one word, which the port neither
   // ends where marked does nor breaks where mermaid does.
-  let lines = text.split("\n").map(line => line.to_owned()).collect()
-  for line in lines {
-    if starts_block(line) {
-      raise refuse()
-    }
+  let lines = text.split("\n").collect()
+  if lines.any(starts_block) {
+    raise refuse()
   }
   // A blank line inside the text is a token of its own for marked, which
   // text labels show as a word; the port's markdown has no such token. An
