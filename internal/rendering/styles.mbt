@@ -28,7 +28,7 @@ fn is_label_style(key : String) -> Bool {
 fn styles_map(styles : Array[String]) -> Map[String, String] {
   let map : Map[String, String] = Map([])
   for style in styles {
-    let parts = style.split(":").map(part => part.to_owned()).collect()
+    let parts = style.split(":").collect()
     let key = parts[0].trim().to_owned()
     let value = if parts.length() > 1 { parts[1].trim().to_owned() } else { "" }
     map[key] = value

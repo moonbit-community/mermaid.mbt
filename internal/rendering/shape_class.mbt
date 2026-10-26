@@ -139,10 +139,9 @@ fn class_add_text(
 /// from the attribute; a transform without a comma has none.
 fn translate_y(element : @dom.Element) -> Double {
   guard element.get_attr("transform") is Some(transform) &&
-    transform.find(",") is Some(comma) else {
+    transform.split_once(",") is Some((_, rest)) else {
     return 0.0
   }
-  let rest = transform[comma + 1:]
   let end = rest.find(")").unwrap_or(rest.length())
   @string.parse_double(rest[:end].trim().to_owned()) catch {
     _ => 0.0

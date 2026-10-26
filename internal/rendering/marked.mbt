@@ -567,7 +567,7 @@ fn table_cell_count(row : String) -> Int32 {
   if js_blank(cells[0]) {
     cells.remove(0) |> ignore
   }
-  if cells.length() > 0 && js_blank(cells[cells.length() - 1]) {
+  if cells is [.., last] && js_blank(last) {
     cells.pop() |> ignore
   }
   cells.length()

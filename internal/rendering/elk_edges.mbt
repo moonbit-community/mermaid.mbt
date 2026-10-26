@@ -332,11 +332,7 @@ fn ensure_start_marker_segment(
   if !on_border(start_bounds, exit, tol=1.0) {
     return points
   }
-  let adjusted = [start]
-  for index in 2..<points.length() {
-    adjusted.push(points[index])
-  }
-  adjusted
+  [start, ..points[2:]]
 }
 
 ///|
