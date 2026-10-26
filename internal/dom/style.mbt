@@ -380,7 +380,7 @@ fn serialize_animation(value : String) -> String {
           None => return false
         }
     }
-    number.length() > 0 && number.all(c => c is ('0'..<='9' | '.' | '-' | '+'))
+    !number.is_empty() && number.all(c => c is ('0'..<='9' | '.' | '-' | '+'))
   }
   let is_number = (token : String) => {
     token != "" && token.all(c => c is ('0'..<='9' | '.'))

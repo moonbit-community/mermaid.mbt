@@ -128,10 +128,7 @@ fn PointBounds::to_bounds(self : PointBounds) -> Bounds? {
 fn number_attr(element : Element, name : String) -> Float? {
   guard element.get_attr(name) is Some(text) else { return None }
   let text = text.trim()
-  let text = match text.strip_suffix("px") {
-    Some(number) => number
-    None => text
-  }
+  let text = text.strip_suffix("px").unwrap_or(text)
   if text == "" {
     return None
   }
@@ -409,10 +406,9 @@ fn Transform::map(self : Transform, bounds : Bounds) -> Bounds {
 fn pixel_declaration(element : Element, name : String) -> Float? {
   for declaration in element.declarations {
     guard declaration.0 == name else { continue }
-    let value = match declaration.1.strip_suffix(" !important") {
-      Some(value) => value
-      None => declaration.1
-    }
+    let value = declaration.1
+      .strip_suffix(" !important")
+      .unwrap_or(declaration.1)
     guard value.strip_suffix("px") is Some(number) else { return None }
     let value = @string.parse_double(number.trim()) catch { _ => return None }
     return Some(Float::from_double(value))

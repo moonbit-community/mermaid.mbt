@@ -138,9 +138,7 @@ fn tokenize_path(data : String) -> Array[(Char, Array[Float])] {
           let arity = command_arity(command)
           if arity > 0 {
             let complete = numbers.length() / arity * arity
-            while numbers.length() > complete {
-              numbers.pop() |> ignore
-            }
+            numbers.truncate(complete)
             if numbers.is_empty() {
               commands.pop() |> ignore
             }
@@ -762,8 +760,9 @@ fn arc_geometry(
   let (tx, ty) = rotate(mid_x, mid_y)
   let radii_scale = tx * tx / (rx * rx) + ty * ty / (ry * ry)
   if radii_scale > 1 {
-    rx = rx * radii_scale.sqrt()
-    ry = ry * radii_scale.sqrt()
+    let scale = radii_scale.sqrt()
+    rx = rx * scale
+    ry = ry * scale
   }
   let one : Float = 1
   let sx = (one / rx).to_double()
