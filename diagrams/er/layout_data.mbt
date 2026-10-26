@@ -11,13 +11,12 @@ fn ErDb::layout_data(
   let edges : Array[@rendering.Edge] = []
   let sub_graphs = self.sub_graphs
   let parent_db : Map[String, String] = Map([])
-  for i in (sub_graphs.length() - 1)>=..0 {
-    for id in sub_graphs[i].nodes {
-      parent_db[id] = sub_graphs[i].id
+  for sub_graph in sub_graphs.rev_iter() {
+    for id in sub_graph.nodes {
+      parent_db[id] = sub_graph.id
     }
   }
-  for i in (sub_graphs.length() - 1)>=..0 {
-    let sub_graph = sub_graphs[i]
+  for sub_graph in sub_graphs.rev_iter() {
     nodes.push(
       @rendering.Node::new(
         id=sub_graph.id,

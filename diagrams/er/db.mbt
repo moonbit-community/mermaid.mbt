@@ -135,9 +135,7 @@ fn ErDb::add_attributes(
   attributes : Array[Attribute],
 ) -> Unit {
   let entity = self.add_entity(name)
-  for i in (attributes.length() - 1)>=..0 {
-    entity.attributes.push(attributes[i])
-  }
+  entity.attributes.append(attributes.rev())
 }
 
 ///|
@@ -178,15 +176,13 @@ fn ErDb::compiled_styles(
   self : ErDb,
   class_names : Array[String],
 ) -> Array[String] {
-  let mut compiled : Array[String] = []
+  let compiled : Array[String] = []
   for name in class_names {
     guard self.classes.get(name) is Some(style_class) else { continue }
-    compiled = [..compiled, ..style_class.styles].map(style => {
-      style.trim().to_owned()
-    })
-    compiled = [..compiled, ..style_class.text_styles].map(style => {
-      style.trim().to_owned()
-    })
+    compiled.append(style_class.styles.map(style => style.trim().to_owned()))
+    compiled.append(
+      style_class.text_styles.map(style => style.trim().to_owned()),
+    )
   }
   compiled
 }
