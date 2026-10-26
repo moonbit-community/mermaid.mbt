@@ -330,9 +330,7 @@ fn XmlParser::entity_declaration(self : XmlParser) -> Unit raise XmlError {
   self.require_space()
   let value = if self.peek() is Some('"' | '\'') {
     let value = self.literal()
-    if value.find("&") is Some(_) ||
-      value.find("%") is Some(_) ||
-      value.find("<") is Some(_) {
+    if value.contains("&") || value.contains("%") || value.contains("<") {
       None
     } else {
       Some(value)

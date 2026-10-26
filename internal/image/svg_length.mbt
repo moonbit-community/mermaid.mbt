@@ -56,7 +56,7 @@ fn svg_length(text : String, font_size : Float?) -> SvgLength {
   let chars = text.to_array()
   guard svg_number(chars, 0) is Some((value, end)) else {
     // A function (`calc(...)` and its kin) the port does not evaluate.
-    if text.find("(") is Some(_) {
+    if text.contains("(") {
       return Unevaluated("length is a CSS function")
     }
     return Open
