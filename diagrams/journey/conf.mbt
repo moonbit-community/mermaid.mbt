@@ -154,9 +154,9 @@ fn css_font_family(text : String) -> String raise JourneyError {
         let is_start = (c : Char) => {
           c is ('a'..<='z' | 'A'..<='Z' | '_') || c.to_int() >= 0x80
         }
-        let ok = first != "" &&
-          is_start(first.get_char(0).unwrap()) &&
-          word.all(c => is_start(c) || c is ('0'..<='9' | '-'))
+        let ok = first is [c, ..] &&
+          is_start(c) &&
+          word.all(ch => is_start(ch) || ch is ('0'..<='9' | '-'))
         if !ok {
           raise unsupported()
         }
@@ -179,7 +179,7 @@ fn css_font_family(text : String) -> String raise JourneyError {
           }
           families.push(if generic.contains(lower) { lower } else { word })
         }
-        words => families.push("\"" + words.join(" ") + "\"")
+        words => families.push("\"\{words.join(" ")}\"")
       }
     }
   }
