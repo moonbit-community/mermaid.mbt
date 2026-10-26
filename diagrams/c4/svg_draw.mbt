@@ -114,7 +114,7 @@ fn draw_text(
       .attr("dominant-baseline", "middle")
       // Inline styles of SVG elements are parsed leniently: a bare number
       // is a length in pixels.
-      .style("font-size", @dom.number(font.size) + "px")
+      .style("font-size", "\{@dom.number(font.size)}px")
       .style("font-weight", font.weight)
       .style("font-family", font.family)
     text
@@ -303,7 +303,7 @@ fn draw_rel_lines(
     if line.technology is Some(technology) {
       draw_text(
         group,
-        "[" + technology.text + "]",
+        "[\{technology.text}]",
         middle_x,
         middle_y + font.size + 5.0 + offset_y,
         line.label.width.max(technology.width),

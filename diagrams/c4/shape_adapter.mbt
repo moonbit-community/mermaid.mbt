@@ -129,7 +129,7 @@ fn element_css_styles(
     styles.push("stroke:\{stroke}")
   }
   styles.push(
-    "color:" + string_of_prop(props, "fontColor").unwrap_or("#FFFFFF"),
+    "color:\{string_of_prop(props, "fontColor").unwrap_or("#FFFFFF")}",
   )
   styles
 }

@@ -117,12 +117,7 @@ fn Renderer::draw_inside_boundary(
         if text == "" {
           None
         } else {
-          let kind = measure_text(
-            "[" + text + "]",
-            wrap,
-            font,
-            current.width_limit,
-          )
+          let kind = measure_text("[\{text}]", wrap, font, current.width_limit)
           kind.y = y + 5.0
           y = kind.y + kind.height
           Some(kind)
