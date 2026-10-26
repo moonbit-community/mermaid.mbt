@@ -174,9 +174,7 @@ fn normalize_value(name : String, value : String) -> String {
   } else if name == "stroke-dasharray" {
     // A list: commas between the lengths.
     let spaced = value.replace_all(old=",", new=" ")
-    let parts = [
-      for part in spaced.split(" ") if !part.is_empty() => part.to_owned()
-    ]
+    let parts = [ for part in spaced.split(" ") if !part.is_empty() => part ]
     parts.join(", ")
   } else {
     let value = value.trim().to_owned()
@@ -298,16 +296,9 @@ pub fn Element::style(self : Element, name : String, value : String) -> Element 
     return self
   }
   let value = normalize_value(name, value)
-  let mut found = false
-  for i, declaration in self.declarations {
-    if declaration.0 == name {
-      self.declarations[i] = (name, value)
-      found = true
-      break
-    }
-  }
-  if !found {
-    self.declarations.push((name, value))
+  match self.declarations.search_by(declaration => declaration.0 == name) {
+    Some(index) => self.declarations[index] = (name, value)
+    None => self.declarations.push((name, value))
   }
   self.style_dirty = true
   self
