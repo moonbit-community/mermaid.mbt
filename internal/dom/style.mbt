@@ -173,12 +173,10 @@ fn normalize_value(name : String, value : String) -> String {
     serialize_animation(value)
   } else if name == "stroke-dasharray" {
     // A list: commas between the lengths.
-    let parts = []
-    for part in value.replace_all(old=",", new=" ").split(" ") {
-      if !part.is_empty() {
-        parts.push(part.to_owned())
-      }
-    }
+    let spaced = value.replace_all(old=",", new=" ")
+    let parts = [
+      for part in spaced.split(" ") if !part.is_empty() => part.to_owned()
+    ]
     parts.join(", ")
   } else {
     let value = value.trim().to_owned()
