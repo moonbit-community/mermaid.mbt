@@ -280,7 +280,7 @@ fn paired_after(text : String, i : Int32) -> Bool {
 
 ///|
 fn json_strings(values : Array[String]) -> String {
-  "[" + values.map(json_string).join(",") + "]"
+  "[\{values.map(json_string).join(",")}]"
 }
 
 ///|
@@ -350,7 +350,7 @@ fn BlockDb::node_json(
     field("colorIndex", index.to_string())
   }
   field("look", json_string(node.look))
-  "{" + fields.join(",") + "}"
+  "{\{fields.join(",")}}"
 }
 
 ///|
