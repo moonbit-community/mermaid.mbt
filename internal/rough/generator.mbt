@@ -3,13 +3,9 @@
 ///|
 /// Keep the first move only, so that a fill is one closed outline.
 fn merged_shape(ops : Array[Op]) -> Array[Op] {
-  let out = []
-  for i, op in ops {
-    if i == 0 || !(op is Move(_, _)) {
-      out.push(op)
-    }
-  }
-  out
+  [
+    for i, op in ops if i == 0 || !(op is Move(_, _)) => op
+  ]
 }
 
 ///|

@@ -122,8 +122,8 @@ fn straight_hachure_lines(
   let vertex_array = []
   for polygon in polygons {
     let vertices = polygon.copy()
-    if vertices.length() > 0 && vertices[0] != vertices[vertices.length() - 1] {
-      vertices.push(vertices[0])
+    if vertices is [first, .., last] && first != last {
+      vertices.push(first)
     }
     if vertices.length() > 2 {
       vertex_array.push(vertices)

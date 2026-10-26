@@ -234,9 +234,9 @@ fn solid_fill_polygon(
       let mx = points[0].0 + o.offset_opt(offset)
       let my = points[0].1 + o.offset_opt(offset)
       ops.push(Move(mx, my))
-      for i in 1..<points.length() {
-        let lx = points[i].0 + o.offset_opt(offset)
-        let ly = points[i].1 + o.offset_opt(offset)
+      for p in points[1:] {
+        let lx = p.0 + o.offset_opt(offset)
+        let ly = p.1 + o.offset_opt(offset)
         ops.push(LineTo(lx, ly))
       }
     }
@@ -252,7 +252,7 @@ fn curve_ops(points : Array[(Double, Double)], o : Options) -> Array[Op] {
   if n > 3 {
     let s = 1.0 - o.curve_tightness
     ops.push(Move(points[1].0, points[1].1))
-    for i = 1; i + 2 < n; i = i + 1 {
+    for i in 1..<(n - 2) {
       let p = points[i]
       let before = points[i - 1]
       let after = points[i + 1]
