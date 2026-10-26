@@ -18,9 +18,9 @@ let post_steps : Array[String] = {
     "nudgeSharedInteriorSubpaths", "separateSharedRenderedTerminalLanes", "collapseRedundantRectangularDoglegs",
     "liftObstacleHuggingSameSideRails", "swapDestinationTerminalTailsToReduceCrossings",
   ] +
-  finalize.map(step => "f1." + step) +
+  finalize.map(step => "f1.\{step}") +
   ["nudgeSharedInteriorSubpaths2"] +
-  finalize.map(step => "f2." + step) +
+  finalize.map(step => "f2.\{step}") +
   [
     "liftTopLaneTitleBandsAboveRails", "shiftLeftLaneTitleBandsLeftOfRails", "liftTopLaneTitleBandsAboveRails2",
     "shiftLeftLaneTitleBandsLeftOfRails2",
@@ -37,12 +37,12 @@ pub(all) suberror UnknownStep {
 /// The name of a step without the round prefix (`f1.`) and the `2` that
 /// tells a repeated step apart.
 fn base_step(name : String) -> String {
-  let name = match name.find(".") {
-    Some(i) => name[i + 1:].to_owned()
+  let name = match name.split_once(".") {
+    Some((_, rest)) => rest.to_owned()
     None => name
   }
-  if name.has_suffix("2") {
-    name[:name.length() - 1].to_owned()
+  if name.strip_suffix("2") is Some(base) {
+    base.to_owned()
   } else {
     name
   }
@@ -126,7 +126,7 @@ fn route(layout : @model.Layout, direction : String) -> Unit {
 /// Turn the top-to-bottom layout to the diagram's direction: false when
 /// the post-processing stops there.
 fn transform_direction(layout : @model.Layout, direction : String) -> Bool {
-  let has_content = layout.nodes.iter().any(node => !node.is_group)
+  let has_content = layout.nodes.any(node => !node.is_group)
   if (direction == "LR" || direction == "RL") &&
     has_content &&
     !@post.apply_lr_direction_transform(layout, direction) {
