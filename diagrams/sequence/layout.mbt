@@ -32,10 +32,7 @@ fn or_default(value : Double, default : Double) -> Double {
 
 ///|
 fn Renderer::actor(self : Renderer, key : String?) -> Actor? {
-  match key {
-    Some(key) => self.db.actors.get(key)
-    None => None
-  }
+  key.bind(name => self.db.actors.get(name))
 }
 
 ///|

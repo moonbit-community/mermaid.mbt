@@ -58,7 +58,7 @@ fn serialize_font_family(value : String) -> String? {
         (name.has_prefix("\"") && name.has_suffix("\"")) ||
         (name.has_prefix("'") && name.has_suffix("'"))
       ) {
-      names.push("\"" + name[1:name.length() - 1].to_owned() + "\"")
+      names.push("\"\{name[1:name.length() - 1]}\"")
       continue
     }
     let words = name
@@ -157,11 +157,7 @@ fn style_font(
   for property in order {
     let value = match property {
       "font-family" => font.family.bind(serialize_font_family)
-      "font-size" =>
-        match size {
-          Some(size) => serialize_font_size(size)
-          None => None
-        }
+      "font-size" => size.bind(serialize_font_size)
       _ => serialize_font_weight(font.weight)
     }
     if value is Some(value) {

@@ -261,7 +261,7 @@ fn parse_metadata(metadata : String) -> Json raise {
   let source = if metadata.contains("\n") {
     metadata + "\n"
   } else {
-    "{\n" + metadata + "\n}"
+    "{\n\{metadata}\n}"
   }
   // js-yaml's leniency, as upstream loads it with js-yaml.
   match
@@ -506,10 +506,7 @@ fn SequenceDb::add_a_link(
   let sanitized = sanitize_text(text_field(text, "text").unwrap_or(""))
   // The separator is looked for before the entities are put back, and the
   // position is used after.
-  let separator = match sanitized.find("@") {
-    Some(index) => index
-    None => -1
-  }
+  let separator = sanitized.find("@").unwrap_or(-1)
   let text = sanitized
     .replace_all(old="&equals;", new="=")
     .replace_all(old="&amp;", new="&")
