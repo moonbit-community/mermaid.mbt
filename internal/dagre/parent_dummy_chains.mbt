@@ -7,7 +7,7 @@ fn parent_dummy_chains(g : LayoutGraph) -> Unit raise LayoutError {
   let postorder_nums = dummy_postorder(g)
   for start in g.graph().dummy_chains {
     let mut v = start
-    let mut node = nd(g, v)
+    let node = nd(g, v)
     guard node.edge_obj is Some(edge_obj) else {
       raise LayoutError("the dummy node \{v} stands for no edge")
     }
@@ -16,7 +16,6 @@ fn parent_dummy_chains(g : LayoutGraph) -> Unit raise LayoutError {
     let mut path_v : String? = path.get(path_idx).unwrap_or(None)
     let mut ascending = true
     while v != edge_obj.w {
-      node = nd(g, v)
       let rank = rank_of(g, v)
       if ascending {
         while true {
@@ -51,7 +50,6 @@ fn parent_dummy_chains(g : LayoutGraph) -> Unit raise LayoutError {
       }
       v = next
     }
-    ignore(node)
   }
 }
 
@@ -72,8 +70,8 @@ fn find_path(
   }
   let v_path : Array[String?] = []
   let w_path : Array[String?] = []
-  let low = if num(v).0 < num(w).0 { num(v).0 } else { num(w).0 }
-  let lim = if num(v).1 > num(w).1 { num(v).1 } else { num(w).1 }
+  let low = num(v).0.min(num(w).0)
+  let lim = num(v).1.max(num(w).1)
   // Traverse up from v to find the LCA.
   let mut parent : String? = Some(v)
   while true {

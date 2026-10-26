@@ -119,11 +119,7 @@ fn[E : RankEdge] simplify(
       .edge_between(e.v, e.w)
       .unwrap_or({ weight: 0.0, minlen: 1, })
     let label = ed(g, e)
-    let minlen = if simple.minlen > label.minlen() {
-      simple.minlen
-    } else {
-      label.minlen()
-    }
+    let minlen = simple.minlen.max(label.minlen())
     graph_op(() => {
       simplified.set_edge(e.v, e.w, {
         weight: simple.weight + label.weight(),
