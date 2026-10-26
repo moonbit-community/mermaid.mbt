@@ -58,8 +58,8 @@ const PAGE_FONT_SIZE : Double = 16.0
 /// `rem` and `%` scale it. Other units and keywords are refused.
 pub fn theme_font_size(theme : @theme.Theme) -> Double raise MeasureError {
   let text = match theme.get("fontSize") {
-    Number(n, ..) => @dom.number(n)
-    String(text) => text.trim(chars=" \t\n").to_owned()
+    Number(n, ..) => @dom.number(n)[:]
+    String(text) => text.trim(chars=" \t\n")
     _ => raise MeasureError("the theme has no font size")
   }
   let mut number = text
@@ -72,7 +72,7 @@ pub fn theme_font_size(theme : @theme.Theme) -> Double raise MeasureError {
       ("%", PAGE_FONT_SIZE / 100.0),
     ] {
     if text.strip_suffix(unit.0) is Some(prefix) {
-      number = prefix.to_owned()
+      number = prefix
       scale = unit.1
       break
     }
