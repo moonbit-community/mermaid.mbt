@@ -45,7 +45,7 @@ fn svg_size(data : Bytes) -> Decoded {
   // the default of 16 pixels, or that of its `font-size` attribute in
   // absolute units, as long as no style sets it.
   let font_size = if root.has_style_element ||
-    attributes.get("style").unwrap_or("").to_lower().find("font") is Some(_) {
+    attributes.get("style").unwrap_or("").to_lower().contains("font") {
     None
   } else {
     match attributes.get("font-size") {
@@ -221,7 +221,7 @@ fn svg_number(chars : Array[Char], at : Int32) -> (Double, Int32)? {
   // Beyond the range of doubles: infinite, or zero.
   let value = @string.parse_double(text) catch {
     _ =>
-      if text.find("e-") is Some(_) || text.find("E-") is Some(_) {
+      if text.contains("e-") || text.contains("E-") {
         0.0
       } else if text.has_prefix("-") {
         -@double.infinity
