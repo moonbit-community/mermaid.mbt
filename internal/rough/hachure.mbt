@@ -172,7 +172,7 @@ fn straight_hachure_lines(
       1
     }
   })
-  if edges.length() == 0 {
+  if edges.is_empty() {
     return lines
   }
   let mut active : Array[Edge] = []
