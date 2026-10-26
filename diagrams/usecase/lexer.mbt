@@ -26,12 +26,10 @@ fn spelled_at(text : String, offset : Int32, expected : String) -> Bool {
 /// Where `needle` first appears at or after `from`.
 fn index_from(text : String, needle : String, from : Int32) -> Int32? {
   let last = text.length() - needle.length()
-  let mut index = from
-  while index <= last {
+  for index in from..<=last {
     if spelled_at(text, index, needle) {
       return Some(index)
     }
-    index += 1
   }
   None
 }
