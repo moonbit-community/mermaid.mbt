@@ -51,7 +51,7 @@ fn text_size(
   if text == "" {
     return (0.0, 0.0)
   }
-  if text.iter().any(c => c is ('\n' | '\r' | '\t')) {
+  if text.any(c => c is ('\n' | '\r' | '\t')) {
     raise Unsupported("a tree view label with a line break or a tab")
   }
   if !font.covers(text) {
@@ -282,7 +282,7 @@ pub fn draw(tree : TreeView, context : @diagram.Context) -> Unit raise {
 
   process(tree.root, 0) |> ignore
   // Descriptions share a column to the right of the widest label.
-  if rows.iter().any(row => row.node.description is Some(_)) {
+  if rows.any(row => row.node.description is Some(_)) {
     let mut max_label_right = -1.0 / 0.0
     for row in rows {
       max_label_right = max(max_label_right, row.label_right_edge)
