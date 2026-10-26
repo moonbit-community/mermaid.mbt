@@ -183,7 +183,7 @@ fn layout_blocks(block : Block, padding : Double) -> Unit raise BlockError {
   }
   let row_offsets : Map[Double, Double] = Map([])
   let rows = row_heights.keys().collect()
-  rows.sort_by((a, b) => a.compare(b))
+  rows.sort()
   let mut offset = 0.0
   for row in rows {
     row_offsets[row] = offset
