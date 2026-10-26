@@ -96,8 +96,7 @@ fn basis(path : Path, points : Array[(Double, Double)]) -> Unit {
       (y0 + 4.0 * y1 + y) / 6.0,
     )
   }
-  for i, point in points {
-    let (x, y) = point
+  for i, (x, y) in points {
     match i {
       0 => path.move_to(x, y)
       1 => ()
@@ -129,8 +128,7 @@ fn basis(path : Path, points : Array[(Double, Double)]) -> Unit {
 fn step(path : Path, points : Array[(Double, Double)], t : Double) -> Unit {
   let mut px = 0.0
   let mut py = 0.0
-  for i, point in points {
-    let (x, y) = point
+  for i, (x, y) in points {
     if i == 0 {
       path.move_to(x, y)
     } else if t <= 0.0 {
@@ -155,8 +153,7 @@ fn step(path : Path, points : Array[(Double, Double)], t : Double) -> Unit {
 fn bump(path : Path, points : Array[(Double, Double)], along_x : Bool) -> Unit {
   let mut x0 = 0.0
   let mut y0 = 0.0
-  for i, point in points {
-    let (x, y) = point
+  for i, (x, y) in points {
     if i == 0 {
       path.move_to(x, y)
     } else if along_x {
@@ -201,8 +198,7 @@ fn cardinal(path : Path, points : Array[(Double, Double)]) -> Unit {
       y2,
     )
   }
-  for i, point in points {
-    let (x, y) = point
+  for i, (x, y) in points {
     match i {
       0 => path.move_to(x, y)
       1 => {
@@ -429,7 +425,7 @@ fn control_points(x : Array[Double]) -> (Array[Double], Array[Double]) {
     r[i] = r[i] - m * r[i - 1]
   }
   a[n - 1] = r[n - 1] / b[n - 1]
-  for i = n - 2; i >= 0; i = i - 1 {
+  for i in (n - 1)>..0 {
     a[i] = (r[i] - a[i + 1]) / b[i]
   }
   b[n - 1] = (x[n] + a[n - 1]) / 2.0

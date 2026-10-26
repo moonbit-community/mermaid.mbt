@@ -55,8 +55,7 @@ pub fn axis(
     },
   )
   |> ignore
-  for tick in ticks {
-    let (position, label) = tick
+  for (position, label) in ticks {
     let tick = group.append("g").attr("class", "tick")
     tick
     .append("line")

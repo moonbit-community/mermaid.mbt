@@ -88,11 +88,11 @@ fn significant(x : Double, digits : Int32) -> (String, Int32) {
 /// those of `String(x)`.
 fn shortest(x : Double) -> (String, Int32) {
   let text = number(x)
-  let (mantissa, exponent) = match text.find("e") {
-    Some(at) =>
+  let (mantissa, exponent) = match text.split_once("e") {
+    Some((mantissa, exponent_text)) =>
       (
-        text[:at].to_owned(),
-        @string.parse_int(text[at + 1:].to_owned().replace(old="+", new="")) catch {
+        mantissa.to_owned(),
+        @string.parse_int(exponent_text.to_owned().replace(old="+", new="")) catch {
           _ => 0
         },
       )

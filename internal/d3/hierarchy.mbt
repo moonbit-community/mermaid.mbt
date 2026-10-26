@@ -39,13 +39,11 @@ pub fn[T] hierarchy(data : T, children : (T) -> Array[T]) -> HierarchyNode[T] {
     if !below.is_empty() {
       let made = below.map(make)
       node.children = Some(made)
-      let mut i = made.length() - 1
-      while i >= 0 {
+      for i in made.length()>..0 {
         let child = made[i]
         child.parent = Some(node)
         child.depth = node.depth + 1
         nodes.push(child)
-        i -= 1
       }
     }
   }
@@ -74,10 +72,8 @@ pub fn[T] HierarchyNode::each_before(
   while nodes.pop() is Some(node) {
     callback(node)
     if node.children is Some(children) {
-      let mut i = children.length() - 1
-      while i >= 0 {
+      for i in children.length()>..0 {
         nodes.push(children[i])
-        i -= 1
       }
     }
   }
@@ -148,10 +144,8 @@ pub fn[T] HierarchyNode::sum(
     let own = value(node.data)
     let mut sum = if own.is_nan() { 0.0 } else { own }
     if node.children is Some(children) {
-      let mut i = children.length() - 1
-      while i >= 0 {
+      for i in children.length()>..0 {
         sum += children[i].value
-        i -= 1
       }
     }
     node.value = sum
