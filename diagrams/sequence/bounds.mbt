@@ -118,10 +118,7 @@ fn update(
   value : Double,
   combine : (Double, Double) -> Double,
 ) -> Double? {
-  match edge {
-    None => Some(value)
-    Some(old) => Some(combine(value, old))
-  }
+  Some(edge.map_or(value, old => combine(value, old)))
 }
 
 ///|
