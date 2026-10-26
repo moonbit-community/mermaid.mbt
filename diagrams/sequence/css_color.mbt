@@ -101,7 +101,7 @@ fn color_argument(text : StringView) -> ColorArgument? {
 ///|
 /// Whether the arguments of `rgb()` or `hsl()` form a color, in either the
 /// comma-separated or the space-separated syntax.
-fn is_color_function(hsl : Bool, arguments : String) -> Bool {
+fn is_color_function(hsl : Bool, arguments : StringView) -> Bool {
   let is_alpha = (argument : ColorArgument?) => {
     argument is Some(Number | Percentage)
   }
@@ -136,7 +136,7 @@ fn is_color_function(hsl : Bool, arguments : String) -> Bool {
       }
       (words(before), true)
     }
-    None => (words(arguments[:]), false)
+    None => (words(arguments), false)
   }
   ignore(alpha)
   guard channels.length() == 3 else { return false }
@@ -167,7 +167,7 @@ fn css_supports_color(value : String) -> Bool {
         !arguments.contains(")") &&
         is_color_function(
           name.has_prefix("hsl"),
-          arguments.to_owned().replace_all(old="\t", new=" "),
+          arguments.replace_all(old="\t", new=" "),
         )
     }
   }
