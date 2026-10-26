@@ -188,7 +188,7 @@ pub fn parse_metadata(metadata : String) -> Json raise {
   let source = if metadata.contains("\n") {
     metadata + "\n"
   } else {
-    "{\n" + metadata + "\n}"
+    "{\n\{metadata}\n}"
   }
   // js-yaml's leniency, as upstream loads it with js-yaml.
   match
@@ -478,10 +478,7 @@ fn FlowDb::add_single_link(
       edge.is_user_defined_id = true
     }
     _ => {
-      let existing = self.edges
-        .iter()
-        .filter(e => e.start == start && e.end == end)
-        .count()
+      let existing = self.edges.count_if(e => e.start == start && e.end == end)
       edge.id = edge_id(
         start,
         end,
@@ -906,7 +903,7 @@ fn destruct_end_link(text : String) -> (String, String, Int32) {
   if line.has_prefix("~") {
     stroke = "invisible"
   }
-  let dots = line.iter().filter(c => c == '.').count()
+  let dots = line.iter().count_if(c => c == '.')
   if dots > 0 {
     stroke = "dotted"
     length = dots
