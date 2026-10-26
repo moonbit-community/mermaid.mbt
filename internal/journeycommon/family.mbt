@@ -45,7 +45,7 @@ fn family_name(item : StringView) -> (String, Bool)? {
       rest.all(c => c is ('A'..<='Z' | 'a'..<='z' | '0'..<='9' | '_' | '-')) else {
       return None
     }
-    words.push(word.to_owned().to_lower())
+    words.push(word.to_lower())
   }
   let name = words.join(" ")
   if words.is_empty() || css_wide_keywords.contains(name) {
@@ -74,8 +74,7 @@ pub fn family_font(
     names.push(name)
   }
   let usable = []
-  for name in names {
-    let (name, quoted) = name
+  for (name, quoted) in names {
     if absent_families.contains(name) {
       continue
     }
