@@ -65,10 +65,8 @@ fn digits_value(digits : StringView) -> Double {
 /// The bounds a repeat prefix stands for: `min*max`, either of which may
 /// be left out, or a number for exactly that many.
 fn repeat_bounds(repeat : String) -> (Double, Double) {
-  match repeat.find("*") {
-    Some(star) => {
-      let min = repeat[:star]
-      let max = repeat[star + 1:]
+  match repeat.split_once("*") {
+    Some((min, max)) =>
       (
         if min.is_empty() {
           0.0
@@ -81,7 +79,6 @@ fn repeat_bounds(repeat : String) -> (Double, Double) {
           digits_value(max)
         },
       )
-    }
     None => {
       let exact = digits_value(repeat)
       (exact, exact)
