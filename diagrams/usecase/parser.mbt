@@ -193,7 +193,7 @@ fn gate(key : String, parser : @chevrotain.Parser) -> Bool {
     "statement:Alternation0:11" => {
       let token = parser.la(1)
       !(token.name == "IDENTIFIER" &&
-      ascii_lower(token.image)
+      token.image.to_lower()
       is ("allowmixing" | "newpage" | "package" | "rectangle" | "skinparam"))
     }
     "relationTail:Option0" =>
@@ -210,23 +210,6 @@ fn gate(key : String, parser : @chevrotain.Parser) -> Bool {
       has_labeled_right(parser, ["MARKERLESS_SOLID"])
     _ => true
   }
-}
-
-///|
-/// `toLowerCase` of an identifier, which is ASCII.
-fn ascii_lower(text : String) -> String {
-  String::from_array(
-    text
-    .iter()
-    .map(c => {
-      if c is ('A'..<='Z') {
-        (c.to_int() + 32).unsafe_to_char()
-      } else {
-        c
-      }
-    })
-    .collect(),
-  )
 }
 
 ///|
@@ -390,7 +373,7 @@ fn stereotype(node : @chevrotain.CstNode) -> String {
 
 ///|
 /// JavaScript's `String.prototype.trim`.
-fn js_trim(text : String) -> String {
+fn js_trim(text : StringView) -> String {
   let mut start = 0
   let mut end = text.length()
   while start < end && is_blank(text[start:start + 1]) {
@@ -698,13 +681,13 @@ fn Visitor::statement(
     "accTitleStatement" => {
       let image = node.tokens("ACC_TITLE_LINE")[0].image
       guard image.find(":") is Some(colon) else { return }
-      drafts.acc_title = js_trim(image[colon + 1:].to_owned())
+      drafts.acc_title = js_trim(image[colon + 1:])
     }
     "accDescrStatement" =>
       match node.tokens("ACC_DESCR_LINE") {
         [line, ..] => {
           guard line.image.find(":") is Some(colon) else { return }
-          drafts.acc_description = js_trim(line.image[colon + 1:].to_owned())
+          drafts.acc_description = js_trim(line.image[colon + 1:])
         }
         [] => {
           let image = node.tokens("ACC_DESCR_BLOCK")[0].image
@@ -713,7 +696,7 @@ fn Visitor::statement(
             return
           }
           // The block ends at the first closing brace of the source.
-          drafts.acc_description = js_trim(image[open + 1:close].to_owned())
+          drafts.acc_description = js_trim(image[open + 1:close])
         }
       }
     "directionStatement" =>
@@ -874,11 +857,8 @@ fn Visitor::statement(
       }
       drafts.class_assignments.push(
         (
-          ids[:split]
-          .iter()
-          .map(token => (token.image, self.token_location(token)))
-          .collect(),
-          ids[split:].iter().map(token => token.image).collect(),
+          ids[:split].map(token => (token.image, self.token_location(token))),
+          ids[split:].map(token => token.image),
         ),
       )
     }

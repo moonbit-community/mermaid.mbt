@@ -5,7 +5,7 @@
 /// browser skips; the rest of a list must name a face the port measures.
 fn check_font_family(family : String) -> Unit raise UsecaseError {
   for name in family.split(",") {
-    let name = name.trim(chars=" \t\n\"'").to_owned().to_lower()
+    let name = name.trim(chars=" \t\n\"'").to_lower()
     match name {
       "open sans" | "recursive variable" => continue
       "trebuchet ms"

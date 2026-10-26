@@ -86,7 +86,7 @@ fn UsecaseDb::compiled_styles(
       let style = js_trim(raw)
       let property = js_trim(
         match style.find(":") {
-          Some(colon) => style[:colon].to_owned()
+          Some(colon) => style[:colon]
           None => style
         },
       )
@@ -539,19 +539,11 @@ fn safe_id(id : String) -> String {
   if pending {
     out.write_char('_')
   }
-  let safe = out.to_string()
-  let mut start = 0
-  let mut end = safe.length()
-  while start < end && safe.unsafe_get(start) == '_' {
-    start += 1
-  }
-  while end > start && safe.unsafe_get(end - 1) == '_' {
-    end -= 1
-  }
-  if start == end {
+  let safe = out.to_string().trim(chars="_")
+  if safe.is_empty() {
     "element"
   } else {
-    safe[start:end].to_owned()
+    safe.to_owned()
   }
 }
 

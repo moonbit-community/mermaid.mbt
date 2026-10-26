@@ -208,7 +208,7 @@ fn JsonReader::number(self : JsonReader) -> JsonValue raise UsecaseError {
     guard self.peek() is ('0'..<='9') else { raise self.fail() }
     digits()
   }
-  let spelled = self.text[start:self.offset].to_owned()
+  let spelled = self.text[start:self.offset]
   let value = @string.parse_double(spelled) catch { _ => raise self.fail() }
   Number(value)
 }
@@ -298,8 +298,7 @@ fn flatten_json_rows(value : JsonValue) -> Array[JsonRow] {
           rows.push({ key: path, accessible_key: path, value: "{}", })
           return
         }
-        for property in properties {
-          let (key, child) = property
+        for (key, child) in properties {
           visit(child, if path != "" { "\{path}.\{key}" } else { key })
         }
       }
