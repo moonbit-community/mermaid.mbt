@@ -131,7 +131,7 @@ fn legend_lines(
           broken = broken + char.to_string()
           if measure(broken + "-") > limit {
             // `slice(0, -1)` drops one UTF-16 unit, not one character.
-            lines.push(broken[:broken.length() - 1].to_owned() + "-")
+            lines.push("\{broken[:broken.length() - 1]}-")
             broken = char.to_string()
           }
         }
