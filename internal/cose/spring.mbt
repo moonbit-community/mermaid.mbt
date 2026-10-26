@@ -136,8 +136,8 @@ fn Layout::find_surrounding(
   let surrounding : Array[LNode] = []
   let in_surrounding = Array::make(self.nodes.length(), false)
   let grid = self.grid
-  for i = node_a.start_x - 1; i < node_a.finish_x + 2; i = i + 1 {
-    for j = node_a.start_y - 1; j < node_a.finish_y + 2; j = j + 1 {
+  for i in (node_a.start_x - 1)..<(node_a.finish_x + 2) {
+    for j in (node_a.start_y - 1)..<(node_a.finish_y + 2) {
       if i < 0 || j < 0 || i >= grid.length() || j >= grid[0].length() {
         continue
       }
@@ -187,8 +187,8 @@ fn Layout::update_grid(self : Layout) -> Unit {
     let finish_y = ((v.rect.height + v.rect.y - self.top) / self.repulsion_range)
       .floor()
       .to_int()
-    for i = start_x; i <= finish_x; i = i + 1 {
-      for j = start_y; j <= finish_y; j = j + 1 {
+    for i in start_x..<=finish_x {
+      for j in start_y..<=finish_y {
         grid[i][j].push(v)
       }
     }

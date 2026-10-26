@@ -60,13 +60,7 @@ fn flat_forest(nodes : Array[LNode]) -> Array[Array[LNode]] {
 fn center_of_tree(nodes : Array[LNode]) -> LNode {
   let mut list = nodes.copy()
   while !(list.length() == 1 || list.length() == 2) {
-    let kept = []
-    for i, node in list {
-      if i % 2 == 1 {
-        kept.push(node)
-      }
-    }
-    list = kept
+    list = [ for i, node in list if i % 2 == 1 => node ]
   }
   list[0]
 }
