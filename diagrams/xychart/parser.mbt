@@ -107,10 +107,7 @@ fn XYChart::reduce(
       None
     }
     27 => {
-      let categories = []
-      for category in v(0).texts() {
-        categories.push(text_sanitizer(category))
-      }
+      let categories = v(0).texts().map(text_sanitizer)
       self.x_axis = Band(categories)
       self.has_set_x_axis = true
       None
