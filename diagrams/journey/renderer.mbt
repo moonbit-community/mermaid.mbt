@@ -280,8 +280,9 @@ fn draw_tasks(
         fill = None
         num = "NaN"
       } else {
-        fill = Some(fills[section_number % fills.length()])
-        num = (section_number % fills.length()).to_string()
+        let index = section_number % fills.length()
+        fill = Some(fills[index])
+        num = index.to_string()
       }
       colour = if colours.is_empty() {
         None

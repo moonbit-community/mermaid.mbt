@@ -6,20 +6,20 @@ pub fn styles(theme : @theme.Theme) -> String {
   // the fills all hinge on the first one, as upstream writes them.
   let fill_type = (index : Int32) => {
     if theme.flag("fillType0") {
-      "fill: " + v("fillType\{index}")
+      "fill: \{v("fillType\{index}")}"
     } else {
       ""
     }
   }
   let actor = (index : Int32) => {
     if theme.flag("actor\{index}") {
-      "fill: " + v("actor\{index}")
+      "fill: \{v("actor\{index}")}"
     } else {
       ""
     }
   }
   let face = if theme.flag("faceColor") {
-    "fill: " + v("faceColor")
+    "fill: \{v("faceColor")}"
   } else {
     "fill: #FFF8DC"
   }
