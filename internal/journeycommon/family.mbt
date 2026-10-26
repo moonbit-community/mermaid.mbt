@@ -26,9 +26,7 @@ let css_wide_keywords : Array[String] = [
 fn family_name(item : StringView) -> (String, Bool)? {
   let item = item.trim(chars=" ")
   if item is ['"' | '\'' as quote, .. rest] {
-    guard rest is [.. name, last] &&
-      last == quote &&
-      !name.iter().any(c => c == quote) else {
+    guard rest is [.. name, last] && last == quote && !name.any(c => c == quote) else {
       return None
     }
     return Some((name.to_owned().to_lower(), true))
@@ -44,9 +42,7 @@ fn family_name(item : StringView) -> (String, Bool)? {
       _ => word
     }
     guard letters is ['A'..<='Z' | 'a'..<='z' | '_', .. rest] &&
-      rest
-      .iter()
-      .all(c => c is ('A'..<='Z' | 'a'..<='z' | '0'..<='9' | '_' | '-')) else {
+      rest.all(c => c is ('A'..<='Z' | 'a'..<='z' | '0'..<='9' | '_' | '-')) else {
       return None
     }
     words.push(word.to_owned().to_lower())

@@ -78,7 +78,7 @@ pub fn theme_font_size(theme : @theme.Theme) -> Double raise MeasureError {
     }
   }
   let plain = number != "" &&
-    number.iter().all(c => c is ('0'..<='9' | '.')) &&
+    number.all(c => c is ('0'..<='9' | '.')) &&
     number.iter().filter(c => c == '.').count() <= 1 &&
     !number.has_suffix(".") &&
     !number.has_prefix(".")
