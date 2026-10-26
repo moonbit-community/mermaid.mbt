@@ -92,7 +92,7 @@ fn shortest(x : Double) -> (String, Int32) {
     Some((mantissa, exponent_text)) =>
       (
         mantissa.to_owned(),
-        @string.parse_int(exponent_text.to_owned().replace(old="+", new="")) catch {
+        @string.parse_int(exponent_text.replace(old="+", new="")) catch {
           _ => 0
         },
       )
@@ -105,8 +105,7 @@ fn shortest(x : Double) -> (String, Int32) {
   while zeros < all.length() - 1 && all[zeros] == '0' {
     zeros += 1
   }
-  let digits = all[zeros:].to_owned()
-  let digits = digits.trim_end(chars="0").to_owned()
+  let digits = all[zeros:].trim_end(chars="0").to_owned()
   (if digits == "" { "0" } else { digits }, exponent + point - 1 - zeros)
 }
 
