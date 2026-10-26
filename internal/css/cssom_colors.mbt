@@ -69,17 +69,16 @@ fn color_function_arguments(
       _ => ()
     }
   }
-  if items.iter().any(item => item is Preserved(Comma, _)) {
+  if items.any(item => item is Preserved(Comma, _)) {
     let parts = split_commas(items[:]).map(part => trim_components(part[:]))
-    guard parts.iter().all(part => part.length() == 1) &&
-      parts.length() is (3 | 4) else {
+    guard parts.all(part => part.length() == 1) && parts.length() is (3 | 4) else {
       return false
     }
     let values = parts.map(part => part[0])
     let channels_ok = if hsl {
       is_hue(values[0]) && is_percentage(values[1]) && is_percentage(values[2])
     } else {
-      values[:3].iter().all(is_number) || values[:3].iter().all(is_percentage)
+      values[:3].all(is_number) || values[:3].all(is_percentage)
     }
     channels_ok && (values.length() == 3 || is_alpha(values[3]))
   } else {
@@ -94,7 +93,7 @@ fn color_function_arguments(
       (is_percentage(channels[1]) || is_number(channels[1])) &&
       (is_percentage(channels[2]) || is_number(channels[2]))
     } else {
-      channels.iter().all(item => is_number(item) || is_percentage(item))
+      channels.all(item => is_number(item) || is_percentage(item))
     }
     channels_ok && alpha.map(is_alpha).unwrap_or(true)
   }
@@ -111,7 +110,7 @@ fn color_value(item : Component, source : Tokens) -> String raise CssomError {
     }
     Preserved(Hash(digits, _), _) => {
       guard digits.length() is (3 | 4 | 6 | 8) &&
-        digits.iter().all(c => c is ('0'..<='9' | 'a'..<='f' | 'A'..<='F')) else {
+        digits.all(c => c is ('0'..<='9' | 'a'..<='f' | 'A'..<='F')) else {
         raise Invalid
       }
       resolved_color("#" + digits)

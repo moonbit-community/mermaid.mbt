@@ -437,7 +437,7 @@ fn an_plus_b(items : Array[Component]) -> String raise CssomError {
     } else if suffix == "-" {
       dash_b(rest)
     } else if suffix.has_prefix("-") &&
-      suffix[1:].iter().all(c => c is ('0'..<='9')) &&
+      suffix[1:].all(c => c is ('0'..<='9')) &&
       rest.to_owned().filter(token => token != Whitespace).is_empty() {
       -integer_text(suffix[1:].to_owned())
     } else {

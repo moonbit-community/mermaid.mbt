@@ -143,10 +143,10 @@ fn declaration_block(
       if is_important != important {
         continue
       }
-      let overridden = parsed[index + 1:]
-        .iter()
-        .any(later => later.0 == name && later.2 == important) ||
-        (!important && parsed.iter().any(other => other.0 == name && other.2))
+      let overridden = parsed[index + 1:].any(later => {
+          later.0 == name && later.2 == important
+        }) ||
+        (!important && parsed.any(other => other.0 == name && other.2))
       if !overridden {
         declarations.push(declaration)
       }
@@ -167,7 +167,7 @@ fn declaration_block(
       for other in names {
         if other != shorthand &&
           shorthands.get(other) is Some(others) &&
-          others.iter().any(longhand => longhands.contains(longhand)) {
+          others.any(longhand => longhands.contains(longhand)) {
           raise Unported("\{shorthand} with \{other}")
         }
       }
