@@ -5,14 +5,14 @@ fn is_css_identifier(text : StringView) -> Bool {
   let start = (c : Char) => {
     c is ('a'..<='z' | 'A'..<='Z' | '_') || c.to_int() >= 0x80
   }
-  let chars = text.to_owned().to_array()
+  let chars = text.to_array()
   let rest = match chars {
     ['-', '-', .. rest] => rest
     ['-', first, .. rest] if start(first) => rest
     [first, .. rest] if start(first) => rest
     _ => return false
   }
-  rest.iter().all(c => start(c) || c is ('0'..<='9' | '-'))
+  rest.all(c => start(c) || c is ('0'..<='9' | '-'))
 }
 
 ///|
@@ -24,7 +24,7 @@ fn is_css_identifier(text : StringView) -> Bool {
 /// as one. Nothing for anything else.
 fn selector_tail(id : String) -> String? {
   let out = []
-  for index, compound in id.split(" ").collect() {
+  for index, compound in id.split(" ") {
     // Extra spaces between compounds, and after the last, mean nothing.
     if index > 0 && compound.is_empty() {
       continue
@@ -42,7 +42,7 @@ fn selector_tail(id : String) -> String? {
     if type_name is Some(name) && !is_css_identifier(name) {
       return None
     }
-    if !classes.iter().all(is_css_identifier) {
+    if !classes.all(is_css_identifier) {
       return None
     }
     let text = StringBuilder()
@@ -80,12 +80,10 @@ pub fn ClassDb::styled_classes(
       // Certain to be refused when nothing but the characters of
       // identifiers is involved; any other character may make the id a
       // selector of some other shape, which is not modelled.
-      let plain = id
-        .iter()
-        .all(c => {
-          c is ('a'..<='z' | 'A'..<='Z' | '0'..<='9' | '_' | '-' | '.' | ' ') ||
-          c.to_int() >= 0x80
-        })
+      let plain = id.all(c => {
+        c is ('a'..<='z' | 'A'..<='Z' | '0'..<='9' | '_' | '-' | '.' | ' ') ||
+        c.to_int() >= 0x80
+      })
       if plain {
         raise Invalid(
           "Failed to execute 'insertRule' on 'CSSStyleSheet': Failed to parse the rule '.\{id} > * { \{node.styles.join(" !important; ")} !important; }'.",
