@@ -26,15 +26,9 @@ fn mult_mat(
 ///|
 /// `Matrix.transpose`.
 fn transpose(a : Array[Array[Double]]) -> Array[Array[Double]] {
-  let result = []
-  for i in 0..<a[0].length() {
-    let row = []
-    for j in 0..<a.length() {
-      row.push(a[j][i])
-    }
-    result.push(row)
-  }
-  result
+  [
+    for i in 0..<a[0].length() => a.map(row => row[i])
+  ]
 }
 
 ///|

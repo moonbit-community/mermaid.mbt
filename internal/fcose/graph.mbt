@@ -415,7 +415,7 @@ fn Manager::other_end_in_graph(
 /// `LGraph.updateConnected`.
 fn Manager::update_connected(self : Manager, graph : Int32) -> Unit {
   let g = self.graphs[graph]
-  if g.nodes.length() == 0 {
+  if g.nodes.is_empty() {
     g.is_connected = true
     return
   }
