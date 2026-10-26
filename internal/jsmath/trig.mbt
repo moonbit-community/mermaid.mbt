@@ -36,7 +36,7 @@ fn sin_series(r : DD) -> DD {
   let r2 = r.mul(r)
   let mut term = r
   let mut sum = r
-  for k = 1; k < 20; k = k + 1 {
+  for k in 1..<20 {
     term = term
       .mul(r2)
       .div_double(-((2 * k).to_double() * (2 * k + 1).to_double()))
@@ -54,7 +54,7 @@ fn cos_series(r : DD) -> DD {
   let r2 = r.mul(r)
   let mut term = DD::from_double(1.0)
   let mut sum = term
-  for k = 1; k < 20; k = k + 1 {
+  for k in 1..<20 {
     term = term
       .mul(r2)
       .div_double(-((2 * k - 1).to_double() * (2 * k).to_double()))
