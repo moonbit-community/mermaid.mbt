@@ -34,7 +34,7 @@ fn mulberry32(seed : UInt32) -> () -> Double {
 fn deterministic_shuffle(order : Array[String], seed : UInt32) -> Array[String] {
   let shuffled = order.copy()
   let random = mulberry32(seed)
-  for i = shuffled.length() - 1; i > 0; i = i - 1 {
+  for i in (shuffled.length() - 1)>=..1 {
     let j = (random() * (i + 1).to_double()).floor().to_int()
     shuffled.swap(i, j)
   }

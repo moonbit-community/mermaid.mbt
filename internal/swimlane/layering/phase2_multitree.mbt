@@ -213,7 +213,7 @@ fn compute_subtree_cross_counts(
     if a == b {
       return a
     }
-    for k = max_log - 1; k >= 0; k = k - 1 {
+    for k in (max_log - 1)>=..0 {
       let up_a = up[k][a]
       let up_b = up[k][b]
       if up_a == -1 || up_b == -1 {
