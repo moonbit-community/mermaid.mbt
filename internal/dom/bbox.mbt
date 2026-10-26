@@ -301,7 +301,7 @@ fn Transform::matrix(
 /// `skewY`, which are not ported.
 fn Transform::apply(
   self : Transform,
-  name : String,
+  name : StringView,
   arguments : Array[Float],
 ) -> Transform? {
   match (name, arguments) {
@@ -346,10 +346,12 @@ fn element_transform(element : Element) -> Transform {
       break
     }
     guard rest.split_once("(") is Some((name, after)) else { return identity }
-    guard after.find(")") is Some(close) else { return identity }
-    let name = name.trim(chars=" \t\n\r").to_owned()
+    guard after.split_once(")") is Some((inside, remaining)) else {
+      return identity
+    }
+    let name = name.trim(chars=" \t\n\r")
     let arguments = []
-    for part in after[:close].replace_all(old=",", new=" ").split(" ") {
+    for part in inside.replace_all(old=",", new=" ").split(" ") {
       let part = part.trim(chars=" \t\n\r")
       if !part.is_empty() {
         arguments.push(parse_svg_number(part))
@@ -359,7 +361,7 @@ fn element_transform(element : Element) -> Transform {
       return identity
     }
     transform = next
-    rest = after[close + 1:]
+    rest = remaining
   }
   transform
 }
