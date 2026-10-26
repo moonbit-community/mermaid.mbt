@@ -26,8 +26,7 @@ fn color_sections(
     }
   }
   let out = StringBuilder()
-  for entry in kind_slots {
-    let (kind, slot) = entry
+  for (kind, slot) in kind_slots {
     let sel = "[data-look=\"\{look}\"].node.af-kind-\{kind}"
     out.write_string(
       (
