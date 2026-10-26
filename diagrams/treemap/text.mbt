@@ -70,7 +70,7 @@ fn place_text(
 
 ///|
 /// `String.prototype.trim`.
-fn js_trim(text : String) -> String {
+fn js_trim(text : StringView) -> String {
   let chars = text.to_array()
   let mut start = 0
   let mut end = chars.length()
@@ -103,10 +103,10 @@ fn split_styles(styles : Array[String]) -> SplitStyles {
   // of an earlier one, in its place.
   let map : Map[String, String] = Map([])
   for style in styles {
-    let parts = style.split(":").map(part => part.to_owned()).collect()
+    let parts = style.split(":").to_array()
     let key = js_trim(parts[0])
     // A declaration without a colon has no value, which joins as nothing.
-    map[key] = if parts.length() > 1 { js_trim(parts[1]) } else { "" }
+    map[key] = if parts is [_, value, ..] { js_trim(value) } else { "" }
   }
   let label = []
   let label_keys = []

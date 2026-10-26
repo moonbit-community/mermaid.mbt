@@ -254,6 +254,14 @@ pub fn draw(
   layout.layout(root)
   // What a truthy number is to JavaScript.
   let truthy = (value : Double) => value != 0.0 && !value.is_nan()
+  // The value of a node as its text, or nothing when it has none.
+  let value_text = (node : @d3.HierarchyNode[Node]) => {
+    if truthy(node.value) {
+      value_format.apply(node.value)
+    } else {
+      ""
+    }
+  }
   // The label styles of a node's class, as they are appended to the
   // style of its texts: `color` becomes `fill`, the first time it occurs.
   let label_styles = (node : Node) => {
@@ -378,7 +386,7 @@ pub fn draw(
             "a treemap section name cut inside a character: \{original}",
           )
         }
-        let truncated = original[:length].to_owned() + ellipsis
+        let truncated = "\{original[:length]}\{ellipsis}"
         label.text(truncated) |> ignore
         if text_length(font, truncated, size, scale) <= available {
           break
@@ -405,16 +413,7 @@ pub fn draw(
         label_styles(node.data)
       }
     })
-    let value_texts = []
-    for node in branches {
-      value_texts.push(
-        if truthy(node.value) {
-          value_format.apply(node.value)
-        } else {
-          ""
-        },
-      )
-    }
+    let value_texts = branches.map(value_text)
     for i, node in branches {
       let element = sections[i]
         .append("text")
@@ -586,16 +585,7 @@ pub fn draw(
       ";" +
       label_styles(node.data)
     })
-    let value_texts = []
-    for node in leaves {
-      value_texts.push(
-        if truthy(node.value) {
-          value_format.apply(node.value)
-        } else {
-          ""
-        },
-      )
-    }
+    let value_texts = leaves.map(value_text)
     let values : Array[DrawnText] = []
     for i, node in leaves {
       let element = cells[i]
