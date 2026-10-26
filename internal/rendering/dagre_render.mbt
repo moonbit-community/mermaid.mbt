@@ -170,7 +170,7 @@ fn DagreState::prepare(self : DagreState) -> DagreGraph raise LayoutError {
       _ => None
     }
     for suffix in ["1", "2"] {
-      let id = node_id + "---" + node_id + "---" + suffix
+      let id = "\{node_id}---\{node_id}---\{suffix}"
       let dummy = Node::new(
         id~,
         dom_id=id,
@@ -185,8 +185,8 @@ fn DagreState::prepare(self : DagreState) -> DagreGraph raise LayoutError {
       graph.set_node(id, Leaf(dummy))
       set_parent(id, parent)
     }
-    let special1 = node_id + "---" + node_id + "---1"
-    let special2 = node_id + "---" + node_id + "---2"
+    let special1 = "\{node_id}---\{node_id}---1"
+    let special2 = "\{node_id}---\{node_id}---2"
     let original = fresh_edge(edge)
     let piece = (edge : Edge, order : Int32) => {
       edge,
