@@ -68,10 +68,7 @@ fn js_number(text : String) -> Double? {
   if text == "" {
     return Some(0.0)
   }
-  let digits = text
-    .strip_prefix("-")
-    .map(rest => rest.to_owned())
-    .unwrap_or(text)
+  let digits = text.strip_prefix("-").unwrap_or(text[:])
   if digits == "" ||
     !digits.all(c => c is ('0'..<='9' | '.')) ||
     digits.iter().count_if(c => c == '.') > 1 ||
