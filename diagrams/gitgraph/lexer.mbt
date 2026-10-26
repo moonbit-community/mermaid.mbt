@@ -97,10 +97,7 @@ let terminals : Terminals = {
 ///|
 /// The end of the match of `regex` at `at`, if it matches there.
 fn match_end(regex : @jsregex.Regex, input : String, at : Int32) -> Int32? {
-  match regex.match_prefix(input, from=at) {
-    Some(found) => Some(found.end)
-    None => None
-  }
+  regex.match_prefix(input, from=at).map(found => found.end)
 }
 
 ///|

@@ -97,10 +97,7 @@ fn Renderer::calculate_position(self : Renderer, commit : Commit) -> Double {
   }
   if commit.parents.length() > 0 {
     if self.closest_parent(commit.parents) is Some(closest) {
-      let parent = match self.commit_pos.get(closest) {
-        Some(point) => point
-        None => { x: 0.0, y: 0.0, }
-      }
+      let parent = self.commit_pos.get(closest).unwrap_or({ x: 0.0, y: 0.0, })
       return match self.dir {
         "TB" => parent.y + COMMIT_STEP
         "BT" => current_y - COMMIT_STEP

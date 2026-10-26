@@ -43,11 +43,9 @@ fn sanitize_text(text : String, html_labels : Bool) -> String raise Unsupported 
       .replace_all(old="=", new="&equals;")
   }
   // The pieces between the breaks are text for the HTML parser.
-  let pieces = []
-  for piece in marked.split("#br#") {
-    pieces.push(reserialize(piece.to_owned()))
-  }
-  pieces.join("<br>")
+  [
+    for piece in marked.split("#br#") => reserialize(piece.to_owned())
+  ].join("<br>")
 }
 
 ///|

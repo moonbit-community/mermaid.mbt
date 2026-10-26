@@ -31,7 +31,7 @@ fn Renderer::find_lane(
   if depth > 5 {
     return candidate
   }
-  if self.lanes.iter().all(lane => (lane - candidate).abs() >= 10.0) {
+  if self.lanes.all(lane => (lane - candidate).abs() >= 10.0) {
     self.lanes.push(candidate)
     return candidate
   }
