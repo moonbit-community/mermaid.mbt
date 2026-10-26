@@ -127,8 +127,8 @@ fn assign_layers_longest_path(
     }
     if inc.is_empty() {
       rank_of[v] = 0
-    } else if compact_single_input && inc.length() == 1 {
-      let u = inc[0].src
+    } else if compact_single_input && inc is [only] {
+      let u = only.src
       if top_lane_of(u) != top_lane_of(v) {
         rank_of[v] = rank_of.get(u).unwrap_or(0)
       } else {
