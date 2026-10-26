@@ -80,7 +80,7 @@ fn preprocess_box_drawing(input : String) -> String raise TreeViewError {
     }
     content.push(expand_tabs(line))
   }
-  if !content.iter().any(line => all_box_chars.matches(line)) {
+  if !content.any(line => all_box_chars.matches(line)) {
     return input
   }
   // The first branch character away from the margin gives the width of a
@@ -92,10 +92,7 @@ fn preprocess_box_drawing(input : String) -> String raise TreeViewError {
       break
     }
   }
-  let output : Array[String] = []
-  for i in 0..<=keyword_index {
-    output.push(lines[i])
-  }
+  let output : Array[String] = lines[:keyword_index + 1].to_owned()
   for i in (keyword_index + 1)..<lines.length() {
     let line = lines[i]
     if passes_through(line) {

@@ -108,7 +108,7 @@ fn detect_icon(name : String, config : IconConfig) -> String? raise {
   let extension = name[dot:].to_owned()
   if config.extension_icons is Object(entries) &&
     entries.length() > 0 &&
-    extension.iter().any(c => c.to_int() > 0x7f) {
+    extension.any(c => c.to_int() > 0x7f) {
     raise Unsupported(
       "matching an extension outside ASCII against extensionIcons: \{extension}",
     )
