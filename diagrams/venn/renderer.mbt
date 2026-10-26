@@ -125,7 +125,7 @@ fn checked_color(value : String, property : String) -> String raise VennError {
   if lower.has_prefix("#") {
     let hex = chars.length() - 1
     if !(hex is (3 | 4 | 6 | 8)) ||
-      !chars[1:].iter().all(c => c is ('0'..<='9' | 'a'..<='f')) {
+      !chars[1:].all(c => c is ('0'..<='9' | 'a'..<='f')) {
       refuse()
     }
   } else if lower.has_prefix("rgb(") || lower.has_prefix("rgba(") {
@@ -136,10 +136,10 @@ fn checked_color(value : String, property : String) -> String raise VennError {
       .map(part => js_trim(part))
       .collect()
     if parts.length() != open - 1 ||
-      !parts.iter().all(part => is_plain_number(part) && !part.has_prefix("-")) {
+      !parts.all(part => is_plain_number(part) && !part.has_prefix("-")) {
       refuse()
     }
-  } else if chars.length() == 0 || !chars.iter().all(c => c is ('a'..<='z')) {
+  } else if chars.length() == 0 || !chars.all(c => c is ('a'..<='z')) {
     refuse()
   }
   // What is left must be a color khroma knows, as the browser does.

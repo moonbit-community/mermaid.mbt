@@ -155,8 +155,7 @@ fn intersection_area(circles : Array[Circle]) -> (Double, Array[Arc]) {
     // Between two neighbours the boundary is an arc of a circle both lie
     // on: of several, the one that bulges least.
     let mut p2 = inner_points[inner_points.length() - 1]
-    for i in 0..<inner_points.length() {
-      let p1 = inner_points[i]
+    for p1 in inner_points {
       polygon_area += (p2.x + p1.x) * (p1.y - p2.y)
       let mid_x = (p1.x + p2.x) / 2.0
       let mid_y = (p1.y + p2.y) / 2.0
