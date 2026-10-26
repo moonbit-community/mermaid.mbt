@@ -155,8 +155,7 @@ fn assign_coordinates(
       }
       // Every column has a centre.
       let cx = center_x[l]
-      if nodes_in_lane.length() == 1 {
-        let id = nodes_in_lane[0]
+      if nodes_in_lane is [id] {
         x[id] = cx
         y[id] = y_offset + layer_h / 2.0
       } else {
@@ -192,10 +191,8 @@ fn assign_coordinates(
     }
   }
   for _, chain_edges in by_ref {
-    if chain_edges.is_empty() {
-      continue
-    }
-    let ref_ = chain_edges[0].ref_
+    guard chain_edges is [first, ..] else { continue }
+    let ref_ = first.ref_
     let src = ref_.start
     let dst = ref_.end
     let mid_x = @model.js_round(
