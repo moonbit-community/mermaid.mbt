@@ -17,7 +17,7 @@ fn add_border_segments(g : LayoutGraph) -> Unit raise LayoutError {
       node.border_right = Some(right)
       // Undefined is not below any rank.
       guard node.max_rank is Some(max_rank) else { return }
-      for rank in min_rank..<(max_rank + 1) {
+      for rank in min_rank..<=max_rank {
         add_segment_node(g, "borderLeft", "_bl", v, left, rank)
         add_segment_node(g, "borderRight", "_br", v, right, rank)
       }

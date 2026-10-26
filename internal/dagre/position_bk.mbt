@@ -34,7 +34,7 @@ fn find_type1_conflicts(
         None => prev_layer_length
       }
       if w is Some(_) || Some(v) == last_node {
-        for j in scan_pos..<(i + 1) {
+        for j in scan_pos..<=i {
           let scan_node = layer[j]
           for u in g.predecessors(scan_node) {
             let u_label = nd(g, u)
