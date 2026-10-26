@@ -79,7 +79,7 @@ async fn render(
   let mut site : Json = Json::object(Map([]))
   let mut now : Double? = None
   let mut page = @diagram.Page::new()
-  let number = (value : String) => {
+  let number = (value : StringView) => {
     @string.parse_double(value) catch {
       _ => raise CliError("\{value} is not a number", status=2)
     }
@@ -96,8 +96,7 @@ async fn render(
         rest = tail
       }
       ["--viewport", value, .. tail] => {
-        guard value.split("x").map(part => part.to_owned()).collect()
-          is [width, height] else {
+        guard value.split("x").collect() is [width, height] else {
           raise CliError("\{value} is not WIDTHxHEIGHT", status=2)
         }
         page = @diagram.Page::new(
@@ -301,14 +300,9 @@ fn flow_db(paths : ArrayView[String]) -> Unit raise CliError {
       .dump()
       .stringify()
     } catch {
-      @jison.ParseError(message~, ..) => {
-        let report : Json = { "error": message }
-        report.stringify()
-      }
-      error => {
-        let report : Json = { "error": Repr(error).to_string() }
-        report.stringify()
-      }
+      @jison.ParseError(message~, ..) =>
+        Json::object({ "error": message }).stringify()
+      error => Json::object({ "error": Repr(error).to_string() }).stringify()
     } noraise {
       text => text
     }
@@ -336,10 +330,7 @@ fn git_db(paths : ArrayView[String]) -> Unit raise CliError {
       }
       graph.dump().stringify()
     } catch {
-      error => {
-        let report : Json = { "error": Repr(error).to_string() }
-        report.stringify()
-      }
+      error => Json::object({ "error": Repr(error).to_string() }).stringify()
     } noraise {
       text => text
     }
@@ -361,14 +352,9 @@ fn c4_db(paths : ArrayView[String]) -> Unit raise CliError {
       .dump()
       .stringify()
     } catch {
-      @jison.ParseError(message~, ..) => {
-        let report : Json = { "error": message }
-        report.stringify()
-      }
-      error => {
-        let report : Json = { "error": Repr(error).to_string() }
-        report.stringify()
-      }
+      @jison.ParseError(message~, ..) =>
+        Json::object({ "error": message }).stringify()
+      error => Json::object({ "error": Repr(error).to_string() }).stringify()
     } noraise {
       text => text
     }
@@ -449,10 +435,7 @@ fn usecase_db(paths : ArrayView[String]) -> Unit raise CliError {
       .dump()
       .stringify()
     } catch {
-      error => {
-        let report : Json = { "error": Repr(error).to_string() }
-        report.stringify()
-      }
+      error => Json::object({ "error": Repr(error).to_string() }).stringify()
     } noraise {
       text => text
     }
@@ -474,14 +457,9 @@ fn state_db(paths : ArrayView[String]) -> Unit raise CliError {
       .dump()
       .stringify()
     } catch {
-      @jison.ParseError(message~, ..) => {
-        let report : Json = { "error": message }
-        report.stringify()
-      }
-      error => {
-        let report : Json = { "error": Repr(error).to_string() }
-        report.stringify()
-      }
+      @jison.ParseError(message~, ..) =>
+        Json::object({ "error": message }).stringify()
+      error => Json::object({ "error": Repr(error).to_string() }).stringify()
     } noraise {
       text => text
     }
@@ -506,14 +484,9 @@ fn sequence_db(paths : ArrayView[String]) -> Unit raise CliError {
       .dump()
       .stringify()
     } catch {
-      @jison.ParseError(message~, ..) => {
-        let report : Json = { "error": message }
-        report.stringify()
-      }
-      error => {
-        let report : Json = { "error": Repr(error).to_string() }
-        report.stringify()
-      }
+      @jison.ParseError(message~, ..) =>
+        Json::object({ "error": message }).stringify()
+      error => Json::object({ "error": Repr(error).to_string() }).stringify()
     } noraise {
       text => text
     }

@@ -9,10 +9,7 @@ fn dagre(paths : ArrayView[String]) -> Unit raise CliError {
     }
     for graph in graphs {
       let result = @dagre.layout_json(graph) catch {
-        @dagre.LayoutError(message) => {
-          let report : Json = { "error": message }
-          report
-        }
+        @dagre.LayoutError(message) => Json::object({ "error": message })
       }
       println(result.stringify())
     }
