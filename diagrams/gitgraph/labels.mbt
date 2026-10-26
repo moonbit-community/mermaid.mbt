@@ -102,8 +102,7 @@ fn Renderer::draw_tags(
     y_offset += 20.0
   }
   let along = position.along
-  for element in elements {
-    let (tag, hole, polygon, y_offset) = element
+  for (tag, hole, polygon, y_offset) in elements {
     let h2 = max_height / 2.0
     let ly = position.y - 19.2 - y_offset
     // The points are written as upstream's template literal lays them

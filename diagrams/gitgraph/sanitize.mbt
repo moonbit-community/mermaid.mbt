@@ -74,9 +74,9 @@ fn reserialize(text : String) -> String raise Unsupported {
     rest = rest[at:]
     let mut resolved = false
     for reference in known_references {
-      if rest.has_prefix(reference.0) {
+      if rest.strip_prefix(reference.0) is Some(after) {
         out.write_string(reference.1)
-        rest = rest[reference.0.length():]
+        rest = after
         resolved = true
         break
       }
