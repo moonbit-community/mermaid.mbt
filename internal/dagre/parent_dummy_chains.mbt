@@ -75,10 +75,7 @@ fn find_path(
   // Traverse up from v to find the LCA.
   let mut parent : String? = Some(v)
   while true {
-    parent = match parent {
-      Some(current) => g.parent(current)
-      None => None
-    }
+    parent = parent.bind(current => g.parent(current))
     v_path.push(parent)
     guard parent is Some(current) && current != "" else { break }
     guard num(current).0 > low || lim > num(current).1 else { break }
@@ -87,10 +84,7 @@ fn find_path(
   // Traverse from w to LCA.
   parent = Some(w)
   while true {
-    parent = match parent {
-      Some(current) => g.parent(current)
-      None => None
-    }
+    parent = parent.bind(current => g.parent(current))
     guard parent != lca else { break }
     guard parent is Some(_) else {
       raise LayoutError("the node \{w} is not under the common ancestor")
