@@ -136,11 +136,7 @@ pub fn to_fixed(x : Double, digits : Int32) -> String {
     n
   }
   let whole = n.length() - digits
-  let text = if digits > 0 {
-    n[:whole].to_owned() + "." + n[whole:].to_owned()
-  } else {
-    n
-  }
+  let text = if digits > 0 { "\{n[:whole]}.\{n[whole:]}" } else { n }
   if negative {
     "-" + text
   } else {
@@ -169,7 +165,7 @@ pub fn to_exponential(x : Double, digits? : Int32) -> String {
     }
   }
   let mantissa = if mantissa.length() > 1 {
-    mantissa[:1].to_owned() + "." + mantissa[1:].to_owned()
+    "\{mantissa[:1]}.\{mantissa[1:]}"
   } else {
     mantissa
   }
@@ -194,7 +190,7 @@ pub fn to_precision(x : Double, precision : Int32) -> String {
   }
   if e < -6 || e >= precision {
     let mantissa = if precision > 1 {
-      digits[:1].to_owned() + "." + digits[1:].to_owned()
+      "\{digits[:1]}.\{digits[1:]}"
     } else {
       digits
     }
@@ -204,7 +200,7 @@ pub fn to_precision(x : Double, precision : Int32) -> String {
     return sign + digits
   }
   if e >= 0 {
-    return sign + digits[:e + 1].to_owned() + "." + digits[e + 1:].to_owned()
+    return "\{sign}\{digits[:e + 1]}.\{digits[e + 1:]}"
   }
   sign + "0." + "0".repeat(-(e + 1)) + digits
 }
