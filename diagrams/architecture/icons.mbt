@@ -70,9 +70,7 @@ fn icon_body(name : String) -> String raise ArchitectureError {
   let parts = name.split(":").map(part => part.to_owned()).collect()
   let lookup = if parts.length() > 3 {
     None
-  } else if parts.length() > 1 {
-    let icon = parts[parts.length() - 1]
-    let pack = parts[parts.length() - 2]
+  } else if parts is [.., pack, icon] {
     if pack != "" && icon != "" && pack == "mermaid-architecture" {
       Some(icon)
     } else {
@@ -98,8 +96,7 @@ fn replace_ids(body : String, counter : Ref[Int32]) -> String {
   // `/\sid="(\S+)"/g`
   let ids = []
   let mut rest = body[:]
-  while rest.find(" id=\"") is Some(at) {
-    let value = rest[at + 5:]
+  while rest.split_once(" id=\"") is Some((_, value)) {
     match value.find("\"") {
       Some(end) if end > 0 && !value[:end].contains(" ") => {
         ids.push(value[:end].to_owned())
