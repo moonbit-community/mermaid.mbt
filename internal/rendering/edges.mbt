@@ -217,7 +217,7 @@ fn add_edge_marker(
   let offset = if use_margin && margin_support { "-margin" } else { "" }
   let original_id = "\{data.diagram_id}_\{data.diagram_type}-\{kind}\{suffix}\{offset}"
   let position = if at_start { "start" } else { "end" }
-  guard stroke_color is Some(color) && color.trim().to_owned() != "" else {
+  guard stroke_color is Some(color) && color.trim() != "" else {
     path.attr("marker-\{position}", "url(#\{original_id})") |> ignore
     return
   }

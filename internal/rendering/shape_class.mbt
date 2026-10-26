@@ -99,7 +99,6 @@ fn class_add_text(
         ""
       } else {
         let rest = text[1:]
-          .to_owned()
           .replace_all(old="&gt;", new=">")
           .replace_all(old="&lt;", new="<")
           .trim(chars=" \t\n\r\u{b}\u{c}\u{a0}\u{feff}\u{2028}\u{2029}")
@@ -143,7 +142,7 @@ fn translate_y(element : @dom.Element) -> Double {
     return 0.0
   }
   let end = rest.find(")").unwrap_or(rest.length())
-  @string.parse_double(rest[:end].trim().to_owned()) catch {
+  @string.parse_double(rest[:end].trim()) catch {
     _ => 0.0
   }
 }

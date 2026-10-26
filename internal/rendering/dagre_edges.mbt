@@ -134,7 +134,7 @@ fn is_label_coordinate_in_path(point : Point, d : String) -> Bool {
         continue
       }
       // No fraction after these digits: a match cannot start in them.
-      sanitized.write_string(d[i:j].to_owned())
+      sanitized.write_view(d[i:j])
       i = j
       continue
     }

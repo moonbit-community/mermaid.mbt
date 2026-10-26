@@ -732,7 +732,7 @@ fn usecase_json_table(
 /// `Number.parseFloat` of a stroke width, if it is a usable one:
 /// `numericStrokeWidth`.
 fn numeric_stroke_width(value : String) -> Double {
-  let text = value.trim_start(chars=" \t\n\r").to_owned()
+  let text = value.trim_start(chars=" \t\n\r")
   let mut end = 0
   let mut seen_dot = false
   let mut seen_digit = false
@@ -749,7 +749,7 @@ fn numeric_stroke_width(value : String) -> Double {
     end += 1
   }
   guard seen_digit else { return 1.0 }
-  let parsed = @string.parse_double(text[:end].to_owned()) catch { _ => 1.0 }
+  let parsed = @string.parse_double(text[:end]) catch { _ => 1.0 }
   if parsed >= 0.0 && !parsed.is_inf() {
     parsed
   } else {
