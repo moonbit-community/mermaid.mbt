@@ -399,7 +399,7 @@ fn style_color(styles : String) -> String? {
     let value = rest.trim_start(chars=" \t\n\r")
     if value.has_prefix(":") {
       let end = rest.find(";").unwrap_or(rest.length())
-      return Some("fill" + rest[:end].to_owned())
+      return Some("fill\{rest[:end]}")
     }
     from = start + 5
   }
