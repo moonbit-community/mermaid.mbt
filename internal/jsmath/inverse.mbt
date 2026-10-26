@@ -45,7 +45,7 @@ fn atan_unit(t : DD) -> DD {
   let square = t.mul(t).neg()
   let mut term = t
   let mut sum = t
-  for k = 1; k < 40; k = k + 1 {
+  for k in 1..<40 {
     term = term.mul(square)
     let part = term.div_double((2 * k + 1).to_double())
     sum = sum.add(part)
