@@ -157,13 +157,13 @@ fn normalize_http_url(url : String) -> String? raise Unsupported {
     }
   }
   // A host ending in a number is an IPv4 address, in any of its spellings.
-  let labels = host.split(".").map(label => label.to_owned()).collect()
+  let labels = host.split(".").collect()
   let last = match labels.last() {
     Some("") if labels.length() > 1 => labels[labels.length() - 2]
     Some(label) => label
     None => ""
   }
-  let is_decimal = (label : String) => {
+  let is_decimal = (label : StringView) => {
     label != "" && label.all(c => c is ('0'..<='9'))
   }
   if is_decimal(last) || last.has_prefix("0x") {
@@ -185,7 +185,7 @@ fn normalize_http_url(url : String) -> String? raise Unsupported {
       continue
     }
     let is_last = index == raw_segments.length() - 1
-    match segment.to_owned().to_lower() {
+    match segment.to_lower() {
       ".." | ".%2e" | "%2e." | "%2e%2e" => {
         ignore(segments.pop())
         if is_last {
