@@ -135,8 +135,7 @@ pub fn sankey(
     y1: 0.0,
   })
   let graph_links : Array[SankeyLink] = []
-  for index, link in links {
-    let (source, target, value) = link
+  for index, (source, target, value) in links {
     graph_links.push({
       index,
       source,
@@ -462,8 +461,7 @@ fn SankeyLayout::relax_right_to_left(
   beta : Double,
 ) -> Unit {
   let nodes = self.graph.nodes
-  let mut i = columns.length() - 2
-  while i >= 0 {
+  for i in (columns.length() - 1)>..0 {
     let column = columns[i]
     for source in column {
       let mut y = 0.0
@@ -485,7 +483,6 @@ fn SankeyLayout::relax_right_to_left(
     }
     js_sort(column, ascending_breadth)
     self.resolve_collisions(column, beta)
-    i -= 1
   }
 }
 
@@ -547,8 +544,7 @@ fn SankeyLayout::resolve_collisions_bottom_to_top(
   alpha : Double,
 ) -> Unit {
   let mut y = y
-  let mut i = i
-  while i >= 0 {
+  for i in i>=..0 {
     let node = nodes[i]
     let dy = (node.y1 - y) * alpha
     if dy > 1.0e-6 {
@@ -556,7 +552,6 @@ fn SankeyLayout::resolve_collisions_bottom_to_top(
       node.y1 -= dy
     }
     y = node.y0 - self.py
-    i -= 1
   }
 }
 

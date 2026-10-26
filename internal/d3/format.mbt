@@ -144,10 +144,12 @@ fn decimal_parts(x : Double, p : Int32) -> (String, Int32)? {
   } else {
     to_exponential(x)
   }
-  guard text.find("e") is Some(at) else { return None }
-  let coefficient = text[:at].to_owned()
+  guard text.split_once("e") is Some((coefficient, exponent_text)) else {
+    return None
+  }
+  let coefficient = coefficient.to_owned()
   let exponent = @string.parse_int(
-    text[at + 1:].to_owned().replace(old="+", new=""),
+    exponent_text.to_owned().replace(old="+", new=""),
   ) catch {
     _ => 0
   }
@@ -396,5 +398,5 @@ fn is_zero_text(text : String) -> Bool {
   }
   // Hexadecimal digits are no decimal number, and never zero unless all
   // are.
-  mantissa != "" && mantissa.iter().all(c => c is ('0' | '.'))
+  mantissa != "" && mantissa.all(c => c is ('0' | '.'))
 }
