@@ -43,7 +43,7 @@ fn is_light(weight : String) -> Bool {
 fn serialize_font_family(value : String) -> String? {
   let names = []
   for part in value.split(",") {
-    let part = part.trim(chars=" \t\n").to_owned()
+    let part = part.trim(chars=" \t\n")
     if part == "" {
       return None
     }
@@ -63,7 +63,6 @@ fn serialize_font_family(value : String) -> String? {
       let words = []
       for word in part.split(" ") {
         guard !word.is_empty() else { continue }
-        let word = word.to_owned()
         let letters = word.to_array()
         guard letters.all(c => {
             c is ('a'..<='z' | 'A'..<='Z' | '0'..<='9' | '-' | '_') ||
@@ -111,7 +110,7 @@ fn font_size_px(value : Json) -> Double? {
     String(text) => {
       let text = text.trim(chars=" \t\n").to_lower()
       guard text.has_suffix("px") else { return None }
-      let number = @string.parse_double(text[:text.length() - 2].to_owned()) catch {
+      let number = @string.parse_double(text[:text.length() - 2]) catch {
         _ => return None
       }
       if number > 0.0 {
