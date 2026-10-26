@@ -42,17 +42,7 @@ let simple_pseudo_elements : Set[String] = Set::from_array([
 ///|
 /// ASCII lower case, as HTML's case-insensitive names.
 fn ascii_lower(text : String) -> String {
-  let out = StringBuilder()
-  for c in text {
-    out.write_char(
-      if c is ('A'..<='Z') {
-        (c.to_int() + 32).unsafe_to_char()
-      } else {
-        c
-      },
-    )
-  }
-  out.to_string()
+  text.to_lower()
 }
 
 ///|
@@ -399,15 +389,15 @@ fn an_plus_b(items : Array[Component]) -> String raise CssomError {
   let tokens = items.map(item => item.token())
   guard !tokens.contains(None) else { raise Invalid }
   let tokens = tokens.map(token => token.unwrap())
-  let integer_text = fn(text : String) -> Int32 raise CssomError {
-    @string.parse_int(if text.has_prefix("+") { text[1:] } else { text[:] }) catch {
+  let integer_text = fn(text : StringView) -> Int32 raise CssomError {
+    @string.parse_int(if text.has_prefix("+") { text[1:] } else { text }) catch {
       _ => raise Invalid
     }
   }
   // B after `An` (or `n`): nothing, a signed integer, or a sign and a
   // signless integer, white space around allowed.
   let rest_b = fn(rest : ArrayView[Token]) -> Int32 raise CssomError {
-    let rest = rest.to_owned().filter(token => token != Whitespace)
+    let rest = rest.filter(token => token != Whitespace)
     match rest {
       [] => 0
       [Number(_, true, text)] if text.has_prefix("+") || text.has_prefix("-") =>
@@ -421,7 +411,7 @@ fn an_plus_b(items : Array[Component]) -> String raise CssomError {
   }
   // B after `An-`: a signless integer, negated.
   let dash_b = fn(rest : ArrayView[Token]) -> Int32 raise CssomError {
-    match rest.to_owned().filter(token => token != Whitespace) {
+    match rest.filter(token => token != Whitespace) {
       [Number(_, true, text)] if !(text.has_prefix("+") || text.has_prefix("-")) =>
         -integer_text(text)
       _ => raise Invalid
@@ -429,7 +419,7 @@ fn an_plus_b(items : Array[Component]) -> String raise CssomError {
   }
   // A unit or identifier `n...`: B from what follows the `n`.
   let after_n = fn(
-    suffix : String,
+    suffix : StringView,
     rest : ArrayView[Token],
   ) -> Int32 raise CssomError {
     if suffix == "" {
@@ -438,8 +428,8 @@ fn an_plus_b(items : Array[Component]) -> String raise CssomError {
       dash_b(rest)
     } else if suffix.has_prefix("-") &&
       suffix[1:].all(c => c is ('0'..<='9')) &&
-      rest.to_owned().filter(token => token != Whitespace).is_empty() {
-      -integer_text(suffix[1:].to_owned())
+      rest.filter(token => token != Whitespace).is_empty() {
+      -integer_text(suffix[1:])
     } else {
       raise Invalid
     }
@@ -451,19 +441,19 @@ fn an_plus_b(items : Array[Component]) -> String raise CssomError {
     [Dimension(_, true, unit, text), .. rest] => {
       let unit = ascii_lower(unit)
       guard unit.has_prefix("n") else { raise Invalid }
-      (integer_text(text), after_n(unit[1:].to_owned(), rest))
+      (integer_text(text), after_n(unit[1:], rest))
     }
     [Delim('+'), Ident(word), .. rest] => {
       let word = ascii_lower(word)
       guard word.has_prefix("n") else { raise Invalid }
-      (1, after_n(word[1:].to_owned(), rest))
+      (1, after_n(word[1:], rest))
     }
     [Ident(word), .. rest] => {
       let word = ascii_lower(word)
       if word.has_prefix("-n") {
-        (-1, after_n(word[2:].to_owned(), rest))
+        (-1, after_n(word[2:], rest))
       } else if word.has_prefix("n") {
-        (1, after_n(word[1:].to_owned(), rest))
+        (1, after_n(word[1:], rest))
       } else {
         raise Invalid
       }
