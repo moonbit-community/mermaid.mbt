@@ -179,7 +179,7 @@ fn mirror_axis(layout : @model.Layout, x_axis : Bool) -> Bool {
 ///|
 /// `applyBtDirectionTransform`: mirror the layout vertically.
 pub fn apply_bt_direction_transform(layout : @model.Layout) -> Bool {
-  if !layout.nodes.iter().any(node => !node.is_group) {
+  if !layout.nodes.any(node => !node.is_group) {
     return true
   }
   mirror_axis(layout, false)
@@ -315,8 +315,7 @@ pub fn apply_lr_direction_transform(
   let center_x = lane_left + lane_width / 2.0
   let vertical_margin = @model.js_max(max_pad, TITLE_BAND_SIZE)
   @d3.js_sort(lane_bounds, (a, b) => a.center_y - b.center_y)
-  for i in 0..<lane_bounds.length() {
-    let curr = lane_bounds[i]
+  for i, curr in lane_bounds {
     let lane_top = if i == 0 {
       curr.content_top - vertical_margin
     } else {

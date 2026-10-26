@@ -109,9 +109,7 @@ fn label_overlaps_own_marker(
   let visible_pts = @model.dedupe_consecutive_points(pts)
   let start_marker = marker_clearance_rect_for(visible_pts, true)
   let end_marker = marker_clearance_rect_for(visible_pts, false)
-  [start_marker, end_marker]
-  .iter()
-  .any(marker => {
+  [start_marker, end_marker].any(marker => {
     marker is Some(marker) && @model.rects_overlap(rect, normalize_rect(marker))
   })
 }
@@ -229,9 +227,7 @@ pub fn anchor_labels_to_polyline(
     None
   }
   let overlaps_placed_label = (label_id : String, rect : @model.Rect) => {
-    placed_label_rects
-    .iter()
-    .any(placed => {
+    placed_label_rects.any(placed => {
       placed.label_id != label_id && @model.rects_overlap(rect, placed.rect)
     })
   }
