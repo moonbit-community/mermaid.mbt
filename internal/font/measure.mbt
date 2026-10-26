@@ -369,11 +369,11 @@ fn measured_fallback_em(c : Char) -> Double? {
     // modifiers (U+1F3FB..U+1F3FF), which join the emoji before them, nor
     // the alchemical symbols, arrows and chess symbols between the emoji
     // blocks, which come from other fonts.
-    code if (code >= 0x1F300 && code <= 0x1F3FA) ||
-      (code >= 0x1F400 && code <= 0x1F64F) ||
-      (code >= 0x1F680 && code <= 0x1F6FF) ||
-      (code >= 0x1F900 && code <= 0x1F9FF) ||
-      (code >= 0x1FA70 && code <= 0x1FAFF) => Some(1.25)
+    0x1F300..<=0x1F3FA
+    | 0x1F400..<=0x1F64F
+    | 0x1F680..<=0x1F6FF
+    | 0x1F900..<=0x1F9FF
+    | 0x1FA70..<=0x1FAFF => Some(1.25)
     _ => None
   }
 }
