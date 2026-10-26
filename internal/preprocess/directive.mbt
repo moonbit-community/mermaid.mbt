@@ -121,10 +121,7 @@ fn detect_init(text : String) -> Json? raise UnknownDiagramError {
     }
     let value : Json = match (directive.word, directive.body) {
       (Some(word), _) => Json::string(word.trim().to_owned())
-      (None, Some(body)) =>
-        @json.parse(body.trim().to_owned()) catch {
-          _ => return None
-        }
+      (None, Some(body)) => @json.parse(body.trim()) catch { _ => return None }
       (None, None) => Json::null()
     }
     args.push(value)

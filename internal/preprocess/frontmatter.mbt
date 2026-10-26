@@ -157,12 +157,7 @@ fn extract_front_matter(text : String) -> FrontMatter raise {
   } else {
     front.body
     .split("\n")
-    .map(line => {
-      match line.strip_prefix(front.indent) {
-        Some(rest) => rest.to_owned()
-        None => line.to_owned()
-      }
-    })
+    .map(line => line.strip_prefix(front.indent).unwrap_or(line))
     .collect()
     .join("\n")
   }
