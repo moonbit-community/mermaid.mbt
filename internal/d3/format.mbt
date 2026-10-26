@@ -148,13 +148,11 @@ fn decimal_parts(x : Double, p : Int32) -> (String, Int32)? {
     return None
   }
   let coefficient = coefficient.to_owned()
-  let exponent = @string.parse_int(
-    exponent_text.to_owned().replace(old="+", new=""),
-  ) catch {
+  let exponent = @string.parse_int(exponent_text.replace(old="+", new="")) catch {
     _ => 0
   }
   let coefficient = if coefficient.length() > 1 {
-    coefficient[:1].to_owned() + coefficient[2:].to_owned()
+    "\{coefficient[:1]}\{coefficient[2:]}"
   } else {
     coefficient
   }
@@ -228,7 +226,7 @@ fn format_trim(s : String) -> String {
     }
   }
   if i0 > 0 {
-    s[:i0].to_owned() + s[i1 + 1:].to_owned()
+    "\{s[:i0]}\{s[i1 + 1:]}"
   } else {
     s
   }
