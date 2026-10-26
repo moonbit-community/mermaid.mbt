@@ -101,20 +101,6 @@ fn match_end(regex : @jsregex.Regex, input : String, at : Int32) -> Int32? {
 }
 
 ///|
-/// Whether `input` continues with `word` at `at`.
-fn has_word(input : String, at : Int32, word : String) -> Bool {
-  if at + word.length() > input.length() {
-    return false
-  }
-  for i in 0..<word.length() {
-    if input[at + i] != word[i] {
-      return false
-    }
-  }
-  true
-}
-
-///|
 /// Cut `input` into tokens, hidden ones dropped. A position where no
 /// token type matches is an error, as it is for mermaid's parser.
 fn tokenize(input : String) -> Array[Token] raise @langium.ParseError {
@@ -132,7 +118,7 @@ fn tokenize(input : String) -> Array[Token] raise @langium.ParseError {
       let found = if word == "gitGraph" {
         match_end(t.git_graph, input, at) is Some(_)
       } else {
-        has_word(input, at, word)
+        input[at:].has_prefix(word)
       }
       if found {
         keyword = Some(word)
