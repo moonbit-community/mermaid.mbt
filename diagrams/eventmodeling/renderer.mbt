@@ -216,7 +216,7 @@ pub fn draw(model : EventModel, context : @diagram.Context) -> Unit raise {
 fn theme_css_restyles_text(config : @config.Config) -> Bool {
   guard config.text("themeCSS") is Some(css) else { return false }
   let css = css.to_lower()
-  ["font", "spacing", "text-transform", "white-space", "writing-mode"]
-  .iter()
-  .any(property => css.contains(property))
+  ["font", "spacing", "text-transform", "white-space", "writing-mode"].any(property => {
+    css.contains(property)
+  })
 }

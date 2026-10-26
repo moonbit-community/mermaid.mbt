@@ -206,8 +206,8 @@ fn sanitize(text : String) -> String raise Unsupported {
     @journeycommon.SanitizeError(message) => raise Unsupported(message)
   }
   let mut rest = text[:]
-  while rest.find("&") is Some(at) {
-    rest = rest[at + 1:]
+  while rest.split_once("&") is Some((_, after)) {
+    rest = after
     guard rest is ['A'..<='Z' | 'a'..<='z' | '0'..<='9' | '#', ..] else {
       continue
     }
