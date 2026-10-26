@@ -293,7 +293,7 @@ pub fn draw(
       } else {
         layout.cy
       },
-      name[:1].to_owned().to_upper() + name[1:].to_owned(),
+      "\{name[:1].to_owned().to_upper()}\{name[1:]}",
     )
   }
   centred(

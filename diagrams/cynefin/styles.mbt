@@ -73,8 +73,8 @@ fn js_number(text : String) -> Double? {
     .map(rest => rest.to_owned())
     .unwrap_or(text)
   if digits == "" ||
-    !digits.iter().all(c => c is ('0'..<='9' | '.')) ||
-    digits.iter().filter(c => c == '.').count() > 1 ||
+    !digits.all(c => c is ('0'..<='9' | '.')) ||
+    digits.iter().count_if(c => c == '.') > 1 ||
     digits == "." {
     return None
   }
