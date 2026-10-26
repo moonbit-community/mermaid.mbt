@@ -127,9 +127,9 @@ fn PointBounds::to_bounds(self : PointBounds) -> Bounds? {
 /// seven decimals; anything else gets the exact value.
 fn number_attr(element : Element, name : String) -> Float? {
   guard element.get_attr(name) is Some(text) else { return None }
-  let text = text.trim().to_owned()
+  let text = text.trim()
   let text = match text.strip_suffix("px") {
-    Some(number) => number.to_owned()
+    Some(number) => number
     None => text
   }
   if text == "" {
@@ -166,7 +166,7 @@ fn number_attr(element : Element, name : String) -> Float? {
   let value = if simple {
     whole + fraction / scale
   } else {
-    let magnitude = if negative { text[1:].to_owned() } else { text }
+    let magnitude = if negative { text[1:] } else { text }
     // `NaN` and `Infinity`, as JavaScript prints them, are not numbers
     // here: the attribute is invalid.
     if magnitude.contains("N") || magnitude.contains("n") {
@@ -191,7 +191,7 @@ pub fn Element::length_attr(self : Element, name : String) -> Double? {
 /// Numbers separated by spaces or commas, read with the SVG number parser.
 fn svg_numbers(text : StringView) -> Array[Float] {
   let numbers = []
-  for part in text.to_owned().replace_all(old=",", new=" ").split(" ") {
+  for part in text.replace_all(old=",", new=" ").split(" ") {
     let part = part.trim()
     if !part.is_empty() {
       numbers.push(parse_svg_number(part))
@@ -352,8 +352,7 @@ fn element_transform(element : Element) -> Transform {
     guard after.find(")") is Some(close) else { return identity }
     let name = name.trim(chars=" \t\n\r").to_owned()
     let arguments = []
-    for
-      part in after[:close].to_owned().replace_all(old=",", new=" ").split(" ") {
+    for part in after[:close].replace_all(old=",", new=" ").split(" ") {
       let part = part.trim(chars=" \t\n\r")
       if !part.is_empty() {
         arguments.push(parse_svg_number(part))
@@ -415,9 +414,7 @@ fn pixel_declaration(element : Element, name : String) -> Float? {
       None => declaration.1
     }
     guard value.strip_suffix("px") is Some(number) else { return None }
-    let value = @string.parse_double(number.trim().to_owned()) catch {
-      _ => return None
-    }
+    let value = @string.parse_double(number.trim()) catch { _ => return None }
     return Some(Float::from_double(value))
   }
   None
@@ -542,10 +539,10 @@ fn Element::is_display_none(self : Element) -> Bool {
   let mut hidden = false
   for part in text.split(";") {
     guard part.split_once(":") is Some((name, value)) else { continue }
-    if name.trim().to_owned().to_lower() == "display" {
-      let value = value.trim().to_owned().to_lower()
+    if name.trim().to_lower() == "display" {
+      let value = value.trim().to_lower()
       let value = match value.strip_suffix("!important") {
-        Some(base) => base.trim().to_owned()
+        Some(base) => base.trim()
         None => value
       }
       hidden = value == "none"
