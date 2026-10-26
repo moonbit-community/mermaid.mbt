@@ -193,24 +193,22 @@ fn Router::a_star(
       let max_x = @model.js_max(cx, neighbor.x)
       let min_y = @model.js_min(cy, neighbor.y)
       let max_y = @model.js_max(cy, neighbor.y)
-      let blocked = self.obstacles
-        .iter()
-        .any(obs => {
-          if obs.node_id == e.start || obs.node_id == e.end {
-            return false
-          }
-          if min_x != max_x {
-            obs.min_y < cy &&
-            obs.max_y > cy &&
-            obs.max_x > min_x &&
-            obs.min_x < max_x
-          } else {
-            obs.min_x < cx &&
-            obs.max_x > cx &&
-            obs.max_y > min_y &&
-            obs.min_y < max_y
-          }
-        })
+      let blocked = self.obstacles.any(obs => {
+        if obs.node_id == e.start || obs.node_id == e.end {
+          return false
+        }
+        if min_x != max_x {
+          obs.min_y < cy &&
+          obs.max_y > cy &&
+          obs.max_x > min_x &&
+          obs.min_x < max_x
+        } else {
+          obs.min_x < cx &&
+          obs.max_x > cx &&
+          obs.max_y > min_y &&
+          obs.min_y < max_y
+        }
+      })
       if blocked {
         continue
       }

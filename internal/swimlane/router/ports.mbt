@@ -373,9 +373,7 @@ fn Router::face_has_label_node(
   let has = role => {
     match self.port_groups.get(port_group_key(node_id, side, role)) {
       Some(group) =>
-        group.entries
-        .iter()
-        .any(entry => self.edge_has_label_node(entry.edge_idx))
+        group.entries.any(entry => self.edge_has_label_node(entry.edge_idx))
       None => false
     }
   }
