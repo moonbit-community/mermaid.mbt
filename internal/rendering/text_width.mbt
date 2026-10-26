@@ -62,7 +62,7 @@ fn calculate_text_width(text : String, config : @config.Config) -> Double {
       // show.
       let words = []
       for word in line.split(" ") {
-        let word = word.to_owned().replace_all(old="\u{ad}", new="")
+        let word = word.replace_all(old="\u{ad}", new="")
         if word != "" {
           words.push(word)
         }

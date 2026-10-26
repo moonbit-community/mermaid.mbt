@@ -307,7 +307,7 @@ fn DagreState::insert_dagre_edge(
           "A route of \{route.length()} points is not supported.",
         )
       }
-      let inner = route[1:route.length() - 1].to_owned()
+      let inner = route[1:route.length() - 1]
       let first = tail(inner[0])
       let last = head(inner[inner.length() - 1])
       points = [first, ..inner, last]

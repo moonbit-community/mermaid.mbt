@@ -420,9 +420,7 @@ fn er_box(
       }
     } else {
       let pieces = styles.node_styles.split(";")
-      let strokes = [
-        for style in pieces if style.contains("stroke") => style.to_owned()
-      ]
+      let strokes = [ for style in pieces if style.contains("stroke") => style ]
       for path in paths {
         path.attr("style", strokes.join("; ")) |> ignore
       }
