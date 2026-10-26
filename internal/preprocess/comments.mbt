@@ -46,31 +46,14 @@ fn cleanup_comments(text : String) -> String {
 /// Replace every `%%` comment up to the end of its line, along with the
 /// whitespace before it, by a single line break.
 fn strip_any_comments(text : String) -> String {
-  let n = text.length()
   let out = StringBuilder()
   let mut consumed = 0
   let mut search_from = 0
-  while search_from < n {
-    let mut marker = -1
-    for i in search_from..<(n - 1) {
-      if text[i] == '%' && text[i + 1] == '%' {
-        marker = i
-        break
-      }
-    }
-    if marker == -1 {
-      break
-    }
-    let mut line_end = -1
-    for i in marker..<n {
-      if text[i] == '\n' {
-        line_end = i
-        break
-      }
-    }
-    if line_end == -1 {
-      break
-    }
+  while search_from < text.length() {
+    guard text[search_from:].find("%%") is Some(offset) else { break }
+    let marker = search_from + offset
+    guard text[marker:].find("\n") is Some(line_offset) else { break }
+    let line_end = marker + line_offset
     let mut start = marker
     while start > consumed && is_space_unit(text[start - 1]) {
       start -= 1

@@ -71,10 +71,9 @@ fn detect(text : String) -> String? {
   if starts_with(text, "agentflow-beta", after=Boundary) {
     return Some("agentflow")
   }
+  let c4_kinds = ["C4Container", "C4Component", "C4Dynamic", "C4Deployment"]
   if starts_with(text, "C4Context") ||
-    ["C4Container", "C4Component", "C4Dynamic", "C4Deployment"]
-    .iter()
-    .any(keyword => text.contains(keyword)) {
+    c4_kinds.any(keyword => text.contains(keyword)) {
     return Some("c4")
   }
   let simple : Array[(String, String)] = [
