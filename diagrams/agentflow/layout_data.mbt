@@ -65,7 +65,7 @@ fn AgentDb::layout_data(
     }
     found
   }
-  for i = sub_graphs.length() - 1; i >= 0; i = i - 1 {
+  for i in (sub_graphs.length() - 1)>=..0 {
     let sg = sub_graphs[i]
     if hidden.contains(sg.id) {
       continue
@@ -83,7 +83,7 @@ fn AgentDb::layout_data(
     }
   }
   let slot = self.container_slots(parent_db)
-  for i = sub_graphs.length() - 1; i >= 0; i = i - 1 {
+  for i in (sub_graphs.length() - 1)>=..0 {
     let sg = sub_graphs[i]
     if hidden.contains(sg.id) {
       continue

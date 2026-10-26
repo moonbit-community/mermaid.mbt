@@ -185,7 +185,7 @@ fn AgentDb::add_sub_graph(
   // a node another container already holds.
   let sub_graphs = self.flow.sub_graphs
   let held = (node : String) => {
-    sub_graphs.iter().any(sub_graph => sub_graph.nodes.contains(node))
+    sub_graphs.any(sub_graph => sub_graph.nodes.contains(node))
   }
   let members = nodes.filter(node => {
     node != id && !self.global_nodes.contains(node) && !held(node)
@@ -247,9 +247,7 @@ fn AgentDb::add_global(self : AgentDb, list : Json) -> Unit {
     }
   }
   for sub_graph in self.flow.sub_graphs {
-    let kept = sub_graph.nodes.filter(id => !self.global_nodes.contains(id))
-    sub_graph.nodes.clear()
-    sub_graph.nodes.append(kept)
+    sub_graph.nodes.retain(id => !self.global_nodes.contains(id))
   }
 }
 

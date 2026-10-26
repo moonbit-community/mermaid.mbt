@@ -94,15 +94,10 @@ fn strip_line_trailing_commas(body : String) -> String {
       out.push(line)
       continue
     }
-    let code = if comment_start >= 0 {
-      line[:comment_start].to_owned()
+    let (code, comment) = if comment_start >= 0 {
+      (line[:comment_start].to_owned(), line[comment_start:].to_owned())
     } else {
-      line
-    }
-    let comment = if comment_start >= 0 {
-      line[comment_start:].to_owned()
-    } else {
-      ""
+      (line, "")
     }
     if block_scalar_header.matches(code) {
       block_scalar_indent = Some(indent_of(line))
