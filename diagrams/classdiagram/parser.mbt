@@ -97,9 +97,9 @@ fn ClassDb::reduce(
   match reduction.production {
     8 => Some(v(1))
     9 | 10 | 13 | 15 | 46 => Some(v(0))
-    11 | 14 => Some(Json::string(s(2) + "." + s(0)))
+    11 | 14 => Some(Json::string("\{s(2)}.\{s(0)}"))
     12 | 16 | 110 => Some(Json::string(s(1) + s(0)))
-    17 | 18 => Some(Json::string(s(1) + "~" + s(0) + "~"))
+    17 | 18 => Some(Json::string("\{s(1)}~\{s(0)}~"))
     19 => {
       add_relation(v(0), None)
       None
