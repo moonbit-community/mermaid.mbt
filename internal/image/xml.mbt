@@ -499,21 +499,17 @@ fn XmlParser::start_tag(
 ///|
 /// The prefix and local part of a qualified name.
 fn split_qname(name : String) -> (String?, String) raise XmlError {
-  match name.find(":") {
-    None => (None, name)
-    Some(at) => {
-      let prefix = name[:at].to_owned()
-      let local_part = name[at + 1:].to_owned()
-      guard prefix != "" &&
-        local_part != "" &&
-        local_part.find(":") is None &&
-        local_part.get_char(0) is Some(c) &&
-        is_name_start(c) else {
-        raise Malformed
-      }
-      (Some(prefix), local_part)
-    }
+  guard name.split_once(":") is Some((prefix, local_part)) else {
+    return (None, name)
   }
+  guard prefix != "" &&
+    local_part != "" &&
+    local_part.find(":") is None &&
+    local_part.get_char(0) is Some(c) &&
+    is_name_start(c) else {
+    raise Malformed
+  }
+  (Some(prefix.to_owned()), local_part.to_owned())
 }
 
 ///|
@@ -529,7 +525,7 @@ fn bind_namespaces(
   let mut copied = false
   let bind = (prefix : String, uri : String) => {
     if !copied {
-      scope = Map::from_iter(scope.iter())
+      scope = scope.copy()
       copied = true
     }
     scope[prefix] = uri

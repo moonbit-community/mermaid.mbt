@@ -26,22 +26,21 @@ pub fn data_url_size(url : String) -> Decoded? {
   let url = cleaned.to_string()
   guard url.length() >= 5 && url[:5].to_lower() == "data:" else { return None }
   // A fragment is no part of the data.
-  let rest = match url[5:].find("#") {
-    Some(at) => url[5:5 + at]
+  let rest = match url[5:].split_once("#") {
+    Some((before_fragment, _)) => before_fragment
     None => url[5:]
   }
-  guard rest.find(",") is Some(comma) else { return Some(Undecodable) }
-  let mut mime = rest[:comma].trim(chars=" \t\n\r\u{0c}").to_owned()
-  let body = percent_decode(rest[comma + 1:].to_owned())
+  guard rest.split_once(",") is Some((type_part, encoded)) else {
+    return Some(Undecodable)
+  }
+  let mut mime = type_part.trim(chars=" \t\n\r\u{0c}").to_owned()
+  let body = percent_decode(encoded.to_owned())
   // `;base64` ends the type, possibly after spaces.
-  let base64 = {
-    let trimmed = mime.trim_end(chars=" ")
-    trimmed.length() >= 6 &&
+  let trimmed = mime.trim_end(chars=" ")
+  let base64 = trimmed.length() >= 6 &&
     trimmed[trimmed.length() - 6:].to_lower() == "base64" &&
     trimmed[:trimmed.length() - 6].trim_end(chars=" ").has_suffix(";")
-  }
   let data = if base64 {
-    let trimmed = mime.trim_end(chars=" ")
     let before = trimmed[:trimmed.length() - 6].trim_end(chars=" ")
     mime = before[:before.length() - 1].to_owned()
     match forgiving_base64(body) {
@@ -109,8 +108,7 @@ fn forgiving_base64(data : Bytes) -> Bytes? {
   let out = []
   let mut buffer = 0
   let mut bits = 0
-  for i in 0..<length {
-    let b = digits[i]
+  for b in digits[:length] {
     let value = match b {
       b'A'..<=b'Z' => b.to_int() - 0x41
       b'a'..<=b'z' => b.to_int() - 0x61 + 26
