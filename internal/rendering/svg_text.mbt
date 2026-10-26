@@ -543,7 +543,7 @@ fn markdown_to_lines(markdown : String) -> Array[Array[Word]] raise LayoutError 
     }
   }
   fn add_text(text : String, kind : String) {
-    for index, text_line in text.split("\n").collect() {
+    for index, text_line in text.split("\n") {
       if index != 0 {
         lines.push([])
       }

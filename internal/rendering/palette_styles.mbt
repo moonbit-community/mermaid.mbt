@@ -2,9 +2,7 @@
 /// `look`, if it is safe to put in a selector: mermaid's `safeLook`.
 pub fn safe_look(look : String) -> String {
   if look != "" &&
-    look
-    .iter()
-    .all(c => c is ('a'..<='z' | 'A'..<='Z' | '0'..<='9' | '_' | '-')) {
+    look.all(c => c is ('a'..<='z' | 'A'..<='Z' | '0'..<='9' | '_' | '-')) {
     look
   } else {
     "classic"

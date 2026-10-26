@@ -6,7 +6,7 @@
 pub fn parse_generic_types(input : String) -> String {
   // `input.split(/(,)/)`: the commas are pieces of their own.
   let sets = []
-  for index, piece in input.split(",").collect() {
+  for index, piece in input.split(",") {
     if index > 0 {
       sets.push(",")
     }
@@ -423,12 +423,10 @@ fn er_box(
         path.attr("style", styles.node_styles) |> ignore
       }
     } else {
-      let strokes = []
-      for style in styles.node_styles.split(";") {
-        if style.contains("stroke") {
-          strokes.push(style.to_owned())
-        }
-      }
+      let pieces = styles.node_styles.split(";")
+      let strokes = [
+        for style in pieces if style.contains("stroke") => style.to_owned()
+      ]
       for path in paths {
         path.attr("style", strokes.join("; ")) |> ignore
       }

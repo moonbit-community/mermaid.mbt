@@ -359,10 +359,7 @@ fn ensure_end_marker_segment(
   if !on_border(end_bounds, entry, tol=1.0) {
     return points
   }
-  let adjusted = []
-  for index in 0..<(n - 2) {
-    adjusted.push(points[index])
-  }
+  let adjusted = points[:n - 2].to_owned()
   adjusted.push(end)
   adjusted
 }

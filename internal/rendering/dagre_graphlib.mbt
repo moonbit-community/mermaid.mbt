@@ -293,10 +293,7 @@ fn DagreState::adjust_clusters_and_edges(
       !parent_entry.external_connections {
       entry.id = parent
     }
-    let has_direct_outgoing_edge = graph
-      .edges()
-      .iter()
-      .any(edge => edge.v == id)
+    let has_direct_outgoing_edge = graph.edges().any(edge => edge.v == id)
     if non_cluster_child is Some(child) &&
       child != "" &&
       entry.external_connections &&
