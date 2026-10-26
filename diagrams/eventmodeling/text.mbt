@@ -103,7 +103,7 @@ fn break_string(
   word : String,
   max_width : Double,
 ) -> (Array[String], String) raise {
-  let characters = word.iter().collect()
+  let characters = word.to_array()
   let lines = []
   let mut current = ""
   for index, character in characters {
@@ -143,7 +143,7 @@ fn wrap_label(label : String, max_width : Double) -> String raise {
       completed.push(next_line)
       next_line = word
     } else {
-      next_line = if next_line == "" { word } else { next_line + " " + word }
+      next_line = if next_line == "" { word } else { "\{next_line} \{word}" }
     }
     if index + 1 == words.length() {
       completed.push(next_line)
