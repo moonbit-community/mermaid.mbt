@@ -473,16 +473,16 @@ fn self_closing_breaks(text : String) -> String {
   guard text.contains("<br") else { return text }
   let out = StringBuilder()
   let mut rest = text[:]
-  while rest.find("<br") is Some(at) {
-    out.write_view(rest[:at])
-    let after = rest[at + 3:].trim_start(chars=" \t\n\r")
+  while rest.split_once("<br") is Some((before, tail)) {
+    out.write_view(before)
+    let after = tail.trim_start(chars=" \t\n\r")
     let after = if after.has_prefix("/") { after[1:] } else { after }
     if after.has_prefix(">") {
       out.write_string("<br/>")
       rest = after[1:]
     } else {
       out.write_string("<br")
-      rest = rest[at + 3:]
+      rest = tail
     }
   }
   out.write_view(rest)
