@@ -326,12 +326,9 @@ fn dash_gaps(style : String) -> (String, String)? {
   let rest = style[at + 16:].trim_start(chars=" \t\n")
   guard rest.strip_prefix(":") is Some(rest) else { return None }
   let end = rest.find(";").unwrap_or(rest.length())
-  let tokens = []
-  for token in rest[:end].split(" ") {
-    if !token.is_empty() {
-      tokens.push(token.to_owned())
-    }
-  }
+  let tokens = [
+    for token in rest[:end].split(" ") if !token.is_empty() => token.to_owned()
+  ]
   guard tokens is ["0", start, _, end, ..] else { return None }
   let numeric = (text : String) => {
     text != "" && text.all(c => c is ('0'..<='9' | '.'))
