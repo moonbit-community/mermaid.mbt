@@ -18,25 +18,19 @@ pub(all) enum CstElement {
 ///|
 /// The sub-rules of `self` filed under `key`.
 pub fn CstNode::nodes(self : CstNode, key : String) -> Array[CstNode] {
-  let found = []
-  for element in self.children.get(key).unwrap_or([]) {
-    if element is Node(node) {
-      found.push(node)
-    }
-  }
-  found
+  let elements = self.children.get(key).unwrap_or([])
+  [
+    for element in elements if element is Node(node) => node
+  ]
 }
 
 ///|
 /// The tokens of `self` filed under `key`.
 pub fn CstNode::tokens(self : CstNode, key : String) -> Array[Token] {
-  let found = []
-  for element in self.children.get(key).unwrap_or([]) {
-    if element is Leaf(token) {
-      found.push(token)
-    }
-  }
-  found
+  let elements = self.children.get(key).unwrap_or([])
+  [
+    for element in elements if element is Leaf(token) => token
+  ]
 }
 
 ///|
