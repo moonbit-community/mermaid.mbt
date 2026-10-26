@@ -85,10 +85,7 @@ fn build_top_lane_map(g : Graph) -> Map[String, String?] {
       cache[id] = None
       return None
     }
-    let lane = match resolve(parent_id) {
-      Some(lane) => lane
-      None => parent_id
-    }
+    let lane = resolve(parent_id).unwrap_or(parent_id)
     cache[id] = Some(lane)
     Some(lane)
   }
@@ -103,12 +100,7 @@ fn build_top_lane_map(g : Graph) -> Map[String, String?] {
 /// `createTopLaneResolver`.
 fn create_top_lane_resolver(g : Graph) -> (String) -> String? {
   let top_lane_map = build_top_lane_map(g)
-  id => {
-    match top_lane_map.get(id) {
-      Some(lane) => lane
-      None => None
-    }
-  }
+  id => top_lane_map.get(id).unwrap_or(None)
 }
 
 ///|

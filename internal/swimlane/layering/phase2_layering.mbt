@@ -59,23 +59,12 @@ fn assign_layers_lane_aware_compact(
 ) -> Layering {
   let g = normalize_graph(g_acyclic)
   let order = if direction == Some("LR") {
-    match topo_sort_by_generation_if_acyclic(g) {
-      Some(order) => order
-      None => sorted_ids(g)
-    }
+    topo_sort_by_generation_if_acyclic(g).unwrap_or_else(() => sorted_ids(g))
   } else {
-    match topo_sort_if_acyclic(g) {
-      Some(order) => order
-      None => sorted_ids(g)
-    }
+    topo_sort_if_acyclic(g).unwrap_or_else(() => sorted_ids(g))
   }
   let top_lane_of = create_top_lane_resolver(g)
-  let lane_of = (id : String) => {
-    match top_lane_of(id) {
-      Some(lane) => lane
-      None => id
-    }
-  }
+  let lane_of = (id : String) => top_lane_of(id).unwrap_or(id)
   let rank_of : Map[String, Int32] = Map([])
   let next_free : Map[String, Int32] = Map([])
   let edge_weight = (u : String, v : String) => {
@@ -119,10 +108,7 @@ fn assign_layers_longest_path(
   optimize_ranks_by_crossings~ : Bool,
 ) -> Layering {
   let g = normalize_graph(g_acyclic)
-  let order = match topo_sort_if_acyclic(g) {
-    Some(order) => order
-    None => sorted_ids(g)
-  }
+  let order = topo_sort_if_acyclic(g).unwrap_or_else(() => sorted_ids(g))
   let top_lane_of = create_top_lane_resolver(g)
   let mut rank_of : Map[String, Int32] = Map([])
   for v in order {
@@ -198,10 +184,7 @@ fn assign_layers_gravity(
     }
     true
   })
-  let order = match topo_sort_if_acyclic(g) {
-    Some(order) => order
-    None => g.nodes.copy()
-  }
+  let order = topo_sort_if_acyclic(g).unwrap_or_else(() => g.nodes.copy())
   let rev_order = order.copy()
   rev_order.rev_in_place()
   let rank = (v : String) => rank_of.get(v).unwrap_or(0).to_double()
