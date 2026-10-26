@@ -63,16 +63,15 @@ fn cose(paths : ArrayView[String]) -> Unit raise CliError {
     let positions = @cose.layout(sizes, pairs, on_tick?) catch {
       Unsupported(message) => raise CliError("\{path}: \{message}", status=1)
     }
-    let out_nodes = []
-    for id, index in ids {
-      out_nodes.push(
+    let out_nodes = [
+      for id, index in ids => {
         Json::object({
           "id": Json::string(id),
           "x": Json::number(positions[index].0),
           "y": Json::number(positions[index].1),
-        }),
-      )
-    }
+        })
+      }
+    ]
     let out_edges = []
     for i, pair in pairs {
       let object : Map[String, Json] = { "id": Json::string(edge_ids[i]) }
@@ -114,10 +113,7 @@ fn mindmap_db(paths : ArrayView[String]) -> Unit raise CliError {
       .dump()
       .stringify()
     } catch {
-      error => {
-        let report : Json = { "error": Repr(error).to_string() }
-        report.stringify()
-      }
+      error => Json::object({ "error": Repr(error).to_string() }).stringify()
     } noraise {
       text => text
     }

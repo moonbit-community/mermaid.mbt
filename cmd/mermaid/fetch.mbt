@@ -65,14 +65,8 @@ fn file_url_path(url : String) -> String? {
     None => rest
   }
   guard rest.has_prefix("/") else { return None }
-  let path = match rest.find("?") {
-    Some(at) => rest[:at]
-    None => rest
-  }
-  let path = match path.find("#") {
-    Some(at) => path[:at]
-    None => path
-  }
+  let path = rest.before("?").unwrap_or(rest)
+  let path = path.before("#").unwrap_or(path)
   Some(percent_decoded(path))
 }
 
@@ -92,15 +86,12 @@ fn resolve_location(base : String, location : String) -> String {
     origin + location
   } else {
     let path = after_scheme[origin_end:]
-    let path = match path.find("?") {
-      Some(at) => path[:at]
-      None => path
-    }
+    let path = path.before("?").unwrap_or(path)
     let directory = match path.rev_find("/") {
       Some(at) => path[:at + 1].to_owned()
       None => "/"
     }
-    origin + directory + location
+    "\{origin}\{directory}\{location}"
   }
 }
 

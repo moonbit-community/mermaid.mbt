@@ -37,12 +37,10 @@ fn swimlane(options : ArrayView[String]) -> Unit raise CliError {
   }
   let plain = (snapshot : Json) => {
     guard snapshot is Object(fields) else { return snapshot }
-    Json::object(
-      Map([
-        ("nodes", fields.get("nodes").unwrap_or(Json::array([]))),
-        ("edges", fields.get("edges").unwrap_or(Json::array([]))),
-      ]),
-    )
+    Json::object({
+      "nodes": fields.get("nodes").unwrap_or(Json::array([])),
+      "edges": fields.get("edges").unwrap_or(Json::array([])),
+    })
   }
   if from is Some(path) {
     guard step is Some(step) else {
