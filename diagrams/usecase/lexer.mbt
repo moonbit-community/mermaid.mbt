@@ -38,14 +38,12 @@ fn index_from(text : String, needle : String, from : Int32) -> Int32? {
 /// Whether only spaces and tabs lie between the start of the line and
 /// `offset`: `isIndentedLineStart`.
 fn at_line_start(text : String, offset : Int32) -> Bool {
-  let mut index = offset - 1
-  while index >= 0 {
+  for index in (offset - 1)>=..0 {
     match code_at(text, index) {
       '\n' | '\r' => return true
       ' ' | '\t' => ()
       _ => return false
     }
-    index -= 1
   }
   true
 }
@@ -64,12 +62,10 @@ fn line_end(text : String, offset : Int32) -> Int32 {
 /// A string in double quotes and backticks, which may span lines.
 fn match_markdown_string(text : String, offset : Int32) -> Int32? {
   guard spelled_at(text, offset, "\"`") else { return None }
-  let mut index = offset + 2
-  while index < text.length() - 1 {
+  for index in (offset + 2)..<(text.length() - 1) {
     if spelled_at(text, index, "`\"") {
       return Some(index + 2 - offset)
     }
-    index += 1
   }
   None
 }

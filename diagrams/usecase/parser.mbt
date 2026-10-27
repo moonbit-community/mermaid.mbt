@@ -680,14 +680,14 @@ fn Visitor::statement(
   match node.name {
     "accTitleStatement" => {
       let image = node.tokens("ACC_TITLE_LINE")[0].image
-      guard image.find(":") is Some(colon) else { return }
-      drafts.acc_title = js_trim(image[colon + 1:])
+      guard image.split_once(":") is Some((_, rest)) else { return }
+      drafts.acc_title = js_trim(rest)
     }
     "accDescrStatement" =>
       match node.tokens("ACC_DESCR_LINE") {
         [line, ..] => {
-          guard line.image.find(":") is Some(colon) else { return }
-          drafts.acc_description = js_trim(line.image[colon + 1:])
+          guard line.image.split_once(":") is Some((_, rest)) else { return }
+          drafts.acc_description = js_trim(rest)
         }
         [] => {
           let image = node.tokens("ACC_DESCR_BLOCK")[0].image

@@ -158,7 +158,7 @@ fn JsonReader::string(self : JsonReader) -> String raise UsecaseError {
           unit = unit * 16 + digit
         }
         // One UTF-16 code unit, which may be half of a pair.
-        value.write_string(String::from_array([unit.unsafe_to_char()]))
+        value.write_char(unit.unsafe_to_char())
         self.offset += 4
       }
       _ => {
