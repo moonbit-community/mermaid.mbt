@@ -221,7 +221,7 @@ fn StateDb::set_css_class(
 fn StateDb::set_styles(self : StateDb, ids : String, styles : String) -> Unit {
   let styles = styles
     .split(",")
-    .map(style => trim(style.to_owned().replace_all(old=";", new="")))
+    .map(style => trim(style.replace_all(old=";", new="")))
     .collect()
   for id in trim(ids).split(",") {
     let id = id.to_owned()
@@ -256,7 +256,6 @@ fn StateDb::add_style_class(
     return
   }
   for attribute in attributes.split(",") {
-    let attribute = attribute.to_owned()
     // `attrib.replace(/([^;]*);/, '$1')` drops the first semicolon.
     let fixed = trim(attribute.replace(old=";", new=""))
     if attribute.contains("color") {
