@@ -246,7 +246,7 @@ fn format_group(value : String, width : Int32?) -> String {
     }
     i -= g
     // `substring` takes a negative start for zero.
-    parts.push(value[@cmp.maximum(0, i):@cmp.maximum(0, i + g)].to_owned())
+    parts.push(value[@cmp.maximum(0, i):@cmp.maximum(0, i + g)])
     length += g + 1
     if width is Some(width) && length > width {
       break
@@ -384,8 +384,8 @@ pub fn Format::apply(self : Format, value : Double) -> String {
 /// Whether JavaScript converts `text` to zero: `+text === 0`, for the
 /// texts the format types produce.
 fn is_zero_text(text : String) -> Bool {
-  let mantissa = match text.find("e") {
-    Some(at) => text[:at].to_owned()
+  let mantissa : StringView = match text.find("e") {
+    Some(at) => text[:at]
     None => text
   }
   // Hexadecimal digits are no decimal number, and never zero unless all
