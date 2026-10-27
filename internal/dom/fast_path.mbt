@@ -269,7 +269,7 @@ fn FastPath::reference(self : FastPath, in_attribute : Bool) -> Unit {
 ///|
 /// `ScanTagname`: lower case letters, or letters of either case, followed
 /// by white space, `>` or `/`; then white space.
-fn FastPath::tag_name(self : FastPath) -> String? {
+fn FastPath::tag_name(self : FastPath) -> StringView? {
   let html = self.html
   let start = self.pos
   let after = (pos : Int32) => {
@@ -283,7 +283,7 @@ fn FastPath::tag_name(self : FastPath) -> String? {
     self.failed = true
     return None
   }
-  let name = html[start:self.pos].to_owned().to_lower()
+  let name = html[start:self.pos].to_lower()
   self.skip_whitespace()
   Some(name)
 }
@@ -330,7 +330,7 @@ fn FastPath::specific_element(self : FastPath, expected : String) -> Unit {
 fn FastPath::container(
   self : FastPath,
   kind : FastChildren,
-  name : String,
+  name : StringView,
 ) -> Unit {
   self.attributes()
   if self.failed {
