@@ -401,11 +401,9 @@ fn CrossingContext::terminal_preserving_outer_track_candidates(
   }
   guard edge.start != "" && dst_node is Some(dst_node) else { return [] }
   let points = route_of(edge)
-  if points.length() < 4 {
+  guard points is [first, departure, ..] && points.length() >= 4 else {
     return []
   }
-  let first = points[0]
-  let departure = points[1]
   let candidates = []
   if @model.is_vertical_segment(first, departure, epsilon=EPS_LOCAL) {
     self.add_vertical_departure_outer_track_candidates(

@@ -5,12 +5,9 @@
 /// ends: `middleRail`.
 fn middle_rail(points : Array[@model.Pt]) -> @model.Seg? {
   let segments = segments_for(points)
-  if segments.length() != 3 {
-    return None
-  }
-  let middle = segments[1]
-  if segments[0].horizontal == middle.horizontal ||
-    segments[2].horizontal == middle.horizontal {
+  guard segments is [first, middle, last] else { return None }
+  if first.horizontal == middle.horizontal ||
+    last.horizontal == middle.horizontal {
     return None
   }
   Some(middle)
