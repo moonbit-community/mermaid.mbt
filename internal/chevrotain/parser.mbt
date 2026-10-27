@@ -169,8 +169,7 @@ fn Parser::run(
       }
       Choose(alternatives) => {
         let mut chosen : Array[Step]? = None
-        for alternative in alternatives {
-          let (key, paths, body) = alternative
+        for (key, paths, body) in alternatives {
           if (self.gate)(key, self) && self.starts_with(paths) {
             chosen = Some(body)
             break

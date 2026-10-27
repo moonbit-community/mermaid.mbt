@@ -67,7 +67,7 @@ pub fn Grammar::tokenize(
       break
     }
     guard found is Some((index, matched)) && matched > 0 else {
-      let character = text[offset:offset + 1].to_owned()
+      let character = text[offset:offset + 1]
       raise ParseError(
         message="unexpected character: ->\{character}<- at offset: \{offset}, skipped 1 characters.",
         offset~,
