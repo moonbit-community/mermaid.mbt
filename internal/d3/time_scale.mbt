@@ -211,16 +211,11 @@ pub fn TimeScale::ticks(
   count~ : Double = 10.0,
 ) -> Array[Double] {
   let (start, stop) = self.domain
-  let reverse = stop < start
-  let (start, stop) = if reverse { (stop, start) } else { (start, stop) }
-  let ticks = match self.calendar.tick_interval(start, stop, count) {
-    Some(interval) => interval.range(start, stop + 1.0)
+  let (start, stop) = if stop < start { (stop, start) } else { (start, stop) }
+  match self.calendar.tick_interval(start, stop, count) {
+    Some(interval) => self.ticks_every(interval)
     None => []
   }
-  if reverse {
-    ticks.rev_in_place()
-  }
-  ticks
 }
 
 ///|

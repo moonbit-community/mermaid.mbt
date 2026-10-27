@@ -2,7 +2,7 @@
 // scripts/check_time.py compares the two on random cases.
 
 ///|
-fn stamps(times : Array[Double]) -> String {
+fn stamps(times : ArrayView[Double]) -> String {
   let zone = @jsdate.Zone::reference()
   times.map(@d3.time_format(zone, "%Y-%m-%d %H:%M:%S.%L")).join("\n")
 }
@@ -29,10 +29,7 @@ test "default ticks pick a calendar step" {
   // Thirty years: every other year, through d3-array's tick step.
   scale.set_domain(946656000000.0, 1893427200000.0) |> ignore
   inspect(scale.ticks().length(), content="16")
-  inspect(
-    stamps(scale.ticks()[1:2].to_owned()),
-    content="2002-01-01 00:00:00.000",
-  )
+  inspect(stamps(scale.ticks()[1:2]), content="2002-01-01 00:00:00.000")
   // Four milliseconds: every one of them.
   scale.set_domain(1388505600000.0, 1388505600004.0) |> ignore
   inspect(scale.ticks().length(), content="5")
@@ -57,7 +54,7 @@ test "ticks of a given interval" {
   // Every other day restarts on the first of the month.
   let days = scale.ticks_every(@d3.time_day(zone).every(2.0).unwrap())
   inspect(
-    stamps(days[14:18].to_owned()),
+    stamps(days[14:18]),
     content=(
       #|2014-01-29 00:00:00.000
       #|2014-01-31 00:00:00.000

@@ -235,7 +235,7 @@ fn format_trim(s : String) -> String {
 ///|
 /// `formatGroup` for groups of three separated by commas. `width` limits
 /// the length of the result; `None` is no limit.
-fn format_group(value : String, width : Int32?) -> String {
+fn format_group(value : StringView, width : Int32?) -> String {
   let mut i = value.length()
   let parts = []
   let mut g = 3
@@ -383,8 +383,8 @@ pub fn Format::apply(self : Format, value : Double) -> String {
 ///|
 /// Whether JavaScript converts `text` to zero: `+text === 0`, for the
 /// texts the format types produce.
-fn is_zero_text(text : String) -> Bool {
-  let mantissa : StringView = match text.find("e") {
+fn is_zero_text(text : StringView) -> Bool {
+  let mantissa = match text.find("e") {
     Some(at) => text[:at]
     None => text
   }
