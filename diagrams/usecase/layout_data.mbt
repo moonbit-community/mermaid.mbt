@@ -668,12 +668,11 @@ pub fn UsecaseDb::dump(self : UsecaseDb) -> Json raise UsecaseError {
     item["accessibleName"] = Json::string(edge.accessible_name)
     Json::object(item)
   })
-  let dump : Json = {
+  {
     "nodes": Json::array(node_list),
     "edges": Json::array(edge_list),
     "direction": self.direction,
     "accTitle": self.acc_title,
     "accDescription": self.acc_description,
   }
-  dump
 }
