@@ -71,9 +71,8 @@ fn reserialized_text(text : String) -> String raise SanitizeError {
     }
   }
   let mut rest = text[:]
-  while rest.find("&") is Some(at) {
-    escape(rest[:at])
-    let after = rest[at + 1:]
+  while rest.split_once("&") is Some((before, after)) {
+    escape(before)
     // A reference ends at its semicolon; the sanitizer resolves it and
     // writes the three characters above as references again.
     let mut length = 0
