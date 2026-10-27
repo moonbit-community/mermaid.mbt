@@ -384,8 +384,8 @@ pub fn Format::apply(self : Format, value : Double) -> String {
 /// Whether JavaScript converts `text` to zero: `+text === 0`, for the
 /// texts the format types produce.
 fn is_zero_text(text : String) -> Bool {
-  let mantissa : StringView = match text.find("e") {
-    Some(at) => text[:at]
+  let mantissa : StringView = match text.split_once("e") {
+    Some((mantissa, _)) => mantissa
     None => text
   }
   // Hexadecimal digits are no decimal number, and never zero unless all
