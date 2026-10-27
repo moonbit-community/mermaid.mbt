@@ -20,7 +20,7 @@ fn Value::text(self : Value) -> String {
 /// mermaid's `trimColon`.
 fn trim_colon(text : String) -> String {
   match text.strip_prefix(":") {
-    Some(rest) => trim(rest.to_owned())
+    Some(rest) => trim(rest)
     None => trim(text)
   }
 }
@@ -32,7 +32,7 @@ fn without_suffix(text : String, count : Int32) -> String {
   if end <= 0 {
     ""
   } else {
-    trim(text[:end].to_owned())
+    trim(text[:end])
   }
 }
 
@@ -64,16 +64,7 @@ fn lexer_hook(hook : Int32, lexer : @jison.Lexer) -> @jison.HookResult {
       lexer.fail(
         "Error: State name must be a single word. Found: \"\{trim(lexer.text())}\"",
       )
-    10 => {
-      let text = lexer.text()
-      lexer.set_text(
-        if text.length() <= 2 {
-          ""
-        } else {
-          trim(text[2:].to_owned())
-        },
-      )
-    }
+    10 => lexer.set_text(trim(lexer.text()[2:]))
     11 => lexer.set_text(without_suffix(lexer.text(), 8))
     13 => lexer.set_text(trim(lexer.text()))
     _ => ()

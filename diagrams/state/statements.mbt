@@ -113,6 +113,6 @@ fn clone_doc(doc : Array[Stmt]) -> Array[Stmt] {
 
 ///|
 /// JavaScript's `String.prototype.trim`.
-fn trim(text : String) -> String {
+fn trim(text : StringView) -> String {
   text.trim(chars=" \t\n\r\u{0B}\u{0C}\u{A0}\u{FEFF}").to_owned()
 }
