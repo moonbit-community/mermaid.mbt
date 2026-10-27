@@ -33,8 +33,8 @@ pub fn data_url_size(url : String) -> Decoded? {
   guard rest.split_once(",") is Some((type_part, encoded)) else {
     return Some(Undecodable)
   }
-  let mut mime = type_part.trim(chars=" \t\n\r\u{0c}").to_owned()
-  let body = percent_decode(encoded.to_owned())
+  let mut mime = type_part.trim(chars=" \t\n\r\u{0c}")
+  let body = percent_decode(encoded)
   // `;base64` ends the type, possibly after spaces.
   let trimmed = mime.trim_end(chars=" ")
   let base64 = trimmed.length() >= 6 &&
@@ -42,7 +42,7 @@ pub fn data_url_size(url : String) -> Decoded? {
     trimmed[:trimmed.length() - 6].trim_end(chars=" ").has_suffix(";")
   let data = if base64 {
     let before = trimmed[:trimmed.length() - 6].trim_end(chars=" ")
-    mime = before[:before.length() - 1].to_owned()
+    mime = before[:before.length() - 1]
     match forgiving_base64(body) {
       Some(data) => data
       None => return Some(Undecodable)
@@ -55,7 +55,7 @@ pub fn data_url_size(url : String) -> Decoded? {
 
 ///|
 /// The type and subtype of a MIME type, in lower case.
-fn mime_essence(mime : String) -> String {
+fn mime_essence(mime : StringView) -> String {
   let essence = match mime.find(";") {
     Some(at) => mime[:at]
     None => mime[:]
@@ -65,7 +65,7 @@ fn mime_essence(mime : String) -> String {
 
 ///|
 /// The bytes of the UTF-8 encoding of `text` with `%XX` escapes decoded.
-fn percent_decode(text : String) -> Bytes {
+fn percent_decode(text : StringView) -> Bytes {
   let utf8 = @utf8.encode(text)
   let out = []
   let hex = (b : Byte) => {
