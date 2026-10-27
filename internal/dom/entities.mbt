@@ -62,12 +62,11 @@ fn decode_entities(text : String, in_attribute~ : Bool = false) -> String {
   while rest.find("ﬂ°") is Some(start) {
     out.write_view(rest[:start])
     let after = rest[start + 2:]
-    guard after.find("¶ß") is Some(end) else {
+    guard after.split_once("¶ß") is Some((body, tail)) else {
       out.write_view(rest[start:])
       return out.to_string()
     }
-    let body = after[:end]
-    rest = after[end + 2:]
+    rest = tail
     if body.strip_prefix("°") is Some(digits) {
       // Numeric: `#9829;` (digits only, as mermaid's `/^\+?\d+$/` and
       // `\w` leave them).

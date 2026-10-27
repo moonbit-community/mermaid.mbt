@@ -16,9 +16,8 @@ fn resolve_references(
   }
   let out = StringBuilder()
   let mut rest = text[:]
-  while rest.find("&") is Some(start) {
-    out.write_view(rest[:start])
-    let after = rest[start + 1:]
+  while rest.split_once("&") is Some((before, after)) {
+    out.write_view(before)
     rest = after
     match after {
       ['#', 'x' | 'X', .. digits] | ['#', .. digits] => {
