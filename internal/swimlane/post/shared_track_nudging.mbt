@@ -260,8 +260,8 @@ pub fn nudge_shared_interior_subpaths(
       guard edge.points is Some(points) && points.length() >= 2 else {
         continue
       }
-      result.push_iter(
-        track_segments_for(edge, @model.dedupe_consecutive_points(points)).iter(),
+      result.append(
+        track_segments_for(edge, @model.dedupe_consecutive_points(points)),
       )
     }
     result
