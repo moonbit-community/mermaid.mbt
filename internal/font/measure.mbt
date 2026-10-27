@@ -867,7 +867,7 @@ pub fn Stack::bbox(
 fn listed_faces(family : String, bold : Bool, italic : Bool) -> Array[Face] {
   let faces = []
   for name in family.split(",") {
-    let name = name.trim(chars=" \t\n\"';").to_owned().to_lower()
+    let name = name.trim(chars=" \t\n\"';").to_lower()
     let face = match name {
       "trebuchet ms" =>
         Some(
