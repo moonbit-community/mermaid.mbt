@@ -178,11 +178,11 @@ fn draw_horizontal(
       .attr("y1", "0%")
       .attr("x2", "100%")
       .attr("y2", "0%")
-    for stop in [("0%", "gradientStart"), ("100%", "gradientStop")] {
-      let element = gradient.append("stop").attr("offset", stop.0)
-      match theme.get(stop.1) {
+    for (offset, name) in [("0%", "gradientStart"), ("100%", "gradientStop")] {
+      let element = gradient.append("stop").attr("offset", offset)
+      match theme.get(name) {
         Null => ()
-        _ => element.attr("stop-color", theme.text(stop.1)) |> ignore
+        _ => element.attr("stop-color", theme.text(name)) |> ignore
       }
       element.attr("stop-opacity", "1") |> ignore
     }
