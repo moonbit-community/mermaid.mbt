@@ -146,7 +146,6 @@ fn AgentDb::layout_data(
     let classes = "default \{vertex.classes.join(" ")} af-kind-\{kind}"
       .split(" ")
       .filter(word => word != "")
-      .map(word => word.to_owned())
       .collect()
     nodes.push(
       @rendering.Node::new(

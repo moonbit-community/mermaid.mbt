@@ -288,9 +288,9 @@ fn AgentDb::add_connector(self : AgentDb, id : Json, title : Json) -> String {
 /// Work out a link's arrow type, stroke and length from its text: `-->`,
 /// `--x`, `-.-`, and from the opening `--` of a link with text.
 fn destruct_link(text : String, start? : String) -> Json {
-  let text = text.trim().to_owned()
+  let text = text.trim()
   let n = text.length()
-  let mut line = if n > 0 { text[:n - 1].to_owned() } else { "" }
+  let mut line = if n > 0 { text[:n - 1] } else { "" }
   let kind = match text.get_char(n - 1) {
     Some('x') => "arrow_cross"
     Some('>') => "arrow_point"
@@ -302,7 +302,7 @@ fn destruct_link(text : String, start? : String) -> Json {
   }
   let mut stroke = "normal"
   let mut length = line.length() - 1
-  let dots = line.iter().filter(c => c == '.').count()
+  let dots = line.iter().count_if(c => c == '.')
   if dots > 0 {
     stroke = "dotted"
     length = dots
