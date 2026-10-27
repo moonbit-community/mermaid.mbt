@@ -343,11 +343,10 @@ fn CrossingContext::pair_candidates_for(
     a.5 - b.5
   })
   let result = []
-  for item in scored {
+  for (path, segments, _, _, total_bends, length) in scored {
     if result.length() >= MAX_PAIR_CANDIDATES_PER_EDGE {
       break
     }
-    let (path, segments, _, _, total_bends, length) = item
     result.push({
       path,
       segments,
@@ -672,8 +671,7 @@ pub fn resolve_rendered_orthogonal_crossings(
       is Some(replacements) else {
       return
     }
-    for replacement in replacements {
-      let (edge_index, points) = replacement
+    for (edge_index, points) in replacements {
       visible[edge_index].points = Some(points)
     }
   }

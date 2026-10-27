@@ -200,7 +200,7 @@ fn shifted_candidate(lane : TerminalLane, shift : Double) -> Array[@model.Pt]? {
   if lane.at_start {
     let rail_end_is_adjacent = n > 1 &&
       @model.same_point(points[1], lane.rail_end, epsilon=EPS_LOCAL)
-    let rest = points[if rail_end_is_adjacent { 2 } else { 1 }:].to_owned()
+    let rest = points[if rail_end_is_adjacent { 2 } else { 1 }:]
     if rest is [next, ..] && !orthogonally_aligned(next, shifted_rail_end) {
       return None
     }
@@ -208,7 +208,7 @@ fn shifted_candidate(lane : TerminalLane, shift : Double) -> Array[@model.Pt]? {
   }
   let rail_end_is_adjacent = n > 1 &&
     @model.same_point(points[n - 2], lane.rail_end, epsilon=EPS_LOCAL)
-  let before = points[:n - (if rail_end_is_adjacent { 2 } else { 1 })].to_owned()
+  let before = points[:n - (if rail_end_is_adjacent { 2 } else { 1 })]
   if before is [.., previous] &&
     !orthogonally_aligned(previous, shifted_rail_end) {
     return None

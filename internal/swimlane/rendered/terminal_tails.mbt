@@ -5,11 +5,9 @@
 /// The last segment of a route of at least four points, when it is
 /// orthogonal: `terminalTailFor`, as `(tailStart, terminal)`.
 fn terminal_tail_for(points : Array[@model.Pt]) -> (@model.Pt, @model.Pt)? {
-  if points.length() < 4 {
+  guard points is [.., tail_start, terminal] && points.length() >= 4 else {
     return None
   }
-  let tail_start = points[points.length() - 2]
-  let terminal = points[points.length() - 1]
   if !@model.is_horizontal_segment(tail_start, terminal, epsilon=EPS_LOCAL) &&
     !@model.is_vertical_segment(tail_start, terminal, epsilon=EPS_LOCAL) {
     return None
@@ -24,12 +22,10 @@ fn candidate_with_destination_tail(
   points : Array[@model.Pt],
   tail : (@model.Pt, @model.Pt),
 ) -> Array[@model.Pt]? {
-  if points.length() < 3 {
+  guard points is [start, first_turn, ..] && points.length() >= 3 else {
     return None
   }
   let (tail_start, terminal) = tail
-  let start = points[0]
-  let first_turn = points[1]
   let connector = if @model.is_horizontal_segment(
       start,
       first_turn,
