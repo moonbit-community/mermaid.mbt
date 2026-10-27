@@ -585,33 +585,24 @@ pub fn resolve_rendered_orthogonal_crossings(
   edges : Array[@model.Edge],
   node_by_id : Map[String, @model.Node],
 ) -> Unit {
-  let real_nodes : Array[@model.NodeInfo] = []
-  for node in node_by_id.values() {
-    if node.is_group || node.is_edge_label {
-      continue
-    }
-    if @model.node_bounds_info_for(node) is Some(info) {
-      real_nodes.push(info)
-    }
-  }
-  if real_nodes.length() == 0 {
+  let (node_info_by_id, real_node_rects) = @model.collect_real_node_bounds(
+    node_by_id.values().collect(),
+  )
+  if real_node_rects.length() == 0 {
     return
-  }
-  let node_info_by_id : Map[String, @model.NodeInfo] = Map([])
-  for node in real_nodes {
-    node_info_by_id[node.id] = node
   }
   let context : CrossingContext = {
     visible: visible_edges(edges),
     node_info_by_id,
-    real_node_rects: real_nodes.map(fn(node) {
-      { id: node.id, rect: node.rect, }
-    }),
-    outside_top: min_of(real_nodes.map(fn(node) { node.rect.top })) - ANCHOR,
-    outside_bottom: max_of(real_nodes.map(fn(node) { node.rect.bottom })) +
+    real_node_rects,
+    outside_top: min_of(real_node_rects.map(fn(entry) { entry.rect.top })) -
     ANCHOR,
-    outside_left: min_of(real_nodes.map(fn(node) { node.rect.left })) - ANCHOR,
-    outside_right: max_of(real_nodes.map(fn(node) { node.rect.right })) + ANCHOR,
+    outside_bottom: max_of(real_node_rects.map(fn(entry) { entry.rect.bottom })) +
+    ANCHOR,
+    outside_left: min_of(real_node_rects.map(fn(entry) { entry.rect.left })) -
+    ANCHOR,
+    outside_right: max_of(real_node_rects.map(fn(entry) { entry.rect.right })) +
+    ANCHOR,
   }
   let visible = context.visible
   for _iteration in 0..<4 {
