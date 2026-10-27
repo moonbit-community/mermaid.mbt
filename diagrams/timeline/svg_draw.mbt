@@ -64,8 +64,8 @@ fn Env::new(
     // number.
     String(text) =>
       @journeycommon.js_number(
-        match text.find("px") {
-          Some(at) => text[:at].to_owned() + text[at + 2:].to_owned()
+        match text.split_once("px") {
+          Some((before, after)) => "\{before}\{after}"
           None => text
         },
       )
