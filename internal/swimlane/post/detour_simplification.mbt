@@ -221,10 +221,7 @@ pub fn simplify_detoured_edges(
     if e.is_layout_only {
       continue
     }
-    let pts = e.points.unwrap_or([])
-    if pts.length() < 1 {
-      continue
-    }
+    guard e.points is Some(pts) && pts.length() >= 1 else { continue }
     let e_id = e.id
     let start_id = e.start
     let end_id = e.end
