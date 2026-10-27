@@ -91,7 +91,7 @@ fn shortest(x : Double) -> (String, Int32) {
   let (mantissa, exponent) = match text.split_once("e") {
     Some((mantissa, exponent_text)) =>
       (
-        mantissa.to_owned(),
+        mantissa,
         @string.parse_int(exponent_text.replace(old="+", new="")) catch {
           _ => 0
         },
