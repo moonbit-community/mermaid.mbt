@@ -148,13 +148,13 @@ pub fn Element::set_inner_html(
       while j < n && is_name(html[j]) {
         j += 1
       }
-      let name = html[i + 2:j].to_owned().to_lower()
+      let name = html[i + 2:j].to_lower()
       while j < n && html[j] != '>' {
         j += 1
       }
       flush()
       for depth in stack.length()>..1 {
-        if stack[depth].tag.to_lower() == name {
+        if name == stack[depth].tag.to_lower() {
           stack.truncate(depth)
           break
         }
