@@ -136,7 +136,6 @@ fn aligns_to_none(value : String) -> Bool {
     .flat_map(word => word.split("\n"))
     .flat_map(word => word.split("\r"))
     .filter(word => word != "")
-    .map(word => word.to_owned())
     .collect()
   match words {
     ["none"] | ["none", "meet" | "slice"] => true
