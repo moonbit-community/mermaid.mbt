@@ -394,12 +394,11 @@ fn CrossingContext::terminal_preserving_outer_track_candidates(
   self : CrossingContext,
   edge : @model.Edge,
 ) -> Array[Array[@model.Pt]] {
-  let dst_node = if edge.end == "" {
-    None
-  } else {
-    self.node_info_by_id.get(edge.end)
+  guard edge.start != "" &&
+    edge.end != "" &&
+    self.node_info_by_id.get(edge.end) is Some(dst_node) else {
+    return []
   }
-  guard edge.start != "" && dst_node is Some(dst_node) else { return [] }
   let points = route_of(edge)
   guard points is [first, departure, ..] && points.length() >= 4 else {
     return []
