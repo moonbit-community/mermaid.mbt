@@ -63,12 +63,10 @@ pub fn line_basis(points : Array[(Double, Double)]) -> String? {
 
 ///|
 fn linear(path : Path, points : Array[(Double, Double)]) -> Unit {
-  for i, point in points {
-    if i == 0 {
-      path.move_to(point.0, point.1)
-    } else {
-      path.line_to(point.0, point.1)
-    }
+  // `line` guarantees at least one point.
+  path.move_to(points[0].0, points[0].1)
+  for point in points[1:] {
+    path.line_to(point.0, point.1)
   }
 }
 

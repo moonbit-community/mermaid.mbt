@@ -28,7 +28,8 @@ pub fn BandScale::new(
     }
   }
   // d3's `rescale`.
-  let n = distinct.length().to_double()
+  let count = distinct.length()
+  let n = count.to_double()
   let (r0, r1) = range
   let reverse = r1 < r0
   let mut start = if reverse { r1 } else { r0 }
@@ -45,7 +46,6 @@ pub fn BandScale::new(
     bandwidth = js_round(bandwidth)
   }
   let positions : Map[String, Double] = Map([])
-  let count = distinct.length()
   for i, value in distinct {
     // A descending range lays the values out from its far end.
     let k = if reverse { count - 1 - i } else { i }

@@ -83,12 +83,11 @@ fn Calendar::tick_interval(
   if i == 0 {
     return time_millisecond().every(js_max(tick_step(start, stop, count), 1.0))
   }
-  let (interval, step, _) = intervals[if target / intervals[i - 1].2 <
-      intervals[i].2 / target {
-      i - 1
-    } else {
-      i
-    }]
+  // The step below `target` wins when it comes closer to it.
+  if target / intervals[i - 1].2 < intervals[i].2 / target {
+    i -= 1
+  }
+  let (interval, step, _) = intervals[i]
   interval.every(step)
 }
 
