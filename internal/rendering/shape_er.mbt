@@ -46,7 +46,7 @@ pub fn parse_generic_types(input : String) -> String {
       i + 1 < sets.length() &&
       count(sets[i - 1]) == 1 &&
       count(sets[i + 1]) == 1 {
-      set = sets[i - 1] + "," + sets[i + 1]
+      set = "\{sets[i - 1]},\{sets[i + 1]}"
       i += 1
       output.pop() |> ignore
     }

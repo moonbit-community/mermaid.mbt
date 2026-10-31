@@ -158,8 +158,8 @@ fn insert_terminal_label(
     |> ignore
     // Never narrower than nine pixels a character: `setTerminalWidth`.
     fo
-    .style("width", n((text.length().to_double() * 9.0).max(box.width)) + "px")
-    .style("height", n(box.height) + "px")
+    .style("width", "\{n((text.length().to_double() * 9.0).max(box.width))}px")
+    .style("height", "\{n(box.height)}px")
     |> ignore
     (box.width, box.height)
   } else {

@@ -312,7 +312,7 @@ fn sketched_collapsed_frame(
     options,
   )
   prepend(shape_svg, frame)
-  frame.attr("class", "basic label-container " + css_class) |> ignore
+  frame.attr("class", "basic label-container \{css_class}") |> ignore
   if styled {
     frame.attr("style", css_styles_text(node)) |> ignore
   }
@@ -363,8 +363,8 @@ fn er_background_node(node : Node, env : Env) -> Node {
   let background = env.config.theme().text("background")
   {
     ..node,
-    id: node.id + "-background",
-    dom_id: node.dom_id + "-background",
+    id: "\{node.id}-background",
+    dom_id: "\{node.dom_id}-background",
     look: "default",
     css_styles: ["stroke: none", "fill: \{background}"],
   }
