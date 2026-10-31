@@ -9,28 +9,27 @@ fn swimlane(options : ArrayView[String]) -> Unit raise CliError {
   let mut direction = "TB"
   let mut stages = false
   let mut capture = None
-  let mut rest = options
-  while true {
+  for rest = options {
     match rest {
       ["--from", value, .. tail] => {
         from = Some(value)
-        rest = tail
+        continue tail
       }
       ["--run", value, .. tail] => {
         step = Some(value)
-        rest = tail
+        continue tail
       }
       ["--direction", value, .. tail] => {
         direction = value
-        rest = tail
+        continue tail
       }
       ["--stages", .. tail] => {
         stages = true
-        rest = tail
+        continue tail
       }
       [path, .. tail] => {
         capture = Some(path)
-        rest = tail
+        continue tail
       }
       [] => break
     }
