@@ -67,10 +67,7 @@ fn pretty_unit(unit : String) -> String {
     "Q" => "quarter"
     _ => {
       let lower = unit.to_lower()
-      match lower.strip_suffix("s") {
-        Some(stem) => stem.to_owned()
-        None => lower
-      }
+      lower.strip_suffix("s").unwrap_or(lower[:]).to_owned()
     }
   }
 }
