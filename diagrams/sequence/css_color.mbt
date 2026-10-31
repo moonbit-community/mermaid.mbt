@@ -127,18 +127,16 @@ fn is_color_function(hsl : Bool, arguments : StringView) -> Bool {
       _ => false
     }
   }
-  let (channels, alpha) = match arguments.split_once("/") {
+  let channels = match arguments.split_once("/") {
     Some((before, after)) => {
       let alpha = words(after)
-      guard alpha.length() == 1 &&
-        (is_alpha(alpha[0]) || alpha[0] == Some(Nothing)) else {
+      guard alpha is [only] && (is_alpha(only) || only == Some(Nothing)) else {
         return false
       }
-      (words(before), true)
+      words(before)
     }
-    None => (words(arguments), false)
+    None => words(arguments)
   }
-  ignore(alpha)
   guard channels.length() == 3 else { return false }
   for index, channel in channels {
     let fits = match channel {

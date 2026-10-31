@@ -98,7 +98,7 @@ fn serialize_font_family(value : String) -> String? {
             word
           },
         )
-      _ => names.push("\"" + words.join(" ") + "\"")
+      _ => names.push("\"\{words.join(" ")}\"")
     }
   }
   Some(names.join(", "))
