@@ -322,9 +322,8 @@ fn Layout::remove_invalid_edges(self : Layout) -> Unit {
   })
   for edge in invalid {
     let remove_from = (list : Array[LEdge]) => {
-      match list.search_by(e => physical_equal(e, edge)) {
-        Some(at) => list.remove(at) |> ignore
-        None => ()
+      if list.search_by(e => physical_equal(e, edge)) is Some(at) {
+        list.remove(at) |> ignore
       }
     }
     remove_from(manager.nodes[edge.source].edges)
