@@ -730,8 +730,8 @@ pub fn draw(
     }
   }
   self.draw_actors(false)
-  for entry in to_draw {
-    self.draw_message(entry.0, entry.1, entry.2)
+  for (model, line_start_y, msg) in to_draw {
+    self.draw_message(model, line_start_y, msg)
   }
   if conf.mirror_actors {
     self.draw_actors(true)

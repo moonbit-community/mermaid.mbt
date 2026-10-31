@@ -24,7 +24,7 @@ pub fn SequenceDb::dump(self : SequenceDb) -> Json {
       "prevActor": optional(actor.prev_actor),
       "nextActor": optional(actor.next_actor),
       "type": actor.kind,
-      "box": optional(actor.box.bind(box => Some(box.name.unwrap_or("")))),
+      "box": optional(actor.box.map(box => box.name.unwrap_or(""))),
       "links": Json::object(actor.links),
       "properties": Json::object(actor.properties),
     })
