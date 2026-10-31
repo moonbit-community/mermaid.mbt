@@ -24,11 +24,11 @@ fn Router::find_path(
   let mut bb_max_x = @model.js_max(p_src_anchor.x, p_dst_anchor.x) + 50.0
   let mut bb_min_y = @model.js_min(p_src_anchor.y, p_dst_anchor.y) - 50.0
   let mut bb_max_y = @model.js_max(p_src_anchor.y, p_dst_anchor.y) + 50.0
+  let path_min_x = @model.js_min(p_src_anchor.x, p_dst_anchor.x)
+  let path_max_x = @model.js_max(p_src_anchor.x, p_dst_anchor.x)
+  let path_min_y = @model.js_min(p_src_anchor.y, p_dst_anchor.y)
+  let path_max_y = @model.js_max(p_src_anchor.y, p_dst_anchor.y)
   for obs in self.obstacles {
-    let path_min_x = @model.js_min(p_src_anchor.x, p_dst_anchor.x)
-    let path_max_x = @model.js_max(p_src_anchor.x, p_dst_anchor.x)
-    let path_min_y = @model.js_min(p_src_anchor.y, p_dst_anchor.y)
-    let path_max_y = @model.js_max(p_src_anchor.y, p_dst_anchor.y)
     let obs_blocks_path = obs.min_x < path_max_x &&
       obs.max_x > path_min_x &&
       obs.min_y < path_max_y &&
@@ -110,10 +110,10 @@ fn Router::find_path(
       found_path = [p_src_anchor, corner_vh, p_dst_anchor]
     }
   }
-  if found_path.length() == 0 {
+  if found_path.is_empty() {
     found_path = self.a_star(i, e, p_src_anchor, p_dst_anchor, h_pipes, v_pipes)
   }
-  if found_path.length() == 0 {
+  if found_path.is_empty() {
     found_path = [
       p_src_anchor,
       @model.pt(p_src_anchor.x, p_dst_anchor.y),
@@ -155,7 +155,7 @@ fn Router::a_star(
     pt: p_src_anchor,
   })
   open_set.add(start_key)
-  while open_list.length() > 0 {
+  while !open_list.is_empty() {
     @d3.js_sort(open_list, (a, b) => a.f - b.f)
     let current = open_list.remove(0)
     open_set.remove(current.key)
@@ -188,6 +188,8 @@ fn Router::a_star(
     if h_idx >= 0 && h_idx < h_pipes.length() - 1 {
       neighbors.push(@model.pt(cx, h_pipes[h_idx + 1].coord))
     }
+    let dest_dx = p_dst_anchor.x - p_src_anchor.x
+    let dest_dy = p_dst_anchor.y - p_src_anchor.y
     for neighbor in neighbors {
       let min_x = @model.js_min(cx, neighbor.x)
       let max_x = @model.js_max(cx, neighbor.x)
@@ -216,8 +218,6 @@ fn Router::a_star(
       let dist = (neighbor.x - cx).abs() + (neighbor.y - cy).abs()
       let penalty = self.crossing_penalty(i, current.pt, neighbor)
       let mut dir_penalty = 0.0
-      let dest_dx = p_dst_anchor.x - p_src_anchor.x
-      let dest_dy = p_dst_anchor.y - p_src_anchor.y
       let move_dx = neighbor.x - cx
       let move_dy = neighbor.y - cy
       if (dest_dy > 10.0 && move_dy < -5.0) ||

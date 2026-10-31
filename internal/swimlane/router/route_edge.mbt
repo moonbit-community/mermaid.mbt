@@ -140,7 +140,7 @@ fn Router::route_edge(self : Router, i : Int32) -> Unit {
   if e.start == "" || e.end == "" {
     return
   }
-  if e.points is Some(points) && points.length() > 0 {
+  if e.points is Some(points) && !points.is_empty() {
     return
   }
   if e.start == e.end {
@@ -209,8 +209,8 @@ fn Router::route_edge(self : Router, i : Int32) -> Unit {
       dst_handle_waypoints = [@model.pt(dx, dy), @model.pt(dx, p_dst_port.y)]
     }
   }
-  if src_handle_waypoints.length() == 0 &&
-    dst_handle_waypoints.length() == 0 &&
+  if src_handle_waypoints.is_empty() &&
+    dst_handle_waypoints.is_empty() &&
     self.try_fast_path(
       i, e, p_src_port, p_dst_port, p_src_anchor, p_dst_anchor, src_port_side, dst_port_side,
     ) {
@@ -320,7 +320,7 @@ fn Router::route_edge(self : Router, i : Int32) -> Unit {
       pos,
     })
     self.edge_segment_indices[i].push(pos)
-    if pipe.tracks.length() == 0 {
+    if pipe.tracks.is_empty() {
       pipe.tracks.push({ index: 0, segments: [], })
     }
     pipe.tracks[0].segments.push({ edge_index: i, segment_index: k, from, to, })

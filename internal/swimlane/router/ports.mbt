@@ -141,7 +141,7 @@ fn Router::assign_ports(self : Router) -> Unit {
     if e.start == "" || e.end == "" || e.start == e.end {
       continue
     }
-    if e.points is Some(points) && points.length() > 0 {
+    if e.points is Some(points) && !points.is_empty() {
       continue
     }
     guard self.node_by_id.get(e.start) is Some(src) else { continue }
@@ -199,8 +199,7 @@ fn Router::assign_ports(self : Router) -> Unit {
       }
       (a.edge_idx - b.edge_idx).to_double()
     })
-    for g in 1..<group.length() {
-      let info = group[g]
+    for info in group[1:] {
       let secondary = secondary_side(info)
       let primary_load = side_load
         .get(load_key(info.src_id, info.src_side))

@@ -73,7 +73,7 @@ fn Router::crossing_penalty(
   from : @model.Pt,
   to : @model.Pt,
 ) -> Double {
-  if self.all_routed_segments.length() == 0 {
+  if self.all_routed_segments.is_empty() {
     return 0.0
   }
   let is_horizontal = (from.y - to.y).abs() < EPS7

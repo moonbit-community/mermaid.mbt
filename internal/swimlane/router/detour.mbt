@@ -47,7 +47,7 @@ fn Router::simplify_detour(
         obs.min_y < path_max_y &&
         obs.max_y > path_min_y
       })
-      if detour_obstacles.length() > 0 {
+      if !detour_obstacles.is_empty() {
         let mut visual_max_x = @model.js_max(start.x, end.x)
         for obs in detour_obstacles {
           let obs_center_x = (obs.min_x + obs.max_x) / 2.0
@@ -68,7 +68,7 @@ fn Router::simplify_detour(
         obs.min_y < @model.js_max(start.y, end.y) &&
         obs.max_y > @model.js_min(start.y, end.y)
       })
-      if detour_obstacles.length() > 0 {
+      if !detour_obstacles.is_empty() {
         let mut visual_min_x = @model.js_min(start.x, end.x)
         for obs in detour_obstacles {
           let obs_center_x = (obs.min_x + obs.max_x) / 2.0
@@ -108,15 +108,15 @@ fn Router::find_best_return_y(
     obs_in_x_range && obs_in_y_range
   })
   let mut filtered_obs = relevant_obs
-  if self.is_lr && relevant_obs.length() > 0 {
+  if self.is_lr && !relevant_obs.is_empty() {
     let obs_at_detour_x = relevant_obs.filter(obs => {
       obs.min_x < detour_x && obs.max_x > detour_x
     })
-    if obs_at_detour_x.length() > 0 {
+    if !obs_at_detour_x.is_empty() {
       filtered_obs = obs_at_detour_x
     }
   }
-  if filtered_obs.length() == 0 {
+  if filtered_obs.is_empty() {
     return end.y
   }
   let margin = HORIZONTAL_PIPE_MARGIN
