@@ -231,16 +231,15 @@ fn time_cases(path : String) -> Unit raise CliError {
   guard read_json(path) is Array(cases) else {
     raise CliError("\{path} must hold an array of cases", status=2)
   }
-  let results : Array[Json] = []
-  for item in cases {
-    results.push(
+  let results = [
+    for item in cases => {
       time_case(item) catch {
         @dayjs.DayjsError(message) => { "error": message }
         @gantt.GanttError(message) => { "error": message }
         @jison.ParseError(message~, ..) => { "error": message }
         error => { "error": Repr(error).to_string() }
-      },
-    )
-  }
+      }
+    }
+  ]
   println(Json::array(results).stringify())
 }

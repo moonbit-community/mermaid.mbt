@@ -6,15 +6,15 @@ fn image_sizes(path : String) -> Unit raise CliError {
   guard read_json(path) is Array(cases) else {
     raise CliError("\{path} must hold an array of data: URLs", status=2)
   }
-  let results : Array[Json] = []
-  for item in cases {
-    guard item is String(url) else { continue }
-    let result = match @image.data_url_size(url) {
-      Some(Size(width, height)) => "\{width}x\{height}"
-      Some(Undecodable) => "undecodable"
-      Some(Unknown(_)) | None => "unknown"
+  let results = [
+    for item in cases if item is String(url) => {
+      let result = match @image.data_url_size(url) {
+        Some(Size(width, height)) => "\{width}x\{height}"
+        Some(Undecodable) => "undecodable"
+        Some(Unknown(_)) | None => "unknown"
+      }
+      Json::string(result)
     }
-    results.push(Json::string(result))
-  }
+  ]
   println(Json::array(results).stringify())
 }

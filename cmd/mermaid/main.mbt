@@ -368,20 +368,19 @@ fn bboxes(path : String) -> Unit raise CliError {
   guard read_json(path) is Array(cases) else {
     raise CliError("\{path} must hold an array of markup strings", status=2)
   }
-  let results : Array[Json] = []
-  for item in cases {
-    if item is String(markup) {
+  let results : Array[Json] = [
+    for item in cases if item is String(markup) => {
       let svg = @dom.Element::new("svg")
       svg.set_inner_html(markup)
       let box = svg.bbox()
-      results.push([
+      [
         Json::number(box.x),
         Json::number(box.y),
         Json::number(box.width),
         Json::number(box.height),
-      ])
+      ]
     }
-  }
+  ]
   println(Json::array(results).stringify())
 }
 
