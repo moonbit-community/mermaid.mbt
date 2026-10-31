@@ -207,13 +207,13 @@ fn insert_themed_marker(
       .append("marker")
       .attr("id", "\{diagram_id}_\{diagram_type}-\{name}\{shape.suffix}")
       .attr("class", "marker \{name} \{diagram_type}")
-    for attribute in shape.attributes {
-      marker.attr(attribute.0, attribute.1) |> ignore
+    for (attribute, value) in shape.attributes {
+      marker.attr(attribute, value) |> ignore
     }
-    for child in shape.children {
-      let element = marker.append(child.0)
-      for attribute in child.1 {
-        element.attr(attribute.0, attribute.1) |> ignore
+    for (tag, attributes) in shape.children {
+      let element = marker.append(tag)
+      for (attribute, value) in attributes {
+        element.attr(attribute, value) |> ignore
       }
     }
   }

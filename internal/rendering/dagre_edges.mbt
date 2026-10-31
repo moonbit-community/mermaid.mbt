@@ -485,9 +485,7 @@ fn self_loop_side(
   }
   if hints.is_empty() {
     for segment in segments {
-      for point in segment.0.edge.points {
-        hints.push(point)
-      }
+      hints.append(segment.0.edge.points)
     }
   }
   if hints.is_empty() {

@@ -141,8 +141,8 @@ fn translate_y(element : @dom.Element) -> Double {
     transform.split_once(",") is Some((_, rest)) else {
     return 0.0
   }
-  let end = rest.find(")").unwrap_or(rest.length())
-  @string.parse_double(rest[:end].trim()) catch {
+  let value = rest.before(")").unwrap_or(rest)
+  @string.parse_double(value.trim()) catch {
     _ => 0.0
   }
 }
@@ -397,8 +397,7 @@ fn style_color(styles : String) -> String? {
     rest = after
     let value = rest.trim_start(chars=" \t\n\r")
     if value.has_prefix(":") {
-      let end = rest.find(";").unwrap_or(rest.length())
-      return Some("fill\{rest[:end]}")
+      return Some("fill\{rest.before(";").unwrap_or(rest)}")
     }
   }
   None

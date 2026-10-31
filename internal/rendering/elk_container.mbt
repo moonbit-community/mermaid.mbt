@@ -75,8 +75,8 @@ fn apply_container_algorithm(
   )
   if algorithm == "elk.rectpacking" {
     let rect_pad_top = label_height + RECTPACKING_CONTAINER_PADDING
-    for option in rectpacking_options() {
-      options[option.0] = option.1
+    for (key, value) in rectpacking_options() {
+      options[key] = value
     }
     options["elk.padding"] = Json::string(
       "[top=\{n(rect_pad_top)},left=10,bottom=10,right=10]",
@@ -102,8 +102,8 @@ fn drop_container_algorithm(node : ElkNode) -> Unit {
     "nodeSize.constraints", "nodeSize.minimum", "elk.algorithm", "elk.aspectRatio",
     "elk.contentAlignment", "elk.expandNodes", "elk.padding",
   ]
-  for option in rectpacking_options() {
-    overridden.push(option.0)
+  for (key, _) in rectpacking_options() {
+    overridden.push(key)
   }
   for key in overridden {
     options.remove(key)
