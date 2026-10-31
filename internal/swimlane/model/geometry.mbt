@@ -657,7 +657,7 @@ fn simplify_polyline_once(points : Array[Pt]) -> (Array[Pt], Bool) {
   let mut i = 0
   while i < points.length() {
     let cur = points[i]
-    let next = if i + 1 < points.length() { Some(points[i + 1]) } else { None }
+    let next = points.get(i + 1)
     if out.last() is Some(prev) && next is Some(next) {
       if same_point(prev, next) {
         // The point and the next one go: the route came back on itself.

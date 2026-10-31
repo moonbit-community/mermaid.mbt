@@ -55,7 +55,7 @@ fn collation_keys(s : String) -> (Array[Int32], Array[Int32]) {
 
 ///|
 fn compare_keys(a : Array[Int32], b : Array[Int32]) -> Int32 {
-  let n = if a.length() < b.length() { a.length() } else { b.length() }
+  let n = a.length().min(b.length())
   for i in 0..<n {
     if a[i] != b[i] {
       return if a[i] < b[i] { -1 } else { 1 }

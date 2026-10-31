@@ -50,10 +50,7 @@ pub fn Layout::from_capture(data : Json) -> Layout {
   if path(data, ["nodes"]) is Some(Array(items)) {
     for item in items {
       guard item is Object(n) else { continue }
-      let label_style = match field(n, "labelStyle") {
-        Some(String(s)) => s
-        _ => ""
-      }
+      let label_style = text_field(n, "labelStyle").unwrap_or("")
       nodes.push(
         Node::new(
           id=text_field(n, "id").unwrap_or(""),
@@ -243,12 +240,11 @@ pub fn Layout::snapshot(self : Layout, name : String) -> Json {
 ///|
 fn snapshot_points(json : Json?) -> Array[Pt]? {
   guard json is Some(Array(items)) else { return None }
-  let points = []
-  for item in items {
-    if item is Array([Number(x, ..), Number(y, ..)]) {
-      points.push(pt(x, y))
+  let points = [
+    for item in items if item is Array([Number(x, ..), Number(y, ..)]) => {
+      pt(x, y)
     }
-  }
+  ]
   Some(points)
 }
 

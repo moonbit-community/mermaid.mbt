@@ -52,7 +52,7 @@ pub fn js_round(x : Double) -> Double {
 ///|
 /// The `<` of two JavaScript strings: by UTF-16 code units.
 pub fn code_unit_less(a : String, b : String) -> Bool {
-  let n = if a.length() < b.length() { a.length() } else { b.length() }
+  let n = a.length().min(b.length())
   for i in 0..<n {
     let x = a.code_unit_at(i)
     let y = b.code_unit_at(i)
