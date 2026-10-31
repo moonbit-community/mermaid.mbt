@@ -389,8 +389,9 @@ fn SankeyLayout::initialize_node_breadths(
     }
     y = (self.y1 - y + self.py) / (nodes.length() + 1).to_double()
     for i, node in nodes {
-      node.y0 += y * (i + 1).to_double()
-      node.y1 += y * (i + 1).to_double()
+      let shift = y * (i + 1).to_double()
+      node.y0 += shift
+      node.y1 += shift
     }
     self.reorder_links(nodes)
   }
