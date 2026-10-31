@@ -72,11 +72,11 @@ fn split_white_space(text : String) -> Array[String] {
 fn wrap_text(text : @dom.Element, label : String) -> Unit {
   let words = split_white_space(label)
   let line = [words[0]]
-  for i in 1..<words.length() {
-    if words[i] == "" {
+  for word in words[1:] {
+    if word == "" {
       break
     }
-    line.push(words[i])
+    line.push(word)
   }
   text.text("") |> ignore
   let x = text.get_attr("x").unwrap_or("")
@@ -103,8 +103,8 @@ fn chart(
   // A set without a size is left out, with every overlap it is part of.
   let to_remove : Map[String, Unit] = Map([])
   for datum in data {
-    if datum.size == 0.0 && datum.sets.length() == 1 {
-      to_remove[datum.sets[0]] = ()
+    if datum.size == 0.0 && datum.sets is [set] {
+      to_remove[set] = ()
     }
   }
   let data = data.filter(datum => {
@@ -125,7 +125,7 @@ fn chart(
   let label = (area : Area) => {
     match labels.get(area.key()) {
       Some(label) => label
-      None => if area.sets.length() == 1 { area.sets[0] } else { "" }
+      None => if area.sets is [set] { set } else { "" }
     }
   }
   let colour_map : Map[String, String] = Map([])

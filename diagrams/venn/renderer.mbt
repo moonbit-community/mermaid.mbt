@@ -7,8 +7,8 @@ fn ensure_pairwise_subsets(subsets : Array[Subset]) -> Array[Area] {
   let individual_sizes : Map[String, Double] = Map([])
   for subset in subsets {
     existing_keys[sorted_copy(subset.sets).join("|")] = ()
-    if subset.sets.length() == 1 {
-      individual_sizes[subset.sets[0]] = subset.size
+    if subset.sets is [set] {
+      individual_sizes[set] = subset.size
     }
   }
   let areas : Array[Area] = subsets.map(subset => {

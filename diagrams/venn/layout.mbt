@@ -66,13 +66,13 @@ fn add_missing_areas(areas : Array[Area]) -> Array[Area] {
   let ids = []
   let pairs : Map[String, Unit] = Map([])
   for area in r {
-    if area.sets.length() == 1 {
-      ids.push(area.sets[0])
-    } else if area.sets.length() == 2 {
-      let a = area.sets[0]
-      let b = area.sets[1]
-      pairs["\{a};\{b}"] = ()
-      pairs["\{b};\{a}"] = ()
+    match area.sets {
+      [a] => ids.push(a)
+      [a, b] => {
+        pairs["\{a};\{b}"] = ()
+        pairs["\{b};\{a}"] = ()
+      }
+      _ => ()
     }
   }
   @d3.js_sort(ids, (a, b) => compare_code_units(a, b).to_double())
@@ -103,19 +103,14 @@ fn circle_of(circles : Dict[Circle], set : String) -> Circle {
 fn loss_function(circles : Dict[Circle], overlaps : Array[Area]) -> Double {
   let mut output = 0.0
   for area in overlaps {
-    if area.sets.length() == 1 {
-      continue
-    }
-    let overlap = if area.sets.length() == 2 {
-      let left = circle_of(circles, area.sets[0])
-      let right = circle_of(circles, area.sets[1])
-      circle_overlap(
-        left.radius,
-        right.radius,
-        distance(left.x, left.y, right.x, right.y),
-      )
-    } else {
-      intersection_area(area.sets.map(set => circle_of(circles, set))).0
+    let overlap = match area.sets {
+      [_] => continue
+      [left, right] => {
+        let a = circle_of(circles, left)
+        let b = circle_of(circles, right)
+        circle_overlap(a.radius, b.radius, distance(a.x, a.y, b.x, b.y))
+      }
+      _ => intersection_area(area.sets.map(set => circle_of(circles, set))).0
     }
     // The weight of every area is 1.
     output += 1.0 * (overlap - area.size) * (overlap - area.size)
@@ -138,8 +133,7 @@ fn greedy_layout(areas : Array[Area]) -> Dict[Circle] raise VennError {
   let circles : Dict[Circle] = Dict::new()
   let set_overlaps : Dict[Array[SetOverlap]] = Dict::new()
   for area in areas {
-    if area.sets.length() == 1 {
-      let set = area.sets[0]
+    if area.sets is [set] {
       circles.set(
         set,
         Circle::new(1.0e10, 1.0e10, (area.size / PI).sqrt(), size=area.size),
@@ -285,8 +279,8 @@ fn constrained_mds_layout(
   let sets : Array[Area] = []
   let setids : Map[String, Int32] = Map([])
   for area in areas {
-    if area.sets.length() == 1 {
-      setids[area.sets[0]] = sets.length()
+    if area.sets is [set] {
+      setids[set] = sets.length()
       sets.push(area)
     }
   }
@@ -295,9 +289,9 @@ fn constrained_mds_layout(
   let mut distances = Array::makei(count, _ => zeros(count))
   let constraints = Array::makei(count, _ => zeros(count))
   for current in areas {
-    guard current.sets.length() == 2 else { continue }
-    guard setids.get(current.sets[0]) is Some(left) &&
-      setids.get(current.sets[1]) is Some(right) else {
+    guard current.sets is [left_set, right_set] else { continue }
+    guard setids.get(left_set) is Some(left) &&
+      setids.get(right_set) is Some(right) else {
       abort("no circle for an overlap")
     }
     let r1 = (sets[left].size / PI).sqrt()
