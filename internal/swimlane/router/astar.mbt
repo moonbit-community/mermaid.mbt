@@ -246,11 +246,8 @@ fn Router::a_star(
         if !open_set.contains(n_key) {
           open_list.push({ key: n_key, f: tentative_g + h, pt: neighbor, })
           open_set.add(n_key)
-        } else {
-          match open_list.search_by(x => x.key == n_key) {
-            Some(idx) => open_list[idx].f = tentative_g + h
-            None => ()
-          }
+        } else if open_list.search_by(x => x.key == n_key) is Some(idx) {
+          open_list[idx].f = tentative_g + h
         }
       }
     }

@@ -86,10 +86,7 @@ fn Router::simplify_detour(
   } else {
     None
   }
-  match simplified {
-    Some(path) => path
-    None => found_path
-  }
+  simplified.unwrap_or(found_path)
 }
 
 ///|
@@ -156,11 +153,8 @@ fn Router::try_simplify_with_detour_x(
   let seg1_blocked = self.is_segment_blocked(start, corner1, e.start, e.end)
   let seg2_blocked = self.is_segment_blocked(corner1, corner2, e.start, e.end)
   let seg3_blocked = self.is_segment_blocked(corner2, corner3, e.start, e.end)
-  let seg4_blocked = if best_y != end.y {
+  let seg4_blocked = best_y != end.y &&
     self.is_segment_blocked(corner3, end, e.start, e.end)
-  } else {
-    false
-  }
   if !seg1_blocked && !seg2_blocked && !seg3_blocked && !seg4_blocked {
     if (best_y - end.y).abs() < EPS7 {
       return Some([start, corner1, corner2, end])
