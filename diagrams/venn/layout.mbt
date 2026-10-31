@@ -246,9 +246,7 @@ fn constrained_mds_gradient(
   distances : Array[Array[Double]],
   constraints : Array[Array[Double]],
 ) -> Double {
-  for i in 0..<fxprime.length() {
-    fxprime[i] = 0.0
-  }
+  fxprime.fill(0.0)
   let mut loss = 0.0
   for i in 0..<distances.length() {
     let xi = x[2 * i]

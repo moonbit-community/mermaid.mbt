@@ -108,7 +108,7 @@ fn normalize_text(text : String) -> String {
 /// The order of `Array.prototype.sort` without a comparator: by UTF-16
 /// code units.
 fn compare_code_units(a : String, b : String) -> Int32 {
-  let n = if a.length() < b.length() { a.length() } else { b.length() }
+  let n = a.length().min(b.length())
   for i in 0..<n {
     let x = a.code_unit_at(i).to_int()
     let y = b.code_unit_at(i).to_int()
