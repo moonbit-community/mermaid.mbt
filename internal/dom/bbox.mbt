@@ -187,14 +187,11 @@ pub fn Element::length_attr(self : Element, name : String) -> Double? {
 ///|
 /// Numbers separated by spaces or commas, read with the SVG number parser.
 fn svg_numbers(text : StringView) -> Array[Float] {
-  let numbers = []
-  for part in text.replace_all(old=",", new=" ").split(" ") {
-    let part = part.trim()
-    if !part.is_empty() {
-      numbers.push(parse_svg_number(part))
-    }
-  }
-  numbers
+  let spaced = text.replace_all(old=",", new=" ")
+  let parts = spaced.split(" ")
+  [
+    for part in parts if part.trim() != "" => parse_svg_number(part.trim())
+  ]
 }
 
 // An SVG `transform` attribute reaches layout as a CSS transform: Blink
