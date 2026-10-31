@@ -51,13 +51,13 @@ fn Journey::add_task(
   let pieces = data[1:].split(":").map(piece => piece.to_owned()).collect()
   let score = @journeycommon.js_number(pieces[0])
   // Pieces after the second are ignored, as upstream ignores them.
-  let people = if pieces.length() == 1 {
-    []
-  } else {
-    pieces[1]
-    .split(",")
-    .map(name => @journeycommon.js_trim(name.to_owned()))
-    .collect()
+  let people = match pieces {
+    [_, names, ..] =>
+      names
+      .split(",")
+      .map(name => @journeycommon.js_trim(name.to_owned()))
+      .collect()
+    _ => []
   }
   self.tasks.push({
     section: self.current_section,

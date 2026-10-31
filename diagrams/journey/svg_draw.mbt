@@ -4,6 +4,15 @@
 const XHTML : String = "http://www.w3.org/1999/xhtml"
 
 ///|
+/// The line break of diagram text as it is written: mermaid's
+/// `lineBreakRegex`, flattened to a blank in the legend and split on in a
+/// box.
+let line_break : @jsregex.Regex = try! @jsregex.Regex::compile(
+  "<br\\s*/?>",
+  flags="gi",
+)
+
+///|
 /// Set `name` to a configuration value the way d3's `attr` does: `null`
 /// leaves the attribute out, anything else is converted to a string.
 fn attr_json(element : @dom.Element, name : String, value : Json) -> Unit {
@@ -85,7 +94,6 @@ fn draw_text(
   text~ : String,
   text_margin~ : Double,
 ) -> @dom.Element {
-  let line_break = try! @jsregex.Regex::compile("<br\\s*/?>", flags="gi")
   let element = parent
     .append("text")
     .attr_number("x", x)
@@ -250,7 +258,6 @@ fn text_by_tspan(
   class~ : String,
   colour~ : String?,
 ) -> Unit {
-  let line_break = try! @jsregex.Regex::compile("<br\\s*/?>", flags="gi")
   let lines = line_break.split(content)
   let size = conf.task_font_size
   let count = lines.length().to_double()
