@@ -161,8 +161,9 @@ pub fn sanitize_label_type(label_type : String?) -> String {
 ///|
 /// The text without the quotes around it, if it has them.
 pub fn unquote(text : String) -> String {
-  if text.length() >= 2 && text.has_prefix("\"") && text.has_suffix("\"") {
-    text[1:text.length() - 1].to_owned()
+  if text.strip_prefix("\"") is Some(rest) &&
+    rest.strip_suffix("\"") is Some(inner) {
+    inner.to_owned()
   } else if text == "\"" {
     // A lone quote starts and ends with a quote too.
     ""
