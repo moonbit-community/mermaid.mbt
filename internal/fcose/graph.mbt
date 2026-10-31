@@ -296,10 +296,7 @@ fn Manager::update_graph_bounds(self : Manager, graph : Int32) -> Unit {
   // edges again.
   let width = right - left
   let height = bottom - top
-  let margin = match self.nodes[g.parent].padding {
-    Some(padding) => padding
-    None => DEFAULT_GRAPH_MARGIN
-  }
+  let margin = self.nodes[g.parent].padding.unwrap_or(DEFAULT_GRAPH_MARGIN)
   g.left = left - margin
   g.right = left + width + margin
   g.top = top - margin

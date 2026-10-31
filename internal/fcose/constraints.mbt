@@ -542,9 +542,7 @@ fn Layout::shuffle(self : Layout, list : Array[String]) -> Unit {
   let mut i = length - 1
   while i.to_double() >= 2.0 * length.to_double() / 3.0 {
     let j = (self.random.next() * (i + 1).to_double()).floor().to_int()
-    let x = list[i]
-    list[i] = list[j]
-    list[j] = x
+    list.swap(i, j)
     i -= 1
   }
 }
