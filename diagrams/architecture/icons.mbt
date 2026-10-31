@@ -2,9 +2,7 @@
 /// The icon wrapper of `architectureIcons.ts`: a blue square under the
 /// icon's strokes.
 fn wrap_icon(icon : String) -> String {
-  "<g><rect width=\"80\" height=\"80\" style=\"fill: #087ebf; stroke-width: 0px;\"/>" +
-  icon +
-  "</g>"
+  "<g><rect width=\"80\" height=\"80\" style=\"fill: #087ebf; stroke-width: 0px;\"/>\{icon}</g>"
 }
 
 ///|

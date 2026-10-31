@@ -428,7 +428,7 @@ fn Db::data_structures(self : Db) -> DataStructures {
     not_visited[id] = ()
   }
   let spatial_maps = []
-  while not_visited.iter().head() is Some((start, _)) {
+  while not_visited.keys().head() is Some(start) {
     let map : SpatialMap = { ids: [start], positions: Map([(start, (0, 0))]), }
     let queue = [start]
     let mut next = 0
