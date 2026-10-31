@@ -46,10 +46,7 @@ fn prepare_lanes(layout : @model.Layout) -> Unit {
     None => {
       let mut max = -1
       for node in nodes {
-        let index = node.color_index.unwrap_or(-1)
-        if index > max {
-          max = index
-        }
+        max = @cmp.maximum(max, node.color_index.unwrap_or(-1))
       }
       let lane = @model.Node::new(
         id=DEFAULT_SWIMLANE_ID,

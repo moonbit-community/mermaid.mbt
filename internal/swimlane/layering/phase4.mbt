@@ -174,11 +174,7 @@ fn assign_coordinates(
         }
       }
     }
-    let extra_gap = if li < extra_layer_gaps.length() {
-      extra_layer_gaps[li]
-    } else {
-      0.0
-    }
+    let extra_gap = extra_layer_gaps.get(li).unwrap_or(0.0)
     y_offset = y_offset + layer_h + layer_gap + extra_gap
   }
   // Placeholders of one edge line up halfway between its ends.

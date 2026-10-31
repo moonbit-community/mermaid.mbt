@@ -68,12 +68,8 @@ fn assign_layers_lane_aware_compact(
   let rank_of : Map[String, Int32] = Map([])
   let next_free : Map[String, Int32] = Map([])
   let edge_weight = (u : String, v : String) => {
-    if ignore_cross_lane_edges {
-      if lane_of(u) == lane_of(v) {
-        1
-      } else {
-        0
-      }
+    if ignore_cross_lane_edges && lane_of(u) != lane_of(v) {
+      0
     } else {
       1
     }
@@ -196,11 +192,8 @@ fn assign_layers_gravity(
       lb = @model.js_max(lb, rank(u) + 1.0)
     }
     let mut ub = @double.infinity
-    let s = succs.get(v).unwrap_or([])
-    if !s.is_empty() {
-      for w in s {
-        ub = @model.js_min(ub, rank(w) - 1.0)
-      }
+    for w in succs.get(v).unwrap_or([]) {
+      ub = @model.js_min(ub, rank(w) - 1.0)
     }
     if ub.is_inf() || ub.is_nan() {
       ub = @model.js_max(lb, desired)

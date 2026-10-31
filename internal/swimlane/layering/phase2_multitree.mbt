@@ -137,10 +137,7 @@ fn compute_subtree_cross_counts(
   let queue = []
   let seen : Set[String] = Set([])
   for node in nodes {
-    let parent_id = match tree.parent.get(node) {
-      Some(Some(p)) => Some(p)
-      _ => None
-    }
+    let parent_id = tree.parent.get(node).unwrap_or(None)
     guard index_of.get(node) is Some(idx) else { continue }
     if parent_id is None {
       parent_idx[idx] = -1

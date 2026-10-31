@@ -48,10 +48,9 @@ fn remove_cycles_dfs(g : Graph) -> (Graph, Array[GEdge]) {
       dfs(v)
     }
   }
-  let to_reverse : Set[String] = Set([])
-  for e in reversed {
-    to_reverse.add("\{e.id}:\{e.src}->\{e.dst}")
-  }
+  let to_reverse : Set[String] = Set(
+    reversed.map(e => "\{e.id}:\{e.src}->\{e.dst}"),
+  )
   let acyc_edges = gn.edges.map(e => {
     if to_reverse.contains("\{e.id}:\{e.src}->\{e.dst}") {
       { id: e.id, src: e.dst, dst: e.src, ref_: e.ref_, }
