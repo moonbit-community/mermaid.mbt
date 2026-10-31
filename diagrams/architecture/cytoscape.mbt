@@ -76,6 +76,18 @@ fn noninf(x : Double) -> Double {
 }
 
 ///|
+/// `noninf` of every bound: what cytoscape reports of a box that reached
+/// infinity.
+fn Box::noninf(self : Box) -> Unit {
+  self.x1 = noninf(self.x1)
+  self.y1 = noninf(self.y1)
+  self.x2 = noninf(self.x2)
+  self.y2 = noninf(self.y2)
+  self.w = noninf(self.x2 - self.x1)
+  self.h = noninf(self.y2 - self.y1)
+}
+
+///|
 /// What kind of node a cytoscape node is: mermaid's classes.
 priv enum CyKind {
   /// A service or a junction.
@@ -292,12 +304,7 @@ fn Cy::node_box(self : Cy, node : CyNode) -> Box raise ArchitectureError {
   if self.node_label_box(node) is Some(label) {
     box.add_box(label)
   }
-  box.x1 = noninf(box.x1)
-  box.y1 = noninf(box.y1)
-  box.x2 = noninf(box.x2)
-  box.y2 = noninf(box.y2)
-  box.w = noninf(box.x2 - box.x1)
-  box.h = noninf(box.y2 - box.y1)
+  box.noninf()
   if box.w > 0.0 && box.h > 0.0 {
     box.expand(1.0)
   }
@@ -485,12 +492,7 @@ fn Cy::edge_box(self : Cy, edge : CyEdge) -> Box raise ArchitectureError {
       geometry.mid_y + height / 2.0 + 2.0,
     )
   }
-  box.x1 = noninf(box.x1)
-  box.y1 = noninf(box.y1)
-  box.x2 = noninf(box.x2)
-  box.y2 = noninf(box.y2)
-  box.w = noninf(box.x2 - box.x1)
-  box.h = noninf(box.y2 - box.y1)
+  box.noninf()
   if box.w > 0.0 && box.h > 0.0 {
     box.expand(1.0)
   }
@@ -508,12 +510,7 @@ fn Cy::bounding_box(self : Cy) -> Box raise ArchitectureError {
   for edge in self.edges {
     box.add_box(self.edge_box(edge))
   }
-  box.x1 = noninf(box.x1)
-  box.y1 = noninf(box.y1)
-  box.x2 = noninf(box.x2)
-  box.y2 = noninf(box.y2)
-  box.w = noninf(box.x2 - box.x1)
-  box.h = noninf(box.y2 - box.y1)
+  box.noninf()
   box
 }
 
