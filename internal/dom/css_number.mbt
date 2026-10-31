@@ -80,7 +80,7 @@ fn css_number(value : Double) -> String {
   let fixed = if k >= 0 {
     "\{text[:k + 1]}.\{text[k + 1:]}"
   } else {
-    "0." + "0".repeat(-k - 1) + text
+    "0.\{"0".repeat(-k - 1)}\{text}"
   }
   sign + strip(fixed)
 }
