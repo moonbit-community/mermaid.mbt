@@ -41,8 +41,7 @@ fn parse_declarations(text : String) -> Array[(String, String)] {
     return parsed.map(declaration => (declaration.0, declaration.1))
   }
   for important in [false, true] {
-    for index, declaration in parsed {
-      let (name, value, is_important) = declaration
+    for index, (name, value, is_important) in parsed {
       if is_important != important {
         continue
       }

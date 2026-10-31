@@ -382,8 +382,7 @@ fn Transform::map(self : Transform, bounds : Bounds) -> Bounds {
   let right = (bounds.x + bounds.width).to_double()
   let bottom = (bounds.y + bounds.height).to_double()
   let corners = PointBounds::new()
-  for corner in [(left, top), (right, top), (right, bottom), (left, bottom)] {
-    let (x, y) = corner
+  for (x, y) in [(left, top), (right, top), (right, bottom), (left, bottom)] {
     corners.add(to_float(a * x + c * y + e), to_float(b * x + d * y + f))
   }
   // `QuadF::BoundingBox`: the size is the plain difference of the edges.

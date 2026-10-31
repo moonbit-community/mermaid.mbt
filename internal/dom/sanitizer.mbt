@@ -52,7 +52,7 @@ pub fn is_allowed_uri(value : String) -> Bool {
     guard is_scheme_char(c) else { break }
     end += 1
   }
-  guard text[0:1] is ['a'..<='z', ..] else { return true }
+  guard text is ['a'..<='z', ..] else { return true }
   guard text[end:] is [':', ..] else { return true }
   text[:end]
   is ("ftp"
