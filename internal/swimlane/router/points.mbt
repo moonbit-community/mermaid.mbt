@@ -17,7 +17,7 @@ fn Router::segment_coords(self : Router) -> Map[(Int32, Int32), Double] {
     @d3.js_sort(segments, (a, b) => a.3 - b.3)
     // Runs of overlapping segments.
     let clusters : Array[Array[(Int32, Int32, Int32, Double, Double)]] = []
-    if segments.length() > 0 {
+    if !segments.is_empty() {
       let mut current_cluster = [segments[0]]
       let mut cluster_end = segments[0].4
       for k in 1..<segments.length() {
@@ -70,7 +70,7 @@ fn Router::segment_coords(self : Router) -> Map[(Int32, Int32), Double] {
           pipe.coord - (i + 1).to_double() * TRACK_SPACING,
         )
       }
-      if neutral_tracks.length() == 0 && used_tracks.length() > 0 {
+      if neutral_tracks.is_empty() && !used_tracks.is_empty() {
         let by_abs_score = used_tracks.to_array()
         @d3.js_sort(by_abs_score, (a, b) => score(a).abs() - score(b).abs())
         let best_track = by_abs_score[0]
@@ -189,11 +189,10 @@ fn Router::edge_points(
     new_points.push(p_dst_port)
   }
   let filtered = []
-  if new_points.length() > 0 {
+  if !new_points.is_empty() {
     filtered.push(new_points[0])
   }
-  for k in 1..<new_points.length() {
-    let p = new_points[k]
+  for p in new_points[1:] {
     let prev = filtered[filtered.length() - 1]
     if (p.x - prev.x).abs() > EPS7 || (p.y - prev.y).abs() > EPS7 {
       filtered.push(p)

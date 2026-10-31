@@ -218,7 +218,7 @@ fn Router::get_dest_info(self : Router, edge_idx : Int32) -> DestInfo {
     return info
   }
   let indices = self.edge_segment_indices[edge_idx]
-  if indices.length() == 0 {
+  if indices.is_empty() {
     let info = { dest: 0.0, deviation: 0.0, delta: 0.0, }
     self.dest_info_cache.set(edge_idx, info)
     return info
@@ -267,7 +267,7 @@ fn Router::fix_source_handle_crossings(self : Router) -> Int32 {
   let mut crossings = 0
   let edges_by_source : Map[String, Array[Int32]] = Map([])
   for i, e in self.edges {
-    if self.edge_segment_indices[i].length() == 0 {
+    if self.edge_segment_indices[i].is_empty() {
       continue
     }
     if e.start == "" {
@@ -324,7 +324,7 @@ fn Router::fix_target_handle_crossings(self : Router) -> Int32 {
   let mut crossings = 0
   let edges_by_target : Map[String, Array[Int32]] = Map([])
   for i, e in self.edges {
-    if self.edge_segment_indices[i].length() == 0 {
+    if self.edge_segment_indices[i].is_empty() {
       continue
     }
     if e.end == "" {

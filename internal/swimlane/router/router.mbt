@@ -96,7 +96,7 @@ pub fn route_edges_orthogonal(
   router.untangle()
   let segment_coords = router.segment_coords()
   for i, e in edges {
-    if router.edge_segment_indices[i].length() == 0 {
+    if router.edge_segment_indices[i].is_empty() {
       continue
     }
     e.points = Some(router.edge_points(i, e, segment_coords))
