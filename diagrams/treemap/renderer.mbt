@@ -32,8 +32,8 @@ fn ValueFormat::new(config : @config.Config) -> ValueFormat {
     Dollar(
       "," + precision.exec(specifier).map(found => found.text()).unwrap_or(""),
     )
-  } else if specifier.has_prefix("$") {
-    Dollar(specifier[1:].to_owned())
+  } else if specifier.strip_prefix("$") is Some(rest) {
+    Dollar(rest.to_owned())
   } else {
     Ready(@d3.format(specifier) catch { _ => try! @d3.format(",") })
   }
@@ -370,9 +370,7 @@ pub fn draw(
     let available = if space > minimum_width { space } else { minimum_width }
     if text_length(font, original, size, scale) > available {
       let ellipsis = "..."
-      let mut length = original.length()
-      while length > 0 {
-        length -= 1
+      for length in original.length()>..0 {
         if length == 0 {
           label.text(ellipsis) |> ignore
           if text_length(font, ellipsis, size, scale) > available {
@@ -633,13 +631,9 @@ pub fn draw(
         style.set("display", "none")
       }
     }
-    for value in values {
-      texts.push(value)
-    }
+    texts.append(values)
   }
-  for label in labels {
-    texts.push(label)
-  }
+  texts.append(labels)
   // Write the styles the way the document serializes them, and give
   // every text that is displayed its box.
   for text in texts {
