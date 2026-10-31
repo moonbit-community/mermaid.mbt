@@ -74,14 +74,11 @@ fn is_label_style(key : String) -> Bool {
 /// `addClass`: the declarations of a `classDef`, separated by commas or
 /// semicolons (`\,` is a comma inside a value), are added to the class.
 fn Treemap::add_class(self : Treemap, id : String, style : String) -> Unit {
-  let style_class = match self.classes.get(id) {
-    Some(style_class) => style_class
-    None => {
-      let style_class = { id, styles: [], text_styles: [], }
-      self.classes[id] = style_class
-      style_class
-    }
-  }
+  let style_class = self.classes.get_or_init(id, () => {
+    id,
+    styles: [],
+    text_styles: [],
+  })
   let styles = style
     .replace_all(old="\\,", new="§§§")
     .replace_all(old=",", new=";")
