@@ -70,17 +70,10 @@ fn normalize(name : String, value : String) -> String? {
       if lower is ("normal" | "bold" | "bolder" | "lighter") {
         Some(lower)
       } else {
-        match css_number(lower) {
-          Some(number) => {
-            let weight = @diagram.parse_float(number)
-            if weight >= 1.0 && weight <= 1000.0 {
-              Some(number)
-            } else {
-              None
-            }
-          }
-          None => None
-        }
+        css_number(lower).filter(number => {
+          let weight = @diagram.parse_float(number)
+          weight >= 1.0 && weight <= 1000.0
+        })
       }
     "font-style" =>
       if lower is ("normal" | "italic") {
