@@ -38,7 +38,7 @@ fn insert_cluster(
   let styles = node_styles(node)
   let shape_svg = parent
     .append("g")
-    .attr("class", "cluster " + node.css_classes)
+    .attr("class", "cluster \{node.css_classes}")
     .attr("id", node.dom_id)
     .attr("data-look", node.look)
   stamp_color_slot(shape_svg, node.color_index, env)

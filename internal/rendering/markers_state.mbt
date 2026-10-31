@@ -51,7 +51,7 @@ fn insert_state_markers(
       insert_barb(parent, id, "strokeWidth", "19", path)
       insert_barb(
         parent,
-        id + "-margin",
+        "\{id}-margin",
         "userSpaceOnUse",
         "17",
         path,

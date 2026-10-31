@@ -406,7 +406,7 @@ fn create_svg_label(
       .append("tspan")
       .attr("class", "text-outer-tspan")
       .attr("x", "0")
-      .attr("y", n(index.to_double() * 1.1 - 0.1) + "em")
+      .attr("y", "\{n(index.to_double() * 1.1 - 0.1)}em")
       .attr("dy", "1.1em")
     if center {
       tspan.attr("text-anchor", "middle") |> ignore
@@ -497,7 +497,7 @@ fn drop_declarations(style : String, names : Array[String]) -> String {
   for name in names {
     let out = StringBuilder()
     let mut rest = result[:]
-    let needle = name + ":"
+    let needle = "\{name}:"
     while rest.split_once(needle) is Some((before, after)) {
       let end = after.find(";").unwrap_or(after.length())
       if end == 0 {

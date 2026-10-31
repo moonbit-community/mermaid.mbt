@@ -12,7 +12,7 @@ fn kanban_section(
   let styles = node_styles(node)
   let shape_svg = parent
     .append("g")
-    .attr("class", "cluster " + node.css_classes)
+    .attr("class", "cluster \{node.css_classes}")
     .attr("id", node.dom_id)
     .attr("data-look", node.look)
   let label = shape_svg.append("g").attr("class", "cluster-label ")
