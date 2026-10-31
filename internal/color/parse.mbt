@@ -10,7 +10,7 @@ pub fn Channels::parse(color : String) -> Channels raise ColorError {
   if parse_hsl(color) is Some(c) {
     return c
   }
-  if keyword_hex(color.to_lower()) is Some(hex) &&
+  if keywords.get(color.to_lower()) is Some(hex) &&
     parse_hex(hex, hex) is Some(c) {
     return c
   }
@@ -110,7 +110,7 @@ fn parse_function(color : String, names : Array[String]) -> Array[Argument]? {
 
 ///|
 fn parse_argument(text : String) -> Argument? {
-  let text = text.strip_prefix("+").map(v => v.to_owned()).unwrap_or(text)
+  let text = text.strip_prefix("+").unwrap_or(text)
   let mut end = text.length()
   while end > 0 &&
         !(text.get_char(end - 1) is Some('0'..<='9') ||

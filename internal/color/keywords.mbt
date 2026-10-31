@@ -151,8 +151,3 @@ let keywords : Map[String, String] = {
   "yellow": "#ffff00",
   "yellowgreen": "#9acd32",
 }
-
-///|
-fn keyword_hex(name : String) -> String? {
-  keywords.get(name)
-}
