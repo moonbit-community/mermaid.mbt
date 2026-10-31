@@ -36,16 +36,6 @@ fn integer(value : Double) -> String {
 }
 
 ///|
-/// dayjs's `padStart`.
-fn pad_start(text : String, length : Int32, fill : Char) -> String {
-  if text.length() >= length {
-    text
-  } else {
-    String::make(length - text.length(), fill) + text
-  }
-}
-
-///|
 /// The English ordinal of a number, in brackets so that the base formatter
 /// copies it.
 fn ordinal(n : Double) -> String {
@@ -92,11 +82,11 @@ pub fn Dayjs::format(
       }
       "GGGG" => integer(self.iso_week_year())
       "W" => integer(self.iso_week())
-      "WW" => pad_start(integer(self.iso_week()), 2, '0')
+      "WW" => integer(self.iso_week()).pad_start(2, '0')
       "k" | "kk" => {
         let hours = zone.hours(time)
         let text = integer(if hours == 0.0 { 24.0 } else { hours })
-        pad_start(text, if token == "k" { 1 } else { 2 }, '0')
+        text.pad_start(if token == "k" { 1 } else { 2 }, '0')
       }
       "X" => integer((time / 1000.0).floor())
       "x" => integer(time)
@@ -109,9 +99,9 @@ pub fn Dayjs::format(
   let offset = -self.utc_offset()
   let magnitude = offset.abs()
   let zone_text = (if offset <= 0.0 { "+" } else { "-" }) +
-    pad_start(integer((magnitude / 60.0).floor()), 2, '0') +
+    integer((magnitude / 60.0).floor()).pad_start(2, '0') +
     ":" +
-    pad_start(integer(magnitude % 60.0), 2, '0')
+    integer(magnitude % 60.0).pad_start(2, '0')
   let year = zone.full_year(time)
   let month = zone.month(time).to_int()
   let date = zone.date(time)
@@ -120,7 +110,7 @@ pub fn Dayjs::format(
   let hours12 = if hours % 12.0 == 0.0 { 12.0 } else { hours % 12.0 }
   let minutes = zone.minutes(time)
   let seconds = zone.seconds(time)
-  let two = (value : Double) => pad_start(integer(value), 2, '0')
+  let two = (value : Double) => integer(value).pad_start(2, '0')
   base_tokens.replace_all(advanced, found => {
     if found.group(1) is Some(literal) {
       return literal
@@ -134,7 +124,7 @@ pub fn Dayjs::format(
           text
         }
       }
-      "YYYY" => pad_start(integer(year), 4, '0')
+      "YYYY" => integer(year).pad_start(4, '0')
       "M" => (month + 1).to_string()
       "MM" => two((month + 1).to_double())
       "MMM" => months[month][:3].to_owned()
@@ -155,7 +145,7 @@ pub fn Dayjs::format(
       "mm" => two(minutes)
       "s" => integer(seconds)
       "ss" => two(seconds)
-      "SSS" => pad_start(integer(zone.milliseconds(time)), 3, '0')
+      "SSS" => integer(zone.milliseconds(time)).pad_start(3, '0')
       "Z" => zone_text
       // "ZZ": the offset without its colon.
       _ => zone_text.replace(old=":", new="")

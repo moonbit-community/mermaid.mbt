@@ -225,11 +225,7 @@ fn compile_format(format : String) -> Array[Piece]? {
 ///|
 /// `text.slice(start)`.
 fn tail(text : String, start : Int32) -> String {
-  if start >= text.length() {
-    ""
-  } else {
-    text[start:].to_owned()
-  }
+  text[start:].to_owned()
 }
 
 ///|
@@ -289,12 +285,7 @@ fn parse_lenient(
     }
   }
   // Zero counts as missing (JavaScript's `||`).
-  let truthy = (value : Double?) => {
-    match value {
-      Some(v) if v != 0.0 => Some(v)
-      _ => None
-    }
-  }
+  let truthy = (value : Double?) => value.filter(v => v != 0.0)
   let year = truthy(parts.year)
   let month = truthy(parts.month)
   // What the string does not say comes from today's date.
