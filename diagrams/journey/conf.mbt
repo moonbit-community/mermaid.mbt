@@ -54,7 +54,7 @@ fn Conf::new(config : @config.Config) -> Conf raise JourneyError {
   let (task_font_size, task_font_size_css) = match
     config.get("journey.taskFontSize") {
     Number(n, ..) =>
-      (n, if n >= 0.0 { Some(@dom.number(n) + "px") } else { None })
+      (n, if n >= 0.0 { Some("\{@dom.number(n)}px") } else { None })
     String(text) => (@journeycommon.js_number(text), css_font_size(text))
     _ => raise JourneyError("journey.taskFontSize must be a number")
   }

@@ -128,7 +128,7 @@ fn legend_lines(
       if measure(word) > limit {
         let mut broken = ""
         for char in word {
-          broken = broken + char.to_string()
+          broken = "\{broken}\{char}"
           if measure(broken + "-") > limit {
             // `slice(0, -1)` drops one UTF-16 unit, not one character.
             lines.push("\{broken[:broken.length() - 1]}-")
