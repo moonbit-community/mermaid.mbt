@@ -22,10 +22,7 @@ pub fn traced_elk_graphs() -> Array[(String, Json)] {
 ///|
 /// The graph as text when tracing is on.
 fn traced_input(input : Json) -> String? {
-  match traced.val {
-    Some(_) => Some(input.stringify())
-    None => None
-  }
+  traced.val.map(_ => input.stringify())
 }
 
 ///|
