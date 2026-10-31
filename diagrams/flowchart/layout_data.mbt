@@ -4,16 +4,14 @@ pub fn FlowDb::compiled_styles(
   self : FlowDb,
   class_names : Array[String],
 ) -> Array[String] {
-  let mut compiled : Array[String] = []
+  let compiled : Array[String] = []
   for name in class_names {
     guard self.classes.get(name) is Some(style_class) else { continue }
     // Both lists exist on every class here, so both steps always run.
-    compiled = [..compiled, ..style_class.styles].map(style => {
-      style.trim().to_owned()
-    })
-    compiled = [..compiled, ..style_class.text_styles].map(style => {
-      style.trim().to_owned()
-    })
+    compiled.append(style_class.styles.map(style => style.trim().to_owned()))
+    compiled.append(
+      style_class.text_styles.map(style => style.trim().to_owned()),
+    )
   }
   compiled
 }
@@ -136,8 +134,7 @@ fn FlowDb::layout_data(
       collapsed_ancestor[child] = ancestor
     }
   }
-  for i in (sub_graphs.length() - 1)>=..0 {
-    let sg = sub_graphs[i]
+  for sg in sub_graphs.rev_iter() {
     if hidden.contains(sg.id) {
       continue
     }
@@ -148,8 +145,7 @@ fn FlowDb::layout_data(
       parent_db[id] = sg.id
     }
   }
-  for i in (sub_graphs.length() - 1)>=..0 {
-    let sg = sub_graphs[i]
+  for sg in sub_graphs.rev_iter() {
     if hidden.contains(sg.id) {
       continue
     }
