@@ -181,8 +181,7 @@ fn parse_path(data : String) -> Array[PathSegment] {
   // The last control point, for smooth curves.
   let mut control : (Float, Float)? = None
   let mut control_is_cubic = false
-  for command in tokenize_path(data) {
-    let (name, args) = command
+  for (name, args) in tokenize_path(data) {
     let relative = name is ('a'..<='z')
     let dx : Float = if relative { x } else { 0 }
     let dy : Float = if relative { y } else { 0 }
