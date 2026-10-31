@@ -168,15 +168,15 @@ test "synthetic images through a loader" {
     let svg = @mermaid.render(source, image_loader=_ => Some(data)) catch {
       error => return Repr(error).to_string()
     }
-    guard svg.find("<image ") is Some(at) &&
-      svg[at:].find(">") is Some(end) &&
-      svg[at:at + end].find("width=\"") is Some(width) &&
-      svg[at + width + 7:].find("\"") is Some(width_end) &&
-      svg[at:at + end].find("height=\"") is Some(height) &&
-      svg[at + height + 8:].find("\"") is Some(height_end) else {
+    guard svg.split_once("<image ") is Some((_, image)) &&
+      image.split_once(">") is Some((tag, _)) &&
+      tag.split_once("width=\"") is Some((_, width_part)) &&
+      width_part.split_once("\"") is Some((width, _)) &&
+      tag.split_once("height=\"") is Some((_, height_part)) &&
+      height_part.split_once("\"") is Some((height, _)) else {
       return "no image"
     }
-    "\{svg[at + width + 7:at + width + 7 + width_end]}x\{svg[at + height + 8:at + height + 8 + height_end]}"
+    "\{width}x\{height}"
   }
   let svg = (attributes : String) => {
     @utf8.encode(

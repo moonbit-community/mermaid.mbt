@@ -8,8 +8,8 @@ test "gantt" {
 fn excerpt(svg : String, from : String, to : String) -> String {
   guard svg.find(from) is Some(start) else { return "" }
   let rest = svg[start:]
-  match rest.find(to) {
-    Some(end) => rest[:end].to_owned()
+  match rest.split_once(to) {
+    Some((before, _)) => before.to_owned()
     None => rest.to_owned()
   }
 }
