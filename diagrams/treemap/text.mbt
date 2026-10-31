@@ -69,18 +69,13 @@ fn place_text(
 }
 
 ///|
+/// What `String.prototype.trim` removes, as `@diagram.is_js_space` takes it.
+const JS_WHITESPACE : String = "\t\n\u{0b}\u{0c}\r \u{a0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{200a}\u{2028}\u{2029}\u{202f}\u{205f}\u{3000}\u{feff}"
+
+///|
 /// `String.prototype.trim`.
 fn js_trim(text : StringView) -> String {
-  let chars = text.to_array()
-  let mut start = 0
-  let mut end = chars.length()
-  while start < end && @diagram.is_js_space(chars[start]) {
-    start += 1
-  }
-  while end > start && @diagram.is_js_space(chars[end - 1]) {
-    end -= 1
-  }
-  String::from_array(chars[start:end])
+  text.trim(chars=JS_WHITESPACE).to_owned()
 }
 
 ///|

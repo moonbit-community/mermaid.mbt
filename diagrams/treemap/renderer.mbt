@@ -169,14 +169,15 @@ pub fn draw(
   let inner_padding = config.number("treemap.padding").unwrap_or(10.0)
   let title = treemap.title
   let title_height = if title != "" { 30.0 } else { 0.0 }
+  // What a truthy number is to JavaScript.
+  let truthy = (value : Double) => value != 0.0 && !value.is_nan()
   // `config.nodeWidth ? config.nodeWidth * SECTION_INNER_PADDING : 960`
   let width = match config.number("treemap.nodeWidth") {
-    Some(node_width) if node_width != 0.0 && !node_width.is_nan() =>
-      node_width * SECTION_INNER_PADDING
+    Some(node_width) if truthy(node_width) => node_width * SECTION_INNER_PADDING
     _ => 960.0
   }
   let height = match config.number("treemap.nodeHeight") {
-    Some(node_height) if node_height != 0.0 && !node_height.is_nan() =>
+    Some(node_height) if truthy(node_height) =>
       node_height * SECTION_INNER_PADDING
     _ => 500.0
   }
@@ -252,8 +253,6 @@ pub fn draw(
     round: true,
   }
   layout.layout(root)
-  // What a truthy number is to JavaScript.
-  let truthy = (value : Double) => value != 0.0 && !value.is_nan()
   // The value of a node as its text, or nothing when it has none.
   let value_text = (node : @d3.HierarchyNode[Node]) => {
     if truthy(node.value) {
