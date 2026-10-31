@@ -266,11 +266,11 @@ fn document_root(element : @dom.Element) -> @dom.Element {
 /// The stroke colour an inline style asks for: `/stroke:([^;]+)/`.
 fn stroke_color_of(style : String) -> String? {
   guard style.split_once("stroke:") is Some((_, rest)) else { return None }
-  let end = rest.find(";").unwrap_or(rest.length())
-  if end == 0 {
+  let value = rest.before(";").unwrap_or(rest)
+  if value.is_empty() {
     None
   } else {
-    Some(rest[:end].to_owned())
+    Some(value.to_owned())
   }
 }
 

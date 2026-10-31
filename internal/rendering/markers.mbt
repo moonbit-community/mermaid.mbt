@@ -295,12 +295,12 @@ pub fn insert_markers(
         .append("marker")
         .attr("id", "\{diagram_id}_\{diagram_type}-\{def.suffix}")
         .attr("class", "marker \{variant}\{diagram_type}")
-      for attribute in def.attributes {
-        marker.attr(attribute.0, attribute.1) |> ignore
+      for (name, value) in def.attributes {
+        marker.attr(name, value) |> ignore
       }
       let child = marker.append(def.child)
-      for attribute in def.child_attributes {
-        child.attr(attribute.0, attribute.1) |> ignore
+      for (name, value) in def.child_attributes {
+        child.attr(name, value) |> ignore
       }
     }
   }

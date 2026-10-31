@@ -168,15 +168,15 @@ fn insert_class_marker(
       .attr("markerHeight", marker.height)
       .attr("orient", "auto")
       .attr("markerUnits", "userSpaceOnUse")
-    for attribute in marker.extra {
-      element.attr(attribute.0, attribute.1) |> ignore
+    for (name, value) in marker.extra {
+      element.attr(name, value) |> ignore
     }
     let child = element.append(marker.child)
-    for attribute in marker.child_attributes {
-      child.attr(attribute.0, attribute.1) |> ignore
+    for (name, value) in marker.child_attributes {
+      child.attr(name, value) |> ignore
     }
-    for style in marker.child_styles {
-      child.style(style.0, style.1) |> ignore
+    for (name, value) in marker.child_styles {
+      child.style(name, value) |> ignore
     }
   }
   true

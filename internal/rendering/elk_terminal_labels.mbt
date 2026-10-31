@@ -124,8 +124,8 @@ fn insert_terminal_labels(
   edge : Edge,
   env : Env,
 ) -> Unit raise LayoutError {
-  for entry in terminal_label_texts(edge) {
-    insert_terminal_label(group, edge, env, entry.0, entry.1)
+  for (key, text) in terminal_label_texts(edge) {
+    insert_terminal_label(group, edge, env, key, text)
   }
 }
 

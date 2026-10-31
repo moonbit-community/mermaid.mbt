@@ -66,16 +66,16 @@ fn c4_label_helper(
     None
   }
   let rendered : Array[(@dom.Element, @dom.Rect)] = []
-  for section in sections {
-    guard section.0 != "" else { continue }
-    let element = label.append("g").attr("class", section.1)
-    let section_env = section_env(env, section.1)
+  for (content, css_class) in sections {
+    guard content != "" else { continue }
+    let element = label.append("g").attr("class", css_class)
+    let section_env = section_env(env, css_class)
     // Lines are broken while every word still carries the weight
     // attribute `createText` writes, which overrides whatever weight the
     // stylesheet gives the label: the breaks are those of regular text.
     let text = create_svg_label(
       element,
-      section.0,
+      content,
       { ..section_env, bold: false, },
       width?,
       style=node.label_style,

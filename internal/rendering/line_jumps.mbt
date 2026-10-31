@@ -268,8 +268,7 @@ fn rewrite_edge_path(
       }
     })
     let seg_jumps = []
-    for entry in keyed {
-      let jump = entry.1
+    for (_, jump) in keyed {
       // Keep clear of the rounded corners at both ends.
       let room = (jump.d - start_consumed).min(end_stop - jump.d) - 2.0
       jump.r = jump.r.min(room)
@@ -327,9 +326,9 @@ fn dash_gaps(style : String) -> (String, String)? {
   }
   let rest = rest.trim_start(chars=" \t\n")
   guard rest.strip_prefix(":") is Some(rest) else { return None }
-  let end = rest.find(";").unwrap_or(rest.length())
+  let value = rest.before(";").unwrap_or(rest)
   let tokens = [
-    for token in rest[:end].split(" ") if !token.is_empty() => token.to_owned()
+    for token in value.split(" ") if !token.is_empty() => token.to_owned()
   ]
   guard tokens is ["0", start, _, end, ..] else { return None }
   let numeric = (text : String) => {
@@ -381,13 +380,9 @@ fn replace_dasharray(style : String, pattern : String) -> String {
       rest = after
       continue
     }
-    let end = match value.find(";") {
-      Some(end) => end + 1
-      None => value.length()
-    }
     replaced.write_view(before)
     replaced.write_string("stroke-dasharray: \{pattern};")
-    rest = value[end:]
+    rest = value.after(";").unwrap_or("")
   }
   replaced.write_view(rest)
   // /;\s*;+/g
