@@ -15,8 +15,8 @@ const MAX_REDIRECTS : Int32 = 20
 ///|
 /// The scheme of a URL, in lower case, with its colon.
 fn url_scheme(url : String) -> String {
-  match url.find(":") {
-    Some(at) => url[:at + 1].to_lower().to_owned()
+  match url.before(":") {
+    Some(scheme) => "\{scheme.to_lower()}:"
     None => ""
   }
 }
@@ -87,8 +87,8 @@ fn resolve_location(base : String, location : String) -> String {
   } else {
     let path = after_scheme[origin_end:]
     let path = path.before("?").unwrap_or(path)
-    let directory = match path.rev_find("/") {
-      Some(at) => path[:at + 1].to_owned()
+    let directory = match path.rev_split_once("/") {
+      Some((directory, _)) => "\{directory}/"
       None => "/"
     }
     "\{origin}\{directory}\{location}"
