@@ -64,12 +64,10 @@ fn Router::segment_coords(self : Router) -> Map[(Int32, Int32), Double] {
           }
         }
       }
-      let mut left_count = 0
-      for track_index in left_tracks {
-        left_count += 1
+      for i, track_index in left_tracks {
         assign_coord(
           track_index,
-          pipe.coord - left_count.to_double() * TRACK_SPACING,
+          pipe.coord - (i + 1).to_double() * TRACK_SPACING,
         )
       }
       if neutral_tracks.length() == 0 && used_tracks.length() > 0 {
@@ -84,26 +82,22 @@ fn Router::segment_coords(self : Router) -> Map[(Int32, Int32), Double] {
         }
         neutral_tracks.push(best_track)
       }
-      let mut neutral_assigned = 0
-      for track_index in neutral_tracks {
-        if neutral_assigned == 0 {
+      for i, track_index in neutral_tracks {
+        if i == 0 {
           assign_coord(track_index, pipe.coord)
         } else {
-          let dir = if neutral_assigned % 2 == 1 { 1.0 } else { -1.0 }
-          let magnitude = (neutral_assigned.to_double() / 2.0).ceil()
+          let dir = if i % 2 == 1 { 1.0 } else { -1.0 }
+          let magnitude = (i.to_double() / 2.0).ceil()
           assign_coord(
             track_index,
             pipe.coord + dir * magnitude * TRACK_SPACING * 0.5,
           )
         }
-        neutral_assigned += 1
       }
-      let mut right_count = 0
-      for track_index in right_tracks {
-        right_count += 1
+      for i, track_index in right_tracks {
         assign_coord(
           track_index,
-          pipe.coord + right_count.to_double() * TRACK_SPACING,
+          pipe.coord + (i + 1).to_double() * TRACK_SPACING,
         )
       }
     }
@@ -152,8 +146,7 @@ fn Router::edge_points(
     { orient: s.orientation, coord, from: s.from, to: s.to, }
   })
   let new_points = [p_src_port]
-  for k in 0..<lines.length() {
-    let line = lines[k]
+  for k, line in lines {
     let prev_pt = new_points[new_points.length() - 1]
     let (prev_along, prev_track_coord) = match line.orient {
       Vertical => (prev_pt.y, prev_pt.x)

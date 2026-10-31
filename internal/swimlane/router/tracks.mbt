@@ -195,9 +195,8 @@ fn Router::resolve_handle_conflicts(
   handles : Array[RoutedSeg],
 ) -> Int32 {
   let mut crossings = 0
-  for i in 0..<handles.length() {
+  for i, h1 in handles {
     for j in (i + 1)..<handles.length() {
-      let h1 = handles[i]
       let h2 = handles[j]
       if !physical_equal(h1.pipe, h2.pipe) {
         continue
@@ -386,9 +385,8 @@ fn Router::fix_pipe_crossings(self : Router) -> Int32 {
       let by_edge = a.edge_index - b.edge_index
       (if by_edge != 0 { by_edge } else { a.segment_index - b.segment_index }).to_double()
     })
-    for i in 0..<pipe_segments.length() {
+    for i, s1 in pipe_segments {
       for j in (i + 1)..<pipe_segments.length() {
-        let s1 = pipe_segments[i]
         let s2 = pipe_segments[j]
         if self.segments_conflict(s1, s2) {
           crossings += 1
