@@ -78,9 +78,7 @@ fn xml_chars(data : Bytes) -> Array[Char]? {
   } else {
     let start = if has_prefix(data, b"\xef\xbb\xbf") { 3 } else { 0 }
     let text = @utf8.decode(view[start:]) catch { _ => return None }
-    for c in text {
-      decoded.push(c)
-    }
+    decoded.push_iter(text.iter())
   }
   let chars = []
   for i, c in decoded {
@@ -240,7 +238,7 @@ fn XmlParser::comment(self : XmlParser) -> Unit raise XmlError {
 /// A processing instruction, after its `<?`; its target may not be `xml`.
 fn XmlParser::processing_instruction(self : XmlParser) -> Unit raise XmlError {
   let target = self.name()
-  guard target.to_lower() != "xml" && target.find(":") is None else {
+  guard target.to_lower() != "xml" && !target.contains(":") else {
     raise Malformed
   }
   if self.accept("?>") {
@@ -504,7 +502,7 @@ fn split_qname(name : String) -> (String?, String) raise XmlError {
   }
   guard prefix != "" &&
     local_part != "" &&
-    local_part.find(":") is None &&
+    !local_part.contains(":") &&
     local_part.get_char(0) is Some(c) &&
     is_name_start(c) else {
     raise Malformed
@@ -536,7 +534,7 @@ fn bind_namespaces(
     } else if attribute.strip_prefix("xmlns:") is Some(prefix) {
       let prefix = prefix.to_owned()
       guard prefix != "" &&
-        prefix.find(":") is None &&
+        !prefix.contains(":") &&
         prefix != "xmlns" &&
         value != "" &&
         (prefix != "xml" || value == XML_NAMESPACE) else {
