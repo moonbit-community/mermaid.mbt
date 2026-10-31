@@ -39,11 +39,11 @@ fn remote_fixture(name : String) -> (String, Bytes, String) raise {
   let root = "testdata/flowchart/icons"
   let source = @fs.read_file_to_string("\{root}/\{name}.mmd")
   let expected = @fs.read_file_to_string("\{root}/\{name}.svg")
-  guard source.find("img: \"data:") is Some(start) &&
-    source[start + 6:].find("\"") is Some(length) else {
+  guard source.split_once("img: \"data:") is Some((_, rest)) &&
+    rest.split_once("\"") is Some((body, _)) else {
     fail("\{name} has no data: URL")
   }
-  let url = source[start + 6:start + 6 + length]
+  let url = "data:\{body}"
   guard url.split_once(",") is Some((header, payload)) else {
     fail("\{url} has no data")
   }
@@ -52,11 +52,11 @@ fn remote_fixture(name : String) -> (String, Bytes, String) raise {
   } else {
     @utf8.encode(payload)
   }
-  guard expected.find("<image href=\"") is Some(href) &&
-    expected[href + 13:].find("\"") is Some(href_length) else {
+  guard expected.split_once("<image href=\"") is Some((head, tail)) &&
+    tail.split_once("\"") is Some((_, rest)) else {
     fail("\{name}.svg has no image")
   }
-  let expected = "\{expected[:href + 13]}\{REMOTE}\{expected[href + 13 + href_length:]}"
+  let expected = "\{head}<image href=\"\{REMOTE}\"\{rest}"
   (source.replace(old=url, new=REMOTE), data, expected)
 }
 
