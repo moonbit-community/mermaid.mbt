@@ -198,7 +198,7 @@ fn DagreState::prepare(self : DagreState) -> DagreGraph raise LayoutError {
     let edge1 = piece(
       {
         ..fresh_edge(edge),
-        id: node_id + "-cyclic-special-1",
+        id: "\{node_id}-cyclic-special-1",
         label: "",
         arrow_type_end: "none",
         end_label_left: "",
@@ -210,7 +210,7 @@ fn DagreState::prepare(self : DagreState) -> DagreGraph raise LayoutError {
     let edge_mid = piece(
       {
         ..fresh_edge(edge),
-        id: node_id + "-cyclic-special-mid",
+        id: "\{node_id}-cyclic-special-mid",
         start_label_right: "",
         start_label_left: "",
         end_label_left: "",
@@ -223,7 +223,7 @@ fn DagreState::prepare(self : DagreState) -> DagreGraph raise LayoutError {
     let edge2 = piece(
       {
         ..fresh_edge(edge),
-        id: node_id + "-cyclic-special-2",
+        id: "\{node_id}-cyclic-special-2",
         label: "",
         start_label_right: "",
         start_label_left: "",
@@ -235,9 +235,9 @@ fn DagreState::prepare(self : DagreState) -> DagreGraph raise LayoutError {
       edge1.from_cluster = Some(node_id)
       edge2.to_cluster = Some(node_id)
     }
-    set_edge(node_id, special1, edge1, node_id + "-cyclic-special-0")
-    set_edge(special1, special2, edge_mid, node_id + "-cyclic-special-1")
-    set_edge(special2, node_id, edge2, node_id + "-cyclic-special-2")
+    set_edge(node_id, special1, edge1, "\{node_id}-cyclic-special-0")
+    set_edge(special1, special2, edge_mid, "\{node_id}-cyclic-special-1")
+    set_edge(special2, node_id, edge2, "\{node_id}-cyclic-special-2")
   }
   self.adjust_clusters_and_edges(graph)
   graph

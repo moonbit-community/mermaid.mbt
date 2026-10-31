@@ -202,7 +202,7 @@ fn BlockToken::absorb(self : BlockToken, raw : String, text : String) -> Unit {
   self.raw = self.raw +
     (if self.raw.has_suffix("\n") { "" } else { "\n" }) +
     raw
-  self.text = self.text + "\n" + text
+  self.text = "\{self.text}\n\{text}"
 }
 
 ///|
@@ -224,7 +224,7 @@ fn MdLexer::block_tokens(
       pos = found.end
       // A single line break joins the block before it.
       match tokens.last() {
-        Some(last) if found.end - found.start == 1 => last.raw = last.raw + "\n"
+        Some(last) if found.end - found.start == 1 => last.raw = "\{last.raw}\n"
         _ => tokens.push({ kind: Space, raw: found.text(), text: "", })
       }
       continue
@@ -377,17 +377,17 @@ fn MdLexer::quote(self : MdLexer, source : String) -> BlockToken? {
       }),
       _ => "",
     )
-    raw = if raw == "" { quoted } else { raw + "\n" + quoted }
-    text = if text == "" { content } else { text + "\n" + content }
+    raw = if raw == "" { quoted } else { "\{raw}\n\{quoted}" }
+    text = if text == "" { content } else { "\{text}\n\{content}" }
     self.block_tokens(content, tokens, true)
-    if lines.length() == 0 {
+    if lines.is_empty() {
       break
     }
     guard tokens.last() is Some(last) else { continue }
     match last.kind {
       Code => break
       Quote => {
-        let joined = last.raw + "\n" + lines.join("\n")
+        let joined = "\{last.raw}\n\{lines.join("\n")}"
         guard self.blockquote(joined) is Some(merged) else { break }
         tokens[tokens.length() - 1] = merged
         raw = js_slice(raw, 0, raw.length() - last.raw.length()) + merged.raw
@@ -396,7 +396,7 @@ fn MdLexer::quote(self : MdLexer, source : String) -> BlockToken? {
         break
       }
       List => {
-        let joined = last.raw + "\n" + lines.join("\n")
+        let joined = "\{last.raw}\n\{lines.join("\n")}"
         guard list_raw(joined) is Some(merged) else { break }
         tokens[tokens.length() - 1] = { kind: List, raw: merged, text: "", }
         raw = js_slice(raw, 0, raw.length() - last.raw.length()) + merged
@@ -450,7 +450,7 @@ fn list_raw(source : String) -> String? {
       indent += bullet.length()
     }
     if blank && blank_line.match_prefix(next) is Some(_) {
-      item_raw = item_raw + next + "\n"
+      item_raw = "\{item_raw}\{next}\n"
       rest = js_slice(rest, next.length() + 1, rest.length())
       ended = true
     }
@@ -492,7 +492,7 @@ fn list_raw(source : String) -> String? {
         if !blank && js_blank(next) {
           blank = true
         }
-        item_raw = item_raw + raw_line + "\n"
+        item_raw = "\{item_raw}\{raw_line}\n"
         rest = js_slice(rest, raw_line.length() + 1, rest.length())
         line = js_slice(expanded, indent, expanded.length())
       }

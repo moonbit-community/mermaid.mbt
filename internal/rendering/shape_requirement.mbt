@@ -123,7 +123,7 @@ fn requirement_box(
     }
   }
   let label_style = node.label_style
-  let name_style = label_style + "; font-weight: bold;"
+  let name_style = "\{label_style}; font-weight: bold;"
   let (type_height, name_height, body_height) = match node.data {
     Requirement(name~, type_~, requirement_id~, text~, risk~, verify_method~) => {
       let type_height = add("&lt;&lt;\{type_}&gt;&gt;", 0.0, label_style, false)

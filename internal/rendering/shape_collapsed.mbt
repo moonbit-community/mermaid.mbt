@@ -100,7 +100,7 @@ fn collapsed_group(
   } else {
     let rect = shape_svg
       .insert_first("rect")
-      .attr("class", "basic label-container " + css_class)
+      .attr("class", "basic label-container \{css_class}")
       .attr("style", styles.node_styles)
       .attr("rx", radius)
       .attr("ry", radius)

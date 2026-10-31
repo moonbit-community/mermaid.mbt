@@ -215,7 +215,7 @@ fn rewrite_edge_path(
     }
   }
   let point_text = (p : Point) => "\{fmt3(p.x)},\{fmt3(p.y)}"
-  let parts = ["M" + point_text(points[0])]
+  let parts = ["M\{point_text(points[0])}"]
   for i in 0..<segment_count {
     let a = points[i]
     let b = points[i + 1]
@@ -297,10 +297,10 @@ fn rewrite_edge_path(
         x: jump.point.x + ux * jump.r,
         y: jump.point.y + uy * jump.r,
       }
-      parts.push("L" + point_text(pre))
+      parts.push("L\{point_text(pre)}")
       if gap {
         // The `gap` style leaves the line open where it crosses.
-        parts.push("M" + point_text(post))
+        parts.push("M\{point_text(post)}")
       } else {
         parts.push(
           "A\{fmt3(jump.r)},\{fmt3(jump.r)} 0 0 \{sweep} \{point_text(post)}",
@@ -309,10 +309,10 @@ fn rewrite_edge_path(
     }
     match upcoming {
       Some(corner) if rounded => {
-        parts.push("L" + point_text(corner.start))
+        parts.push("L\{point_text(corner.start)}")
         parts.push("Q\{point_text(corner.ctrl)} \{point_text(corner.end)}")
       }
-      _ => parts.push("L" + point_text(b))
+      _ => parts.push("L\{point_text(b)}")
     }
   }
   parts.join(" ")

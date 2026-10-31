@@ -146,7 +146,7 @@ fn points_json(points : Array[Point]) -> String {
     }
   }
   let parts = points.map(p => "{\"x\":\{n(p.x)},\"y\":\{n(p.y)}}")
-  "[" + parts.join(",") + "]"
+  "[\{parts.join(",")}]"
 }
 
 ///|
@@ -318,9 +318,9 @@ fn insert_edge(
     (None, false) => ""
   }
   let styles_from_classes = edge.css_compiled_styles.join(";")
-  let styles = edge.style.map(style => style + ";").join("")
+  let styles = edge.style.map(style => "\{style};").join("")
   let path_style = (if styles_from_classes != "" {
-      styles_from_classes + ";" + styles + ";"
+      "\{styles_from_classes};\{styles};"
     } else {
       styles
     }) +

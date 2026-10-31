@@ -292,7 +292,7 @@ fn usecase_actor(
   let labelled = label_helper(
     parent,
     node,
-    node_classes(node) + "usecase-actor-variant usecase-actor-\{variant}",
+    "\{node_classes(node)}usecase-actor-variant usecase-actor-\{variant}",
     usecase_label_env(node, env),
   )
   let shape_svg = labelled.shape_svg
@@ -465,7 +465,7 @@ fn usecase_business(
   let labelled = label_helper(
     parent,
     node,
-    node_classes(node) + "usecase-business-shape",
+    "\{node_classes(node)}usecase-business-shape",
     usecase_label_env(node, env),
   )
   labelled.label.attr("class", "label usecase-label") |> ignore
@@ -580,7 +580,7 @@ fn usecase_json_table(
   let labelled = label_helper(
     parent,
     node,
-    node_classes(node) + "usecase-json-table",
+    "\{node_classes(node)}usecase-json-table",
     env,
   )
   let shape_svg = labelled.shape_svg

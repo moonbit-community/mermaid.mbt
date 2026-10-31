@@ -49,7 +49,7 @@ fn create_html_label(
   let fo = parent.append("foreignObject")
   // No width means no limit: the label never wraps.
   let initial = match width {
-    Some(width) => @dom.number((10.0 * width).min(16384.0)) + "px"
+    Some(width) => "\{@dom.number((10.0 * width).min(16384.0))}px"
     None => "16384px"
   }
   fo.attr("width", initial).attr("height", initial) |> ignore
@@ -77,7 +77,7 @@ fn create_html_label(
   if width is Some(width) {
     // A negative length is no value for `max-width`, and is dropped.
     if width >= 0.0 {
-      div.style("max-width", @dom.number(width) + "px") |> ignore
+      div.style("max-width", "\{@dom.number(width)}px") |> ignore
     }
     div.style("text-align", "center") |> ignore
   }
@@ -146,7 +146,7 @@ fn create_html_label(
     div
     .style("display", "table")
     .style("white-space", "break-spaces")
-    .style("width", @dom.number(width) + "px")
+    .style("width", "\{@dom.number(width)}px")
     |> ignore
     // A table is as wide as its widest piece that cannot be broken, and
     // the lines are then broken in the width it has.
@@ -175,7 +175,7 @@ fn create_html_label(
   } else if box.width < min_width {
     div
     .style("display", "table")
-    .style("width", @dom.number(min_width) + "px")
+    .style("width", "\{@dom.number(min_width)}px")
     .style("text-align", "center")
     |> ignore
     box = { ..box, width: min_width, }
