@@ -364,8 +364,7 @@ fn Layout::handle_constraints(self : Layout) -> Unit {
     let dag_on_horizontal : Map[String, Array[Adjacent]] = Map([])
     let dag_on_vertical : Map[String, Array[Adjacent]] = Map([])
     for node_id, list in dag {
-      for entry in list {
-        let (adjacent, horizontal_axis) = entry
+      for (adjacent, horizontal_axis) in list {
         let (dag_on, node_to_dummy) = if horizontal_axis {
           (dag_on_horizontal, node_to_dummy_vertical)
         } else {
@@ -414,36 +413,26 @@ fn Layout::handle_constraints(self : Layout) -> Unit {
       sources(dag_on_vertical),
     )
     for key, value in positions_horizontal {
-      match dummy_to_node_vertical.get(key) {
-        Some(members) =>
-          for id in members {
-            let index = index_of(id)
-            if index >= 0 {
-              x_coords[index] = value
-            }
-          }
-        None => {
-          let index = index_of(key)
-          if index >= 0 {
-            x_coords[index] = value
-          }
+      let members = match dummy_to_node_vertical.get(key) {
+        Some(members) => members
+        None => [key]
+      }
+      for id in members {
+        let index = index_of(id)
+        if index >= 0 {
+          x_coords[index] = value
         }
       }
     }
     for key, value in positions_vertical {
-      match dummy_to_node_horizontal.get(key) {
-        Some(members) =>
-          for id in members {
-            let index = index_of(id)
-            if index >= 0 {
-              y_coords[index] = value
-            }
-          }
-        None => {
-          let index = index_of(key)
-          if index >= 0 {
-            y_coords[index] = value
-          }
+      let members = match dummy_to_node_horizontal.get(key) {
+        Some(members) => members
+        None => [key]
+      }
+      for id in members {
+        let index = index_of(id)
+        if index >= 0 {
+          y_coords[index] = value
         }
       }
     }

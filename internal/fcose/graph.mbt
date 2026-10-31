@@ -309,15 +309,15 @@ fn Manager::update_graph_bounds(self : Manager, graph : Int32) -> Unit {
 ///|
 /// `LNode.updateBounds` of a compound node: the box of its graph.
 fn Manager::update_node_bounds(self : Manager, node : LNode) -> Unit {
-  guard node.child is Some(child) else { return }
-  if self.graphs[child].nodes.length() != 0 {
-    self.update_graph_bounds(child)
-    let graph = self.graphs[child]
-    node.rect.x = graph.left
-    node.rect.y = graph.top
-    node.rect.width = graph.right - graph.left
-    node.rect.height = graph.bottom - graph.top
+  guard node.child is Some(child) && !self.graphs[child].nodes.is_empty() else {
+    return
   }
+  self.update_graph_bounds(child)
+  let graph = self.graphs[child]
+  node.rect.x = graph.left
+  node.rect.y = graph.top
+  node.rect.width = graph.right - graph.left
+  node.rect.height = graph.bottom - graph.top
 }
 
 ///|
@@ -432,16 +432,14 @@ fn Manager::update_connected(self : Manager, graph : Int32) -> Unit {
     let current = queue[next]
     next += 1
     for edge in self.nodes[current].edges {
-      match self.other_end_in_graph(edge, current, graph) {
-        Some(neighbor) if !visited[neighbor] => {
-          let inside = []
-          self.with_children(self.nodes[neighbor], inside)
-          for index in inside {
-            queue.push(index)
-            visited[index] = true
-          }
+      if self.other_end_in_graph(edge, current, graph) is Some(neighbor) &&
+        !visited[neighbor] {
+        let inside = []
+        self.with_children(self.nodes[neighbor], inside)
+        for index in inside {
+          queue.push(index)
+          visited[index] = true
         }
-        _ => ()
       }
     }
   }
