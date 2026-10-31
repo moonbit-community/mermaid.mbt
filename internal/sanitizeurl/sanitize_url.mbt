@@ -124,9 +124,9 @@ fn percent_encode(text : StringView, reserved : String) -> String {
 /// port or credentials, which is all that reaches here: the address has
 /// exactly one colon. `None` when the browser cannot parse it.
 fn normalize_http_url(url : String) -> String? raise Unsupported {
-  guard url.find(":") is Some(colon) else { return None }
-  let scheme = url[:colon].to_owned().to_lower()
-  let mut rest = url[colon + 1:]
+  guard url.split_once(":") is Some((scheme, rest)) else { return None }
+  let scheme = scheme.to_owned().to_lower()
+  let mut rest = rest
   // Any number of slashes introduces the host.
   while rest.strip_prefix("/") is Some(tail) {
     rest = tail
@@ -158,10 +158,10 @@ fn normalize_http_url(url : String) -> String? raise Unsupported {
   }
   // A host ending in a number is an IPv4 address, in any of its spellings.
   let labels = host.split(".").collect()
-  let last = match labels.last() {
-    Some("") if labels.length() > 1 => labels[labels.length() - 2]
-    Some(label) => label
-    None => ""
+  let last = match labels {
+    [.., second, ""] => second
+    [.., only] => only
+    [] => ""
   }
   let is_decimal = (label : StringView) => {
     label != "" && label.all(c => c is ('0'..<='9'))
