@@ -195,6 +195,19 @@ fn StateDb::add_state(
 }
 
 ///|
+/// The entry of a state, added when nothing has named it before.
+fn StateDb::state_info(self : StateDb, id : StringView) -> StateInfo {
+  match self.states.get(id.to_owned()) {
+    Some(state) => state
+    None => {
+      let id = trim(id)
+      self.add_state(id)
+      self.states[id]
+    }
+  }
+}
+
+///|
 /// Mermaid's `setCssClass`: give the class to each of the comma-separated
 /// states.
 fn StateDb::set_css_class(
@@ -203,15 +216,7 @@ fn StateDb::set_css_class(
   css_class : String,
 ) -> Unit {
   for id in ids.split(",") {
-    let id = id.to_owned()
-    let state = match self.states.get(id) {
-      Some(state) => state
-      None => {
-        let id = trim(id)
-        self.add_state(id)
-        self.states[id]
-      }
-    }
+    let state = self.state_info(id)
     state.classes.push(css_class)
   }
 }
@@ -224,15 +229,7 @@ fn StateDb::set_styles(self : StateDb, ids : String, styles : String) -> Unit {
     .map(style => trim(style.replace_all(old=";", new="")))
     .collect()
   for id in trim(ids).split(",") {
-    let id = id.to_owned()
-    let state = match self.states.get(id) {
-      Some(state) => state
-      None => {
-        let id = trim(id)
-        self.add_state(id)
-        self.states[id]
-      }
-    }
+    let state = self.state_info(id)
     state.styles = styles
   }
 }

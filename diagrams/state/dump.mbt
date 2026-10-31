@@ -56,21 +56,21 @@ pub fn StateDb::dump(self : StateDb) -> Json {
     optional(fields, "pattern", edge.pattern)
     Json::object(fields)
   })
-  let classes : Array[Json] = []
-  for _, style_class in self.classes {
-    classes.push({
-      "id": Json::string(style_class.id),
-      "styles": Json(style_class.styles),
-      "textStyles": Json(style_class.text_styles),
-    })
-  }
+  let classes : Array[Json] = [
+    for _, style_class in self.classes => {
+      Json::object({
+        "id": Json::string(style_class.id),
+        "styles": Json(style_class.styles),
+        "textStyles": Json(style_class.text_styles),
+      })
+    }
+  ]
   let links : Array[Json] = self.links.map(link => {
-    let json : Json = {
+    Json::object({
       "id": Json::string(link.id),
       "url": Json::string(link.url),
       "tooltip": Json::string(link.tooltip),
-    }
-    json
+    })
   })
   {
     "nodes": Json::array(nodes),
