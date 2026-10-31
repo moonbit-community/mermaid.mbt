@@ -592,10 +592,8 @@ pub fn parse(source : String) -> Wardley raise {
     }
   }
   for link in ast.links {
-    let dashed = match link.arrow {
-      Some(arrow) => arrow.contains("-.->") || arrow.contains(".-.")
-      None => false
-    }
+    let dashed = link.arrow is Some(arrow) &&
+      (arrow.contains("-.->") || arrow.contains(".-."))
     let (arrow_flow, flow_label) = flow_from_arrow(link.arrow)
     let flow = match flow_from_port(link.from_port) {
       Some(flow) => Some(flow)

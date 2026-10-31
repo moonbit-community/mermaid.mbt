@@ -28,7 +28,7 @@ fn Scene::draw_annotations(
 ) -> Unit raise WardleyError {
   let n = @dom.number
   let { map, colors, width, height, .. } = self
-  if map.annotations.length() == 0 {
+  if map.annotations.is_empty() {
     return
   }
   let group = self.root.append("g").attr("class", "wardley-annotations")
@@ -151,7 +151,7 @@ fn Scene::draw_annotations(
 /// The notes: bold text at a place of the map.
 fn Scene::draw_notes(self : Scene) -> Unit {
   let n = @dom.number
-  if self.map.notes.length() == 0 {
+  if self.map.notes.is_empty() {
     return
   }
   let group = self.root.append("g").attr("class", "wardley-notes")
@@ -193,7 +193,7 @@ fn Scene::draw_accelerators(self : Scene) -> Unit {
     items : Array[Placed],
     outline : (Double, Double) -> Array[(Double, Double)],
   ) => {
-    if items.length() == 0 {
+    if items.is_empty() {
       return
     }
     let group = self.root.append("g").attr("class", class_name)

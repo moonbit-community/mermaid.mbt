@@ -65,8 +65,7 @@ fn Scene::draw_nodes(self : Scene) -> Unit {
       let right = (x + triangle_radius * cos30, y + triangle_radius * sin30)
       // The sides of the triangle first, so that the circles cover
       // their ends.
-      for side in [(top, left), (left, right), (right, top)] {
-        let (from, to) = side
+      for (from, to) in [(top, left), (left, right), (right, top)] {
         group
         .append("line")
         .attr("class", "wardley-market-line")
@@ -134,10 +133,7 @@ fn Scene::draw_nodes(self : Scene) -> Unit {
     // An anchor's label is centred on its place; any other label goes up
     // and to the right, further when a strategy's disc is in the way.
     let label_x = if anchor {
-      match node.label_offset_x {
-        Some(offset) => x + offset
-        None => x
-      }
+      node.label_offset_x.map(offset => x + offset).unwrap_or(x)
     } else {
       let mut default_offset = self.settings.node_label_offset
       if node.source_strategy is Some(_) && node.label_offset_x is None {
@@ -146,10 +142,7 @@ fn Scene::draw_nodes(self : Scene) -> Unit {
       x + node.label_offset_x.unwrap_or(default_offset)
     }
     let label_y = if anchor {
-      match node.label_offset_y {
-        Some(offset) => y + offset
-        None => y - 3.0
-      }
+      node.label_offset_y.map(offset => y + offset).unwrap_or(y - 3.0)
     } else {
       let mut default_offset = -self.settings.node_label_offset
       if node.source_strategy is Some(_) && node.label_offset_y is None {

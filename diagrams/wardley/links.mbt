@@ -33,8 +33,7 @@ fn Scene::draw_links(self : Scene) -> Unit {
     }
     valid.push((link, source, target, source_node, target_node))
   }
-  for entry in valid {
-    let (link, source, target, source_node, target_node) = entry
+  for (link, source, target, source_node, target_node) in valid {
     let line = group
       .append("line")
       .attr(
@@ -73,8 +72,7 @@ fn Scene::draw_links(self : Scene) -> Unit {
       line.attr("marker-start", "url(#link-arrow-start-\{id})") |> ignore
     }
   }
-  for entry in valid {
-    let (link, source, target, _, _) = entry
+  for (link, source, target, _, _) in valid {
     guard link.label is Some(label) && label != "" else { continue }
     let mid_x = (source.x + target.x) / 2.0
     let mid_y = (source.y + target.y) / 2.0

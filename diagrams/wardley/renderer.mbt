@@ -437,13 +437,13 @@ fn Scene::draw_grid(self : Scene) -> Unit {
 fn Scene::draw_pipelines(self : Scene) -> Unit {
   let n = @dom.number
   let { map, colors, positions, .. } = self
-  if map.pipelines.length() == 0 {
+  if map.pipelines.is_empty() {
     return
   }
   let boxes = self.root.append("g").attr("class", "wardley-pipelines")
   let links = self.root.append("g").attr("class", "wardley-pipeline-links")
   for pipeline in map.pipelines {
-    if pipeline.component_ids.length() == 0 {
+    if pipeline.component_ids.is_empty() {
       continue
     }
     // The components from left to right; those in the same place stay in
