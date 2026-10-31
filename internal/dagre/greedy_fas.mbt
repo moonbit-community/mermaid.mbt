@@ -72,11 +72,7 @@ fn greedy_fas(g : LayoutGraph) -> Array[@graphlib.Edge] raise LayoutError {
   }
   let (graph, buckets, zero_idx) = fas_build_state(g)
   let results = do_greedy_fas(graph, buckets, zero_idx)
-  let edges = []
-  for pair in results {
-    edges.append(g.out_edges(pair.0, w=pair.1))
-  }
-  edges
+  results.map(pair => g.out_edges(pair.0, w=pair.1)).flatten()
 }
 
 ///|

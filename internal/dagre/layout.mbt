@@ -25,9 +25,8 @@ pub fn layout(
   }
   let edge_layouts = []
   for edge in edges {
-    let label = match g.edge_between(edge.v, edge.w, name?=edge.name) {
-      Some(label) => label
-      None => raise LayoutError("no edge from \{edge.v} to \{edge.w}")
+    guard g.edge_between(edge.v, edge.w, name?=edge.name) is Some(label) else {
+      raise LayoutError("no edge from \{edge.v} to \{edge.w}")
     }
     let points = match label.points {
       Some(points) => points.map(p => Point::{ x: p.x, y: p.y, })

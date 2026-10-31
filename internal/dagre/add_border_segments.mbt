@@ -10,17 +10,16 @@ fn add_border_segments(g : LayoutGraph) -> Unit raise LayoutError {
     for child in children {
       dfs(child)
     }
-    if node.min_rank is Some(min_rank) {
-      let left = []
-      let right = []
-      node.border_left = Some(left)
-      node.border_right = Some(right)
-      // Undefined is not below any rank.
-      guard node.max_rank is Some(max_rank) else { return }
-      for rank in min_rank..<=max_rank {
-        add_segment_node(g, "borderLeft", "_bl", v, left, rank)
-        add_segment_node(g, "borderRight", "_br", v, right, rank)
-      }
+    guard node.min_rank is Some(min_rank) else { return }
+    let left = []
+    let right = []
+    node.border_left = Some(left)
+    node.border_right = Some(right)
+    // Undefined is not below any rank.
+    guard node.max_rank is Some(max_rank) else { return }
+    for rank in min_rank..<=max_rank {
+      add_segment_node(g, "borderLeft", "_bl", v, left, rank)
+      add_segment_node(g, "borderRight", "_br", v, right, rank)
     }
   }
 

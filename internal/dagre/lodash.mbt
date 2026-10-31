@@ -10,7 +10,7 @@ let id_counter : Ref[Int32] = Ref(0)
 /// `_.uniqueId(prefix)`.
 fn unique_id(prefix : String) -> String {
   id_counter.val += 1
-  prefix + id_counter.val.to_string()
+  "\{prefix}\{id_counter.val}"
 }
 
 ///|
