@@ -24,6 +24,6 @@ test "markup with references before characters outside the basic plane" {
   for entry in cases {
     let div = Element::new("div")
     div.set_inner_html(entry.0)
-    assert_eq(div.to_html(), "<div>" + entry.1 + "</div>")
+    assert_eq(div.to_html(), "<div>\{entry.1}</div>")
   }
 }
