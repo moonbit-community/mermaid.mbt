@@ -69,12 +69,9 @@ fn ClassDb::layout_data(
   let mut color_index = 0
   for _, node in self.classes {
     let lines = (members : Array[ClassMember]) => {
-      members.map(line => {
-        let line : @rendering.ClassBoxMember = {
-          text: line.text,
-          style: line.css_style(),
-        }
-        line
+      members.map(line => @rendering.ClassBoxMember::{
+        text: line.text,
+        style: line.css_style(),
       })
     }
     nodes.push(
