@@ -35,13 +35,7 @@ fn dates(path : String) -> Unit raise CliError {
       { "parse": String(text), .. } => number_or_null(zone.parse(text))
       { "make": Array(args), .. } => {
         let a = numbers(args)
-        let get = (i : Int32, default : Double) => {
-          if i < a.length() {
-            a[i]
-          } else {
-            default
-          }
-        }
+        let get = (i : Int32, default : Double) => a.get(i).unwrap_or(default)
         number_or_null(
           zone.make(
             get(0, 0.0),
@@ -74,31 +68,19 @@ fn dates(path : String) -> Unit raise CliError {
           _ => @double.not_a_number
         }
         let a = numbers(args)
-        let optional = (i : Int32) => {
-          if i < a.length() {
-            Some(a[i])
-          } else {
-            None
-          }
-        }
         number_or_null(
           match name {
             "date" => zone.set_date(time, a[0])
-            "month" => zone.set_month(time, a[0], date?=optional(1))
+            "month" => zone.set_month(time, a[0], date?=a.get(1))
             "fullYear" =>
-              zone.set_full_year(
-                time,
-                a[0],
-                month?=optional(1),
-                date?=optional(2),
-              )
+              zone.set_full_year(time, a[0], month?=a.get(1), date?=a.get(2))
             _ =>
               zone.set_hours(
                 time,
                 a[0],
-                minutes?=optional(1),
-                seconds?=optional(2),
-                ms?=optional(3),
+                minutes?=a.get(1),
+                seconds?=a.get(2),
+                ms?=a.get(3),
               )
           },
         )
@@ -120,25 +102,19 @@ fn dates(path : String) -> Unit raise CliError {
 
 ///|
 fn field_number(item : Json, name : String) -> Double {
-  match item {
-    Object(fields) =>
-      match fields.get(name) {
-        Some(Number(n, ..)) => n
-        _ => @double.not_a_number
-      }
-    _ => @double.not_a_number
+  if item is Object(fields) && fields.get(name) is Some(Number(n, ..)) {
+    n
+  } else {
+    @double.not_a_number
   }
 }
 
 ///|
 fn field_text(item : Json, name : String) -> String {
-  match item {
-    Object(fields) =>
-      match fields.get(name) {
-        Some(String(text)) => text
-        _ => ""
-      }
-    _ => ""
+  if item is Object(fields) && fields.get(name) is Some(String(text)) {
+    text
+  } else {
+    ""
   }
 }
 
