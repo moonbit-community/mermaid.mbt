@@ -29,16 +29,11 @@ fn to_graph_view(layout : @model.Layout) -> Graph {
   for n in layout.nodes {
     node_by_id[n.id] = n
   }
-  let edges = []
-  for e in layout.edges {
-    if e.start == "" || e.end == "" {
-      continue
-    }
-    if e.label_node_id is Some(_) {
-      continue
-    }
-    edges.push({ id: e.id, src: e.start, dst: e.end, ref_: e, })
-  }
+  let edges : Array[GEdge] = [
+    for e in layout.edges if e.start != "" &&
+    e.end != "" &&
+    e.label_node_id is None => { id: e.id, src: e.start, dst: e.end, ref_: e, }
+  ]
   let groups = layout.nodes.filter(n => n.is_group)
   groups.rev_in_place()
   let nodes = groups.map(n => n.id) +

@@ -81,12 +81,10 @@ fn count_crossings_between_adjacent(
 ) -> Int32 {
   let upper_index = build_layer_index(upper)
   let lower_index = build_layer_index(lower)
-  let pairs : Array[(Int32, Int32)] = []
-  for e in edges {
-    if upper_index.get(e.src) is Some(u) && lower_index.get(e.dst) is Some(v) {
-      pairs.push((u, v))
-    }
-  }
+  let pairs : Array[(Int32, Int32)] = [
+    for e in edges if upper_index.get(e.src) is Some(u) &&
+    lower_index.get(e.dst) is Some(v) => (u, v)
+  ]
   @d3.js_sort(pairs, (a, b) => {
     if a.0 == b.0 {
       (a.1 - b.1).to_double()
@@ -196,18 +194,13 @@ fn transpose_improve(
   let best = current.copy()
   let upper_set : Set[String] = Set(upper)
   let layer_set : Set[String] = Set(current)
-  let next_set : Set[String]? = match next {
-    Some(next) => Some(Set(next))
-    None => None
-  }
+  let next_set : Set[String]? = next.map(set => Set(set))
   let edges_in = edges.filter(e => {
     upper_set.contains(e.src) && layer_set.contains(e.dst)
   })
-  let edges_out = match next_set {
-    Some(set) =>
-      Some(edges.filter(e => layer_set.contains(e.src) && set.contains(e.dst)))
-    None => None
-  }
+  let edges_out = next_set.map(set => {
+    edges.filter(e => layer_set.contains(e.src) && set.contains(e.dst))
+  })
   let crossing_score = (order : Array[String]) => {
     let mut score = count_crossings_between_adjacent(upper, order, edges_in)
     if edges_out is Some(out) && next is Some(next) {
