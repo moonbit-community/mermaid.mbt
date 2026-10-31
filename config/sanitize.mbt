@@ -27,26 +27,20 @@ fn is_unsafe_key(key : String) -> Bool {
 }
 
 ///|
+/// The characters allowed in a theme variable.
+const PLAIN_THEME_VALUE = re"^[0-9 \"#%(),.;A-Za-z]+$"
+
+///|
 /// Whether `value` consists only of characters allowed in a theme variable:
 /// `[\d "#%(),.;A-Za-z]+`.
 fn is_plain_theme_value(value : String) -> Bool {
-  value != "" &&
-  value.all(c => {
-    c
-    is ('0'..<='9'
-    | 'A'..<='Z'
-    | 'a'..<='z'
-    | ' '
-    | '"'
-    | '#'
-    | '%'
-    | '('
-    | ')'
-    | ','
-    | '.'
-    | ';')
-  })
+  value =~ PLAIN_THEME_VALUE
 }
+
+///|
+/// A `nodeColors` value: a hex color, an `rgb()` or `hsl()` call, or a
+/// lowercase keyword.
+const NODE_COLOR = re"^(#[0-9a-f]{3,8}|(rgb|hsl)\([0-9 %,\t\n.]+\)|[a-z]+)$"
 
 ///|
 /// Whether `value` is acceptable for the dictionary option `key`
@@ -57,23 +51,7 @@ fn dictionary_value_ok(key : String, value : String) -> Bool? {
     c is ('0'..<='9' | 'A'..<='Z' | 'a'..<='z' | '_' | '-')
   }
   match key {
-    "nodeColors" => {
-      let lower = value.to_lower()
-      let hex = lower.strip_prefix("#") is Some(digits) &&
-        digits.length() >= 3 &&
-        digits.length() <= 8 &&
-        digits.all(c => c is ('0'..<='9' | 'a'..<='f'))
-      let function = (name : String) => {
-        lower.strip_prefix(name) is Some(rest) &&
-        rest.strip_suffix(")") is Some(arguments) &&
-        arguments.length() > 0 &&
-        arguments.all(c => {
-          c is ('0'..<='9' | ' ' | '\t' | '\n' | '%' | ',' | '.')
-        })
-      }
-      let keyword = lower != "" && lower.all(c => c is ('a'..<='z'))
-      Some(hex || function("rgb(") || function("hsl(") || keyword)
-    }
+    "nodeColors" => Some(value.to_lower() =~ NODE_COLOR)
     "filenameIcons" | "extensionIcons" => {
       let parts = value.split(":").collect()
       Some(

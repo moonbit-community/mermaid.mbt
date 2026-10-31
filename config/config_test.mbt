@@ -168,6 +168,37 @@ test "directives are sanitized" {
 }
 
 ///|
+test "nodeColors keeps hex colors, rgb() and hsl() calls and keywords" {
+  let colors = {
+    "hex": "#ff0000",
+    "short": "#fff",
+    "long": "#ff00000f",
+    "rgb": "rgb(1, 2, 3)",
+    "hsl": "hsl(80, 100%, 56%)",
+    "keyword": "RED",
+    "emptyCall": "rgb()",
+    "tooShort": "#ff",
+    "notHex": "#ff0000g",
+    "javascript": "javascript:1",
+  }
+  json_inspect(
+    @config.sanitize_directive({ "sankey": { "nodeColors": colors } }),
+    content={
+      "sankey": {
+        "nodeColors": {
+          "hex": "#ff0000",
+          "short": "#fff",
+          "long": "#ff00000f",
+          "rgb": "rgb(1, 2, 3)",
+          "hsl": "hsl(80, 100%, 56%)",
+          "keyword": "RED",
+        },
+      },
+    },
+  )
+}
+
+///|
 test "a directive cannot set a key whose default is an array" {
   // Upstream collects the known keys without those holding arrays, so
   // `sectionColours` is dropped from a directive; the site configuration
