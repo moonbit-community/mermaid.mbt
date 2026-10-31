@@ -138,8 +138,7 @@ fn declaration_block(
   // over any that is not, the important ones after the others.
   let declarations : Array[(String, String, Bool)] = []
   for important in [false, true] {
-    for index, declaration in parsed {
-      let (name, _, is_important) = declaration
+    for index, (name, text, is_important) in parsed {
       if is_important != important {
         continue
       }
@@ -148,7 +147,7 @@ fn declaration_block(
         }) ||
         (!important && parsed.any(other => other.0 == name && other.2))
       if !overridden {
-        declarations.push(declaration)
+        declarations.push((name, text, is_important))
       }
     }
   }
@@ -174,8 +173,7 @@ fn declaration_block(
     }
   }
   let out = StringBuilder()
-  for declaration in declarations {
-    let (name, text, important) = declaration
+  for (name, text, important) in declarations {
     let priority = if important { " !important" } else { "" }
     out.write_string("\{name}: \{text}\{priority}; ")
   }

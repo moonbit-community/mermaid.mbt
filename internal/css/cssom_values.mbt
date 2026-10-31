@@ -147,7 +147,7 @@ fn CalcSum::scaled(self : CalcSum, factor : Double) -> CalcSum {
 
 ///|
 fn CalcSum::plus(self : CalcSum, other : CalcSum, sign : Double) -> CalcSum {
-  let terms = Map::from_iter(self.terms.iter())
+  let terms = self.terms.copy()
   for unit, value in other.terms {
     terms[unit] = terms.get(unit).unwrap_or(0.0) + sign * value
   }
