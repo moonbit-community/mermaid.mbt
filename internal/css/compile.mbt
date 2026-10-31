@@ -137,7 +137,7 @@ fn resolve_selectors(text : String, parents : Array[String]) -> Array[String] {
       } else if parent == "" {
         part
       } else {
-        parent + " " + part
+        "\{parent} \{part}"
       }
       let selector = selector.trim().to_owned()
       if selector != "" {

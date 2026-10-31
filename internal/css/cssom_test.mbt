@@ -5,8 +5,7 @@
 /// The style sheets whose rules the port serializes otherwise than Chrome.
 fn cssom_differences(cases : Array[(String, Array[String])]) -> Array[String] {
   let failed = []
-  for case in cases {
-    let (sheet, expected) = case
+  for (sheet, expected) in cases {
     let actual = @css.serialize_style_sheet(sheet) catch {
       CssUnsupported(what) => ["unported: \{what}"]
     }
