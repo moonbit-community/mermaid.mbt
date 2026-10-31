@@ -32,15 +32,6 @@ fn Cynefin::new() -> Cynefin {
 }
 
 ///|
-fn Cynefin::set_domain(
-  self : Cynefin,
-  name : String,
-  items : Array[String],
-) -> Unit {
-  self.domains[name] = items
-}
-
-///|
 /// A transition from a domain to itself means nothing and is dropped; an
 /// empty label is no label.
 fn Cynefin::add_transition(

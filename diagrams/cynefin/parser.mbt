@@ -124,7 +124,7 @@ pub fn parse(source : String) -> Cynefin raise {
           items.push(unquote(item.text))
           skip_newlines()
         }
-        diagram.set_domain(from.text, items)
+        diagram.domains[from.text] = items
       }
     } else {
       tokens.fail("Expecting a domain, a transition or a title")
