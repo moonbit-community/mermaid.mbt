@@ -364,11 +364,7 @@ fn serialize_animation(value : String) -> String {
   let is_time = (token : String) => {
     let number = match token.strip_suffix("ms") {
       Some(number) => number
-      None =>
-        match token.strip_suffix("s") {
-          Some(number) => number
-          None => return false
-        }
+      None => token.strip_suffix("s").unwrap_or("")
     }
     !number.is_empty() && number.all(c => c is ('0'..<='9' | '.' | '-' | '+'))
   }
