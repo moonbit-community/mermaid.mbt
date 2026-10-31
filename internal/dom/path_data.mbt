@@ -974,8 +974,7 @@ fn arc_to_conics(
   let delta_y = u1y - u0y
   let d = delta_x * delta_x + delta_y * delta_y
   let quarter : Float = 0.25
-  let squared = one / d - quarter
-  let squared : Float = if squared > 0 { squared } else { 0 }
+  let squared = (one / d - quarter).max(0)
   let mut scale = squared.sqrt()
   // Skia's direction is clockwise for a set sweep flag.
   if !sweep != large {
