@@ -56,9 +56,9 @@ pub fn data_url_size(url : String) -> Decoded? {
 ///|
 /// The type and subtype of a MIME type, in lower case.
 fn mime_essence(mime : StringView) -> String {
-  let essence = match mime.find(";") {
-    Some(at) => mime[:at]
-    None => mime[:]
+  let essence = match mime.split_once(";") {
+    Some((before, _)) => before
+    None => mime
   }
   essence.trim(chars=" \t\n\r\u{0c}").to_lower().to_owned()
 }
