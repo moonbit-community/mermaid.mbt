@@ -422,7 +422,7 @@ fn list_raw(source : String) -> String? {
   } else {
     "\\" + bullet
   }
-  let item = md_rule("^( {0,3}" + marker + ")((?:[\t ][^\\n]*)?(?:\\n|$))")
+  let item = md_rule("^( {0,3}\{marker})((?:[\t ][^\\n]*)?(?:\\n|$))")
   let mut rest = source
   let mut raw = ""
   let mut items = 0
@@ -457,14 +457,14 @@ fn list_raw(source : String) -> String? {
     if !ended {
       let up_to = (indent - 1).min(3).to_string()
       let next_bullet = md_rule(
-        "^ {0," + up_to + "}(?:[*+-]|\\d{1,9}[.)])((?:[ \t][^\\n]*)?(?:\\n|$))",
+        "^ {0,\{up_to}}(?:[*+-]|\\d{1,9}[.)])((?:[ \t][^\\n]*)?(?:\\n|$))",
       )
       let hr = md_rule(
-        "^ {0," + up_to + "}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)",
+        "^ {0,\{up_to}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)",
       )
-      let fences = md_rule("^ {0," + up_to + "}(?:```|~~~)")
-      let heading = md_rule("^ {0," + up_to + "}#")
-      let html = md_rule("^ {0," + up_to + "}<(?:[a-z].*>|!--)", flags="i")
+      let fences = md_rule("^ {0,\{up_to}}(?:```|~~~)")
+      let heading = md_rule("^ {0,\{up_to}}#")
+      let html = md_rule("^ {0,\{up_to}}<(?:[a-z].*>|!--)", flags="i")
       let starts = (regex : @jsregex.Regex, text : String) => {
         regex.match_prefix(text) is Some(_)
       }
