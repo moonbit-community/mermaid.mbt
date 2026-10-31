@@ -81,17 +81,12 @@ fn alignments(
         .get(id)
         .bind(node => node.parent)
         .unwrap_or("default")
-      if !horizontal_lines.contains(y) {
-        horizontal_lines[y] = Map([])
-      }
-      if !vertical_lines.contains(x) {
-        vertical_lines[x] = Map([])
-      }
-      for line in [horizontal_lines[y], vertical_lines[x]] {
-        if !line.contains(group) {
-          line[group] = []
-        }
-        line[group].push(id)
+      let lines = [
+        horizontal_lines.get_or_init(y, () => Map([])),
+        vertical_lines.get_or_init(x, () => Map([])),
+      ]
+      for line in lines {
+        line.get_or_init(group, () => []).push(id)
       }
     }
     horizontal.append(flatten(horizontal_lines, Horizontal))
