@@ -48,8 +48,7 @@ fn serialize_font_family(value : String) -> String? {
       return None
     }
     let chars = part.to_array()
-    if chars[0] is ('"' | '\'') {
-      let quote = chars[0]
+    if chars[0] is ('"' | '\'' as quote) {
       guard chars.length() >= 2 && chars[chars.length() - 1] == quote else {
         return None
       }
@@ -109,10 +108,8 @@ fn font_size_px(value : Json) -> Double? {
     Number(number, ..) if number > 0.0 => Some(number)
     String(text) => {
       let text = text.trim(chars=" \t\n").to_lower()
-      guard text.has_suffix("px") else { return None }
-      let number = @string.parse_double(text[:text.length() - 2]) catch {
-        _ => return None
-      }
+      guard text.strip_suffix("px") is Some(digits) else { return None }
+      let number = @string.parse_double(digits) catch { _ => return None }
       if number > 0.0 {
         Some(number)
       } else {
