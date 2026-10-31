@@ -59,11 +59,12 @@ fn decode_entities(text : String, in_attribute~ : Bool = false) -> String {
   }
   let out = StringBuilder()
   let mut rest = text[:]
-  while rest.find("ﬂ°") is Some(start) {
-    out.write_view(rest[:start])
-    let after = rest[start + 2:]
+  while rest.split_once("ﬂ°") is Some((before, after)) {
+    out.write_view(before)
     guard after.split_once("¶ß") is Some((body, tail)) else {
-      out.write_view(rest[start:])
+      // The marker without its end, as it stands.
+      out.write_string("ﬂ°")
+      out.write_view(after)
       return out.to_string()
     }
     rest = tail

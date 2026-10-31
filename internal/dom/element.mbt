@@ -270,12 +270,11 @@ pub fn Element::descendants(
   let found = []
   fn visit(element : Element) {
     for child in element.children {
-      if child is Element(child) {
-        if tags.contains(child.tag) {
-          found.push(child)
-        }
-        visit(child)
+      guard child is Element(child) else { continue }
+      if tags.contains(child.tag) {
+        found.push(child)
       }
+      visit(child)
     }
   }
   visit(self)
