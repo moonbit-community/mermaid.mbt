@@ -84,12 +84,7 @@ fn UsecaseDb::compiled_styles(
     guard self.class_defs.get(name) is Some(styles) else { continue }
     for raw in styles {
       let style = js_trim(raw)
-      let property = js_trim(
-        match style.find(":") {
-          Some(colon) => style[:colon]
-          None => style
-        },
-      )
+      let property = js_trim(style.before(":").unwrap_or(style))
       if property != "" {
         compiled[property] = style
       }

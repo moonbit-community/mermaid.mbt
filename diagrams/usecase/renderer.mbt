@@ -120,7 +120,7 @@ fn root_depth(element : @dom.Element) -> Int32 {
   let mut depth = 0
   let mut current = element.parent()
   while current is Some(ancestor) {
-    if ancestor.get_attr("class").unwrap_or("").split(" ").any(c => c == "root") {
+    if ancestor.get_attr("class").unwrap_or("").split(" ").contains("root") {
       depth += 1
     }
     current = ancestor.parent()
@@ -162,11 +162,7 @@ fn annotate(
         element
         .descendants(["span"])
         .filter(span => {
-          span
-          .get_attr("class")
-          .unwrap_or("")
-          .split(" ")
-          .any(c => c == "nodeLabel")
+          span.get_attr("class").unwrap_or("").split(" ").contains("nodeLabel")
         }) {
         [label, ..] => {
           let container = match label.descendants(["p"]) {
