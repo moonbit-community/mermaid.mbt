@@ -55,13 +55,9 @@ fn ClassMember::new(
       parameters = js_trim(group(3))
       classifier = js_trim(group(4))
       return_type = js_trim(group(5))
-      if classifier == "" {
-        let length = return_type.length()
-        if length > 0 &&
-          return_type[length - 1:].to_owned() is ("$" | "*" as last) {
-          classifier = last
-          return_type = return_type[:length - 1].to_owned()
-        }
+      if classifier == "" && return_type is [.. prefix, '$' | '*' as last] {
+        classifier = last.to_string()
+        return_type = prefix.to_owned()
       }
     } else {
       // Upstream goes on with a name it never set, and fails.

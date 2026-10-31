@@ -284,9 +284,9 @@ fn ClassDb::add_member(
   self.add_class(class_name)
   let node = self.class_of(class_name)
   let line = js_trim(line)
-  if line.has_prefix("<<") && line.has_suffix(">>") {
-    let inner = line[2:line.length() - 2].to_owned()
-    node.annotations.push(sanitize_text(inner))
+  if line.strip_prefix("<<") is Some(rest) &&
+    rest.strip_suffix(">>") is Some(inner) {
+    node.annotations.push(sanitize_text(inner.to_owned()))
   } else if line.find(")") is Some(at) && at > 0 {
     node.methods.push(ClassMember::new(sanitize_text(line), "method"))
   } else if line != "" {
