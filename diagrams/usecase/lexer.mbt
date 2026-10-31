@@ -149,27 +149,7 @@ fn match_json_object(text : String, offset : Int32) -> Int32? {
 ///|
 /// JavaScript's `String.prototype.trim` leaves nothing of `text`.
 fn is_blank(text : StringView) -> Bool {
-  for character in text {
-    guard character
-      is (' '
-      | '\t'
-      | '\n'
-      | '\r'
-      | '\u{0b}'
-      | '\u{0c}'
-      | '\u{a0}'
-      | '\u{1680}'
-      | '\u{2000}'..<='\u{200a}'
-      | '\u{2028}'
-      | '\u{2029}'
-      | '\u{202f}'
-      | '\u{205f}'
-      | '\u{3000}'
-      | '\u{feff}') else {
-      return false
-    }
-  }
-  true
+  text.all(@diagram.is_js_space)
 }
 
 ///|
