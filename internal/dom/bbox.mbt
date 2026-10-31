@@ -350,13 +350,7 @@ fn element_transform(element : Element) -> Transform {
       return identity
     }
     let name = name.trim(chars=" \t\n\r")
-    let arguments = []
-    for part in inside.replace_all(old=",", new=" ").split(" ") {
-      let part = part.trim(chars=" \t\n\r")
-      if !part.is_empty() {
-        arguments.push(parse_svg_number(part))
-      }
-    }
+    let arguments = svg_numbers(inside)
     guard transform.apply(name, arguments) is Some(next) else {
       return identity
     }
@@ -539,10 +533,7 @@ fn Element::is_display_none(self : Element) -> Bool {
     guard part.split_once(":") is Some((name, value)) else { continue }
     if name.trim().to_lower() == "display" {
       let value = value.trim().to_lower()
-      let value = match value.strip_suffix("!important") {
-        Some(base) => base.trim()
-        None => value
-      }
+      let value = value.strip_suffix("!important").unwrap_or(value).trim()
       hidden = value == "none"
     }
   }
