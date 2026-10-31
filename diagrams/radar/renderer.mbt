@@ -58,7 +58,7 @@ pub fn draw(radar : Radar, context : @diagram.Context) -> Unit {
   let config = context.config
   let svg = context.svg
   let setting = (name : String, default : Double) => {
-    config.number("radar." + name).unwrap_or(default)
+    config.number("radar.\{name}").unwrap_or(default)
   }
   let width = setting("width", 600.0)
   let height = setting("height", 600.0)
@@ -115,13 +115,14 @@ pub fn draw(radar : Radar, context : @diagram.Context) -> Unit {
         g.append("circle").attr("r", n(r)).attr("class", "radarGraticule")
         |> ignore
       Polygon => {
-        let points = []
-        for j in 0..<radar.axes.length() {
-          let angle = 2.0 * j.to_double() * PI / axis_count - PI / 2.0
-          let x = r * @jsmath.cos(angle)
-          let y = r * @jsmath.sin(angle)
-          points.push("\{n(x)},\{n(y)}")
-        }
+        let points = [
+          for j in 0..<radar.axes.length() => {
+            let angle = 2.0 * j.to_double() * PI / axis_count - PI / 2.0
+            let x = r * @jsmath.cos(angle)
+            let y = r * @jsmath.sin(angle)
+            "\{n(x)},\{n(y)}"
+          }
+        ]
         g
         .append("polygon")
         .attr("points", points.join(" "))
@@ -175,12 +176,13 @@ pub fn draw(radar : Radar, context : @diagram.Context) -> Unit {
     if curve.entries.length() != radar.axes.length() {
       continue
     }
-    let points = []
-    for i, entry in curve.entries {
-      let angle = 2.0 * PI * i.to_double() / axis_count - PI / 2.0
-      let r = relative_radius(entry, min_value, max_value, radius)
-      points.push({ x: r * @jsmath.cos(angle), y: r * @jsmath.sin(angle), })
-    }
+    let points = [
+      for i, entry in curve.entries => {
+        let angle = 2.0 * PI * i.to_double() / axis_count - PI / 2.0
+        let r = relative_radius(entry, min_value, max_value, radius)
+        Point::{ x: r * @jsmath.cos(angle), y: r * @jsmath.sin(angle), }
+      }
+    ]
     match radar.graticule {
       Circle =>
         g

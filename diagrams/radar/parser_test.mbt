@@ -3,8 +3,8 @@
 fn dump(source : String) -> Json {
   let radar = @radar.parse(source) catch {
     @langium.ParseError(message~, ..) =>
-      return Json::string("syntax: " + message)
-    @radar.Invalid(message) => return Json::string("invalid: " + message)
+      return Json::string("syntax: \{message}")
+    @radar.Invalid(message) => return Json::string("invalid: \{message}")
     _ => return Json::string("error")
   }
   {
