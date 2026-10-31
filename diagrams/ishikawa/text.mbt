@@ -60,7 +60,7 @@ fn collapse_lines(lines : Array[String]) -> Array[String] {
     out.push(text.to_string())
   }
   // The space the text ends with is in the last line that has anything.
-  for i = out.length() - 1; i >= 0; i = i - 1 {
+  for i in (out.length() - 1)>=..0 {
     if out[i] != "" {
       if out[i].strip_suffix(" ") is Some(rest) {
         out[i] = rest.to_owned()

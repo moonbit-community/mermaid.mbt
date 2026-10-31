@@ -54,10 +54,7 @@ fn Ishikawa::add_node(
       raw_level
     }
   }
-  let mut level = raw_level - base_level + 1
-  if level <= 0 {
-    level = 1
-  }
+  let level = (raw_level - base_level + 1).max(1)
   while self.stack.length() > 1 &&
         self.stack[self.stack.length() - 1].0 >= level {
     self.stack.pop() |> ignore
