@@ -90,9 +90,7 @@ pub fn[T] HierarchyNode::each_after(
   while nodes.pop() is Some(node) {
     next.push(node)
     if node.children is Some(children) {
-      for child in children {
-        nodes.push(child)
-      }
+      nodes.append(children)
     }
   }
   while next.pop() is Some(node) {
@@ -114,9 +112,7 @@ pub fn[T] HierarchyNode::descendants(
     for node in current {
       out.push(node)
       if node.children is Some(children) {
-        for child in children {
-          next.push(child)
-        }
+        next.append(children)
       }
     }
   }

@@ -333,12 +333,7 @@ pub fn Format::apply(self : Format, value : Double) -> String {
       for i in 0..<text.length() {
         let c = text[i]
         if c < '0' || c > '9' {
-          value_suffix = (if c == '.' {
-              ".\{text[i + 1:]}"
-            } else {
-              text[i:].to_owned()
-            }) +
-            value_suffix
+          value_suffix = text[i:].to_owned() + value_suffix
           text = text[:i].to_owned()
           break
         }
