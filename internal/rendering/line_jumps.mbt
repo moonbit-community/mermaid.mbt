@@ -373,11 +373,11 @@ fn replace_dasharray(style : String, pattern : String) -> String {
   // /stroke-dasharray\s*:[^;]*;?/g
   let replaced = StringBuilder()
   let mut rest = style[:]
-  while rest.find("stroke-dasharray") is Some(at) {
-    let after = rest[at + 16:]
+  while rest.split_once("stroke-dasharray") is Some((before, after)) {
     let trimmed = after.trim_start(chars=" \t\n")
     guard trimmed.strip_prefix(":") is Some(value) else {
-      replaced.write_view(rest[:at + 16])
+      replaced.write_view(before)
+      replaced.write_string("stroke-dasharray")
       rest = after
       continue
     }
@@ -385,7 +385,7 @@ fn replace_dasharray(style : String, pattern : String) -> String {
       Some(end) => end + 1
       None => value.length()
     }
-    replaced.write_view(rest[:at])
+    replaced.write_view(before)
     replaced.write_string("stroke-dasharray: \{pattern};")
     rest = value[end:]
   }

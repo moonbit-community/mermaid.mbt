@@ -61,8 +61,8 @@ fn calculate_point(
 ///|
 /// The middle of a route by length: mermaid's `calcLabelPosition`.
 fn calc_label_position(points : Array[Point]) -> Point raise LayoutError {
-  if points.length() == 1 {
-    return points[0]
+  if points is [single] {
+    return single
   }
   let mut total = 0.0
   let mut prev : Point? = None

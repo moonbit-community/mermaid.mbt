@@ -612,14 +612,12 @@ fn straighten_edge_terminals(edges : Array[Edge]) -> Unit {
       continue
     }
     let label = labels[index]
-    let candidate_label = match label {
-      Some(area) =>
-        match project_onto_run(area.centre, runs) {
-          Some(moved) => Some({ ..area, centre: moved, })
-          None => label
-        }
-      None => None
-    }
+    let candidate_label = label.map(area => {
+      match project_onto_run(area.centre, runs) {
+        Some(moved) => { ..area, centre: moved, }
+        None => area
+      }
+    })
     let mut before = 0
     let mut after = 0
     let mut covered_before = 0
