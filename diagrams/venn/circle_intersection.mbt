@@ -259,8 +259,8 @@ fn intersection_area_path(circles : Array[Circle]) -> String {
   if arcs.length() == 0 {
     return "M 0 0"
   }
-  if arcs.length() == 1 {
-    let circle = arcs[0].circle
+  if arcs is [arc] {
+    let circle = arc.circle
     return circle_path(circle.x, circle.y, circle.radius)
   }
   let out = StringBuilder()

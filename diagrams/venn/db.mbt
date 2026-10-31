@@ -95,10 +95,8 @@ fn js_trim(text : StringView) -> String {
 /// around it if it has them.
 fn normalize_text(text : String) -> String {
   let trimmed = js_trim(text)
-  if trimmed.length() >= 2 &&
-    trimmed.has_prefix("\"") &&
-    trimmed.has_suffix("\"") {
-    trimmed[1:trimmed.length() - 1].to_owned()
+  if trimmed is ['"', .. rest] && rest is [.. inner, '"'] {
+    inner.to_owned()
   } else {
     trimmed
   }
@@ -149,8 +147,8 @@ fn Venn::add_subset(
   let count = identifiers.length().to_double()
   let size = size.unwrap_or(10.0 / (count * count))
   self.current_sets = Some(sets)
-  if sets.length() == 1 {
-    self.known_sets[sets[0]] = ()
+  if sets is [set] {
+    self.known_sets[set] = ()
   }
   self.subsets.push({ sets, size, label: normalized_label(label), })
 }

@@ -82,8 +82,8 @@ fn compute_text_centre(
   if valid {
     return ret
   }
-  if interior.length() == 1 {
-    return { x: interior[0].x, y: interior[0].y, }
+  if interior is [only] {
+    return { x: only.x, y: only.y, }
   }
   let arcs = intersection_area(interior).1
   if arcs.length() == 0 {

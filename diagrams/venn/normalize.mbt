@@ -39,15 +39,12 @@ fn orientate_circles(circles : Array[Circle], orientation : Double) -> Unit {
       circle.y -= largest_y
     }
   }
-  if circles.length() == 2 {
+  if circles is [first, second] {
     // A circle inside the other touches it on the inside.
-    let dist = distance(circles[0].x, circles[0].y, circles[1].x, circles[1].y)
-    if dist < (circles[1].radius - circles[0].radius).abs() {
-      circles[1].x = circles[0].x +
-        circles[0].radius -
-        circles[1].radius -
-        1.0e-10
-      circles[1].y = circles[0].y
+    let dist = distance(first.x, first.y, second.x, second.y)
+    if dist < (second.radius - first.radius).abs() {
+      second.x = first.x + first.radius - second.radius - 1.0e-10
+      second.y = first.y
     }
   }
   if circles.length() > 1 {
@@ -136,18 +133,12 @@ priv struct Bounds {
 fn bounding_box(circles : Array[Circle]) -> Bounds {
   let mut x_max = @double.neg_infinity
   let mut x_min = @double.infinity
-  for c in circles {
-    x_max = js_max(x_max, c.x + c.radius)
-  }
-  for c in circles {
-    x_min = js_min(x_min, c.x - c.radius)
-  }
   let mut y_max = @double.neg_infinity
   let mut y_min = @double.infinity
   for c in circles {
+    x_max = js_max(x_max, c.x + c.radius)
+    x_min = js_min(x_min, c.x - c.radius)
     y_max = js_max(y_max, c.y + c.radius)
-  }
-  for c in circles {
     y_min = js_min(y_min, c.y - c.radius)
   }
   { x_min, x_max, y_min, y_max, }
