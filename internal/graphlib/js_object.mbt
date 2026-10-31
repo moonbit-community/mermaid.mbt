@@ -108,33 +108,23 @@ pub fn[V] JsObject::is_empty(self : JsObject[V]) -> Bool {
 ///|
 /// `Object.keys(object)`.
 pub fn[V] JsObject::keys(self : JsObject[V]) -> Array[String] {
-  let keys = []
-  if !self.indices.is_empty() {
-    for key, _ in self.indices {
-      keys.push(key)
-    }
-    keys.sort_by(compare_indices)
-  }
-  for key, _ in self.names {
-    keys.push(key)
-  }
+  let keys = self.indices.keys().collect()
+  keys.sort_by(compare_indices)
+  keys.push_iter(self.names.keys())
   keys
 }
 
 ///|
 /// `Object.values(object)`.
 pub fn[V] JsObject::values(self : JsObject[V]) -> Array[V] {
-  let values = []
-  if !self.indices.is_empty() {
-    for key in self.keys() {
-      if self.get(key) is Some(value) {
-        values.push(value)
-      }
-    }
-    return values
+  if self.indices.is_empty() {
+    return self.names.values().collect()
   }
-  for _, value in self.names {
-    values.push(value)
+  let values = []
+  for key in self.keys() {
+    if self.get(key) is Some(value) {
+      values.push(value)
+    }
   }
   values
 }
