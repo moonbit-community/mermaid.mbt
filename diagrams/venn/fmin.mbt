@@ -103,8 +103,8 @@ fn norm2(a : Array[Double]) -> Double {
 ///|
 /// `scale(ret, value, c)`
 fn scale_into(ret : Array[Double], value : Array[Double], c : Double) -> Unit {
-  for i in 0..<value.length() {
-    ret[i] = value[i] * c
+  for i, v in value {
+    ret[i] = v * c
   }
 }
 
@@ -159,8 +159,8 @@ fn nelder_mead(
     simplex.push({ x: point, fx: f(point), })
   }
   let update_simplex = (value : Vertex) => {
-    for i in 0..<value.x.length() {
-      simplex[n].x[i] = value.x[i]
+    for i, coordinate in value.x {
+      simplex[n].x[i] = coordinate
     }
     simplex[n].fx = value.fx
   }
