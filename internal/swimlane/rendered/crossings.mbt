@@ -193,11 +193,11 @@ fn pair_search_groups(
       }
     }
     let group = component.copy()
-    for edge in 0..<visible.length() {
+    for edge, visible_edge in visible {
       if component_set.contains(edge) {
         continue
       }
-      if endpoint_ids(visible[edge]).any(fn(id) {
+      if endpoint_ids(visible_edge).any(fn(id) {
           component_endpoint_ids.contains(id)
         }) {
         group.push(edge)
@@ -245,11 +245,11 @@ fn path_has_segment_conflict(
   base_segments : Array[Array[@model.Seg]],
 ) -> Bool {
   let path_segments = segments_for(path)
-  for other in 0..<base_segments.length() {
+  for other, other_segments in base_segments {
     if other == edge {
       continue
     }
-    if share_track(path_segments, base_segments[other]) {
+    if share_track(path_segments, other_segments) {
       return true
     }
   }
@@ -265,11 +265,11 @@ fn shared_track_conflicts_for(
   base_segments : Array[Array[@model.Seg]],
 ) -> Set[Int32] {
   let conflicts : Set[Int32] = Set([])
-  for other in 0..<base_segments.length() {
+  for other, other_segments in base_segments {
     if other == edge {
       continue
     }
-    if share_track(candidate_segments, base_segments[other]) {
+    if share_track(candidate_segments, other_segments) {
       conflicts.add(other)
     }
   }
@@ -305,13 +305,12 @@ fn CrossingContext::pair_candidates_for(
     seen.add(key)
     let candidate_segments = segments_for(candidate)
     let mut replacement_affected = 0
-    for other in 0..<base_segments.length() {
+    for other, other_segments in base_segments {
       if other == edge {
         continue
       }
       replacement_affected += crossing_count_between(
-        candidate_segments,
-        base_segments[other],
+        candidate_segments, other_segments,
       )
     }
     let crossings = current.count -
@@ -383,11 +382,10 @@ fn pair_crossing_count(
     first_candidate.segments,
     second_candidate.segments,
   )
-  for other in 0..<base_segments.length() {
+  for other, other_segments in base_segments {
     if other == first_edge || other == second_edge {
       continue
     }
-    let other_segments = base_segments[other]
     replacement_affected += crossing_count_between(
         first_candidate.segments,
         other_segments,
@@ -594,7 +592,7 @@ pub fn resolve_rendered_orthogonal_crossings(
       real_nodes.push(info)
     }
   }
-  if real_nodes.length() == 0 {
+  if real_nodes.is_empty() {
     return
   }
   let node_info_by_id : Map[String, @model.NodeInfo] = Map([])

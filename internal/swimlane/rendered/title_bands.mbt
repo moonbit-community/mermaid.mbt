@@ -123,7 +123,7 @@ pub fn lift_top_lane_title_bands_above_rails(
     }
     lanes.push({ node, rect, })
   }
-  if lanes.length() == 0 {
+  if lanes.is_empty() {
     return
   }
   let mut top_delta = 0.0
@@ -185,7 +185,7 @@ pub fn shift_left_lane_title_bands_left_of_rails(
     }
     lanes.push({ node, rect, })
   }
-  if lanes.length() == 0 {
+  if lanes.is_empty() {
     return
   }
   let mut left_delta = 0.0
