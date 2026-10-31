@@ -175,7 +175,6 @@ fn draw_actor_legend(
         text_margin=conf.box_text_margin,
       )
       |> ignore
-      let line_break = try! @jsregex.Regex::compile("<br\\s*/?>", flags="gi")
       let line_width = client_width(
         font,
         line_break.replace_all(line, _ => " "),
@@ -349,10 +348,9 @@ fn draw_tasks(
     )
     let mut dot_x = x + 14.0
     for person in task.people {
-      guard actors.search_by(actor => actor.name == person) is Some(index) else {
+      guard actors.iter().find_first(a => a.name == person) is Some(actor) else {
         continue
       }
-      let actor = actors[index]
       draw_circle(
         group,
         cx=dot_x,

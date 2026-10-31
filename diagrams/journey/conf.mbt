@@ -111,7 +111,7 @@ fn css_font_size(text : String) -> String? raise JourneyError {
   // JavaScript are left alone.
   let plain = value != "" &&
     value.all(c => c is ('0'..<='9' | '.')) &&
-    value.iter().filter(c => c == '.').count() <= 1 &&
+    value.iter().count_if(c => c == '.') <= 1 &&
     !value.has_suffix(".")
   if !plain {
     raise JourneyError("journey.taskFontSize \{text} is not a plain length")
