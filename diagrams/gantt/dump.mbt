@@ -20,15 +20,15 @@ pub fn GanttDb::dump(self : GanttDb, now : Double) -> Json raise GanttError {
   for task in self.compile(now) {
     let flags : Array[Json] = []
     for
-      flag in [
+      (name, on) in [
         ("active", task.active),
         ("done", task.done),
         ("crit", task.crit),
         ("milestone", task.milestone),
         ("vert", task.vert),
       ] {
-      if flag.1 {
-        flags.push(Json::string(flag.0))
+      if on {
+        flags.push(Json::string(name))
       }
     }
     tasks.push({

@@ -87,7 +87,7 @@ fn GanttDb::start_date(
   if date.is_nan() ||
     self.zone.full_year(date) < -10000.0 ||
     self.zone.full_year(date) > 10000.0 {
-    raise GanttError("Invalid date:" + text)
+    raise GanttError("Invalid date:\{text}")
   }
   Some(date)
 }
