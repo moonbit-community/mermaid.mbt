@@ -274,12 +274,11 @@ fn path_lengths(path : String) -> Unit raise CliError {
   guard read_json(path) is Array(cases) else {
     raise CliError("\{path} must hold an array of path data", status=2)
   }
-  let results : Array[Json] = []
-  for item in cases {
-    if item is String(data) {
-      results.push(Json::number(@dom.path_length(data)))
+  let results = [
+    for item in cases if item is String(data) => {
+      Json::number(@dom.path_length(data))
     }
-  }
+  ]
   println(Json::array(results).stringify())
 }
 
