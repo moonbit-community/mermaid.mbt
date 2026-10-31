@@ -468,8 +468,7 @@ fn self_loop_side(
     _ => "top"
   }
   let dummy_ids : Array[String] = []
-  for segment in segments {
-    let (_, start, end) = segment
+  for (_, start, end) in segments {
     for id in [start, end] {
       if id != original_node_id && !dummy_ids.contains(id) {
         dummy_ids.push(id)

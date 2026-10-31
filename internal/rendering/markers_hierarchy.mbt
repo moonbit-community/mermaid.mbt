@@ -9,11 +9,10 @@ fn insert_hierarchy_marker(
 ) -> Bool {
   guard kind == "hierarchy" else { return false }
   for
-    end in [
+    (suffix, ref_x, d) in [
       ("End", "10", "M 0 0 L 6 5 L 0 10 M 4 0 L 10 5 L 4 10"),
       ("Start", "2", "M 12 0 L 6 5 L 12 10 M 8 0 L 2 5 L 8 10"),
     ] {
-    let (suffix, ref_x, d) = end
     parent
     .append("marker")
     .attr("id", "\{diagram_id}_\{diagram_type}-hierarchy\{suffix}")

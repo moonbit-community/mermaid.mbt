@@ -98,8 +98,7 @@ fn c4_label_helper(
   })
   let n = @dom.number
   let mut y = 0.0
-  for section in rendered {
-    let (element, box) = section
+  for (element, box) in rendered {
     element.attr(
       "transform",
       "translate(\{n(total_width / 2.0 - box.x - box.width / 2.0)}, \{n(y - box.y)})",

@@ -265,13 +265,12 @@ fn Box::hit_by(self : Box, a : Point, b : Point) -> Bool {
   let dx = b.x - a.x
   let dy = b.y - a.y
   for
-    pair in [
+    (p, q) in [
       (-dx, a.x - self.x1),
       (dx, self.x2 - a.x),
       (-dy, a.y - self.y1),
       (dy, self.y2 - a.y),
     ] {
-    let (p, q) = pair
     if p == 0.0 {
       if q < 0.0 {
         return false
