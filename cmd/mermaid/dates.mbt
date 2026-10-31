@@ -8,13 +8,16 @@ fn number_or_null(value : Double) -> Json {
 }
 
 ///|
+fn number_of(value : Json) -> Double {
+  match value {
+    Number(n, ..) => n
+    _ => @double.not_a_number
+  }
+}
+
+///|
 fn numbers(values : Array[Json]) -> Array[Double] {
-  values.map(value => {
-    match value {
-      Number(n, ..) => n
-      _ => @double.not_a_number
-    }
-  })
+  values.map(number_of)
 }
 
 ///|
@@ -211,7 +214,7 @@ fn time_case(item : Json) -> Json raise {
         fail("malformed scale case")
       }
       let scale = @d3.TimeScale::new(zone)
-        .set_domain(numbers([d0])[0], numbers([d1])[0])
+        .set_domain(number_of(d0), number_of(d1))
         .set_range_round(r0, r1)
       // The values stand for `Date` objects, which hold whole milliseconds.
       Json::array(

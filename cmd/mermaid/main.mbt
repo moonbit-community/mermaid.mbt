@@ -84,16 +84,15 @@ async fn render(
       _ => raise CliError("\{value} is not a number", status=2)
     }
   }
-  let mut rest = options
-  while true {
+  for rest = options {
     match rest {
       ["--id", value, .. tail] => {
         id = value
-        rest = tail
+        continue tail
       }
       ["--now", value, .. tail] => {
         now = Some(number(value))
-        rest = tail
+        continue tail
       }
       ["--viewport", value, .. tail] => {
         guard value.split("x").collect() is [width, height] else {
@@ -103,15 +102,15 @@ async fn render(
           viewport_width=number(width),
           viewport_height=number(height),
         )
-        rest = tail
+        continue tail
       }
       ["--config", value, .. tail] => {
         site = read_json(value)
-        rest = tail
+        continue tail
       }
       ["--fetch-images", .. tail] => {
         fetch_images = true
-        rest = tail
+        continue tail
       }
       [] => break
       [other, ..] => raise CliError("unknown option \{other}", status=2)
