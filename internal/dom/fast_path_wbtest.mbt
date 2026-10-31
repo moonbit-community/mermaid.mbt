@@ -66,8 +66,7 @@ test "Chrome's fast path takes the markup it takes" {
     ("&xyz=abcdefghijklmnopqrs;", false, false, false),
     ("&a=abcdefghijklmnopqrst;", false, false, false),
   ]
-  for entry in cases {
-    let (text, body, div, span) = entry
+  for (text, body, div, span) in cases {
     let html = marker + text
     assert_eq(fast_path(html, "body") is Some(_), body, msg=text)
     assert_eq(fast_path(html, "div") is Some(_), div, msg=text)

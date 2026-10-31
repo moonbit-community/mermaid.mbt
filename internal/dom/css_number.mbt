@@ -68,12 +68,7 @@ fn css_number(value : Double) -> String {
   }
   let sign = if negative { "-" } else { "" }
   if k < -4 || k >= 6 {
-    let exponent_text = k.abs().to_string()
-    let padded = if exponent_text.length() < 2 {
-      "0" + exponent_text
-    } else {
-      exponent_text
-    }
+    let padded = k.abs().to_string().pad_start(2, '0')
     let mantissa_text = strip("\{text[:1]}.\{text[1:]}")
     return "\{sign}\{mantissa_text}e\{if k < 0 { "-" } else { "+" }}\{padded}"
   }
