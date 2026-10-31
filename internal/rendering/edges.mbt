@@ -326,13 +326,12 @@ fn insert_edge(
     }) +
     ";" +
     edge.style.map(style => ";" + style).join("")
-  let classes = " \{thickness} \{pattern}" +
-    (if edge.classes != "" { " " + edge.classes } else { "" }) +
+  let extra_classes = (if edge.classes != "" { " " + edge.classes } else { "" }) +
     (if animation_class != "" { " " + animation_class } else { "" })
+  let classes = " \{thickness} \{pattern}" + extra_classes
   let (path, sketched_stroke) = if edge.look == "handDrawn" {
     let (path, stroke) = sketched_edge(group, line_path, edge, data)
-    let classes = " \{thickness} \{pattern} transition" +
-      classes[thickness.length() + pattern.length() + 2:].to_owned()
+    let classes = " \{thickness} \{pattern} transition" + extra_classes
     path
     .attr("id", "\{data.diagram_id}-\{edge.id}")
     .attr("class", classes)

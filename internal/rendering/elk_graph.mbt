@@ -523,8 +523,7 @@ fn cyclic_entry_nodes(
       }
       found
     }
-    for pair in internal {
-      let (source, target) = pair
+    for (source, target) in internal {
       if reaches(target, source) {
         continue
       }

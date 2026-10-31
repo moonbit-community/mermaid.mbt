@@ -25,7 +25,7 @@ fn MdLexer::masked(self : MdLexer, source : String) -> String {
   let replace = (text : String, start : Int32, end : Int32, fill : String) => {
     js_slice(text, 0, start) + fill + js_slice(text, end, text.length())
   }
-  let brackets = (length : Int32) => "[" + "a".repeat(length - 2) + "]"
+  let brackets = (length : Int32) => "[\{"a".repeat(length - 2)}]"
   if !self.links.is_empty() {
     let mut from = 0
     while inline_reflink_search.exec(masked, from~) is Some(found) {
