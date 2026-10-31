@@ -228,7 +228,7 @@ fn tail(text : String, start : Int32) -> String {
   if start >= text.length() {
     ""
   } else {
-    text.unsafe_substring(start~, end=text.length())
+    text[start:].to_owned()
   }
 }
 
