@@ -61,12 +61,11 @@ fn result_edges(graph : Json) -> Array[ResultEdge] {
       }
     }
     let sections = json_items(edge, "sections").map(section => {
-      let points = [json_point(json_field(section, "startPoint"))]
-      for bend in json_items(section, "bendPoints") {
-        points.push(json_point(bend))
-      }
-      points.push(json_point(json_field(section, "endPoint")))
-      points
+      [
+        json_point(json_field(section, "startPoint")),
+        ..json_items(section, "bendPoints").map(json_point),
+        json_point(json_field(section, "endPoint")),
+      ]
     })
     let label = match json_items(edge, "labels") {
       [label, ..] =>

@@ -125,14 +125,7 @@ fn check_label_styles(data : LayoutData) -> Unit raise LayoutError {
         "the image or icon size of \{node.id} is not a number, which is not ported",
       )
     }
-    let styles = [..node.css_compiled_styles, ..node.css_styles]
-    for style in node.label_style.split(";") {
-      let style = style.trim().to_owned()
-      if style != "" {
-        styles.push(style)
-      }
-    }
-    check(styles)
+    check(node_declarations(node))
   }
   // Marker references then start with the address of the page, which
   // a renderer without a page does not have.

@@ -59,14 +59,7 @@ fn asset_data(node : Node) -> AssetData {
 ///|
 /// The node's styles by property, label styles included: `compileStyles`.
 fn compiled_styles_map(node : Node) -> Map[String, String] {
-  let styles = [..node.css_compiled_styles, ..node.css_styles]
-  for style in node.label_style.split(";") {
-    let style = style.trim().to_owned()
-    if style != "" {
-      styles.push(style)
-    }
-  }
-  styles_map(styles)
+  styles_map(node_declarations(node))
 }
 
 ///|

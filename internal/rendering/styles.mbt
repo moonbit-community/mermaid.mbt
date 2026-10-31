@@ -30,7 +30,11 @@ fn styles_map(styles : Array[String]) -> Map[String, String] {
   for style in styles {
     let parts = style.split(":").collect()
     let key = parts[0].trim().to_owned()
-    let value = if parts.length() > 1 { parts[1].trim().to_owned() } else { "" }
+    let value = if parts is [_, value, ..] {
+      value.trim().to_owned()
+    } else {
+      ""
+    }
     map[key] = value
   }
   map
@@ -61,16 +65,23 @@ fn split_styles(styles : Array[String]) -> SplitStyles {
 }
 
 ///|
-/// `styles2String` of a node.
-fn node_styles(node : Node) -> SplitStyles {
-  let styles = [..node.css_compiled_styles, ..node.css_styles]
+/// The inline style declarations of a node: its compiled and its own
+/// styles, then the ones its label carries.
+fn node_declarations(node : Node) -> Array[String] {
+  let declarations = [..node.css_compiled_styles, ..node.css_styles]
   for style in node.label_style.split(";") {
     let style = style.trim().to_owned()
     if style != "" {
-      styles.push(style)
+      declarations.push(style)
     }
   }
-  split_styles(styles)
+  declarations
+}
+
+///|
+/// `styles2String` of a node.
+fn node_styles(node : Node) -> SplitStyles {
+  split_styles(node_declarations(node))
 }
 
 ///|
@@ -111,14 +122,7 @@ fn stroke_dash_array(style : String?) -> Array[Double] {
 /// `userNodeOverrides` with `roughness: 0` and `fillStyle: 'solid'`.
 fn rough_options(node : Node, env : Env) -> @rough.Options {
   let theme = env.config.theme()
-  let styles = [..node.css_compiled_styles, ..node.css_styles]
-  for style in node.label_style.split(";") {
-    let style = style.trim().to_owned()
-    if style != "" {
-      styles.push(style)
-    }
-  }
-  let map = styles_map(styles)
+  let map = styles_map(node_declarations(node))
   let pick = (name : String, fallback : String) => {
     match map.get(name) {
       Some(value) if value != "" => value
