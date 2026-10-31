@@ -241,7 +241,7 @@ fn break_string(
   let lines = []
   let mut current = ""
   for index, character in characters {
-    let next = current + character.to_string()
+    let next = "\{current}\{character}"
     if text_width(next, font) >= max_width {
       let is_last = index + 1 == characters.length()
       lines.push(if is_last { next } else { next + "-" })

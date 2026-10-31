@@ -574,8 +574,7 @@ fn Renderer::calculate_loop_bounds(
     if msg.placement is Some(_) {
       let note = self.build_note_model(msg)
       msg.note_model = Some(note)
-      for entry in stack {
-        let current = entry.1
+      for (_, current) in stack {
         current.from = get_min([current.from, note.startx])
         current.to = get_max([current.to, note.startx + note.width])
         current.width = get_max([
@@ -595,8 +594,7 @@ fn Renderer::calculate_loop_bounds(
         model.stopx == model.stopx else {
         continue
       }
-      for entry in stack {
-        let current = entry.1
+      for (_, current) in stack {
         if model.startx == model.stopx {
           guard self.actor(msg.from) is Some(from) &&
             self.actor(msg.to) is Some(to) else {
