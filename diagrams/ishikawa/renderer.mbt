@@ -652,15 +652,8 @@ pub fn draw(
     return
   }
   spine_x -= 20.0
-  let upper : Array[Node] = []
-  let lower : Array[Node] = []
-  for i, cause in causes {
-    if i % 2 == 0 {
-      upper.push(cause)
-    } else {
-      lower.push(cause)
-    }
-  }
+  let upper : Array[Node] = [ for i, cause in causes if i % 2 == 0 => cause ]
+  let lower : Array[Node] = [ for i, cause in causes if i % 2 != 0 => cause ]
   let (upper_total, upper_max) = side_stats(upper)
   let (lower_total, lower_max) = side_stats(lower)
   let descendant_total = upper_total + lower_total
