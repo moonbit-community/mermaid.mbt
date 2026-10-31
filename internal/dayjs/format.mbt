@@ -52,16 +52,9 @@ fn ordinal(n : Double) -> String {
   let n = n.to_int()
   let rest = n % 100
   let suffixes = ["th", "st", "nd", "rd"]
-  let pick = (index : Int32) => {
-    if index >= 0 && index < 4 {
-      Some(suffixes[index])
-    } else {
-      None
-    }
-  }
-  let suffix = match pick((rest - 20) % 10) {
+  let suffix = match suffixes.get((rest - 20) % 10) {
     Some(suffix) => suffix
-    None => pick(rest).unwrap_or("th")
+    None => suffixes.get(rest).unwrap_or("th")
   }
   "[\{n}\{suffix}]"
 }
@@ -136,7 +129,7 @@ pub fn Dayjs::format(
       "YY" => {
         let text = integer(year)
         if text.length() > 2 {
-          text.unsafe_substring(start=text.length() - 2, end=text.length())
+          text[text.length() - 2:].to_owned()
         } else {
           text
         }
@@ -144,13 +137,13 @@ pub fn Dayjs::format(
       "YYYY" => pad_start(integer(year), 4, '0')
       "M" => (month + 1).to_string()
       "MM" => two((month + 1).to_double())
-      "MMM" => months[month].unsafe_substring(start=0, end=3)
+      "MMM" => months[month][:3].to_owned()
       "MMMM" => months[month]
       "D" => integer(date)
       "DD" => two(date)
       "d" => weekday.to_string()
-      "dd" => weekdays[weekday].unsafe_substring(start=0, end=2)
-      "ddd" => weekdays[weekday].unsafe_substring(start=0, end=3)
+      "dd" => weekdays[weekday][:2].to_owned()
+      "ddd" => weekdays[weekday][:3].to_owned()
       "dddd" => weekdays[weekday]
       "H" => integer(hours)
       "HH" => two(hours)
