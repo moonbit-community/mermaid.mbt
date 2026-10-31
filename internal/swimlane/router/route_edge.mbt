@@ -243,11 +243,7 @@ fn Router::route_edge(self : Router, i : Int32) -> Unit {
   full_points.append(dst_handle_waypoints)
   full_points.push(p_dst_port)
   // A last point doubling back over the one before it is dropped.
-  if full_points.length() >= 3 {
-    let n = full_points.length()
-    let c = full_points[n - 1]
-    let b = full_points[n - 2]
-    let a = full_points[n - 3]
+  if full_points is [.., a, b, c] {
     let is_horiz = (a.y - b.y).abs() < EPS7 && (b.y - c.y).abs() < EPS7
     let is_vert = (a.x - b.x).abs() < EPS7 && (b.x - c.x).abs() < EPS7
     if is_horiz {
@@ -256,7 +252,7 @@ fn Router::route_edge(self : Router, i : Int32) -> Unit {
       if sign_ab != 0.0 &&
         sign_ab == sign_ac &&
         (b.x - a.x).abs() > (c.x - a.x).abs() {
-        full_points.remove(n - 2) |> ignore
+        full_points.remove(full_points.length() - 2) |> ignore
       }
     } else if is_vert {
       let sign_ab = js_sign(b.y - a.y)
@@ -264,7 +260,7 @@ fn Router::route_edge(self : Router, i : Int32) -> Unit {
       if sign_ab != 0.0 &&
         sign_ab == sign_ac &&
         (b.y - a.y).abs() > (c.y - a.y).abs() {
-        full_points.remove(n - 2) |> ignore
+        full_points.remove(full_points.length() - 2) |> ignore
       }
     }
   }
