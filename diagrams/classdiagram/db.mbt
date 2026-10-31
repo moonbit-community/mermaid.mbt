@@ -210,16 +210,15 @@ fn ClassDb::set_class_label(
 }
 
 ///|
+/// Adds the interface, and returns the id it was given.
 fn ClassDb::add_interface(
   self : ClassDb,
   label : String,
   class_id : String,
-) -> Unit {
-  self.interfaces.push({
-    id: "interface\{self.interfaces.length()}",
-    label,
-    class_id,
-  })
+) -> String {
+  let id = "interface\{self.interfaces.length()}"
+  self.interfaces.push({ id, label, class_id, })
+  id
 }
 
 ///|
@@ -240,12 +239,10 @@ fn ClassDb::add_relation(
   let mut id2 = id2
   if type1 == Some(LOLLIPOP) && type2 is None {
     self.add_class(id2)
-    self.add_interface(id1, id2)
-    id1 = "interface\{self.interfaces.length() - 1}"
+    id1 = self.add_interface(id1, id2)
   } else if type2 == Some(LOLLIPOP) && type1 is None {
     self.add_class(id1)
-    self.add_interface(id2, id1)
-    id2 = "interface\{self.interfaces.length() - 1}"
+    id2 = self.add_interface(id2, id1)
   } else {
     self.add_class(id1)
     self.add_class(id2)

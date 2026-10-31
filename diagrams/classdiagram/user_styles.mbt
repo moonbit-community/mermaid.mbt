@@ -47,7 +47,7 @@ fn selector_tail(id : String) -> String? {
     }
     let text = StringBuilder()
     if type_name is Some(name) {
-      text.write_string(name.to_owned().to_lower())
+      text.write_view(name.to_lower())
     }
     for position, class_name in classes {
       if position > 0 || index > 0 {
