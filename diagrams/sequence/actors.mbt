@@ -315,12 +315,10 @@ fn Renderer::draw_participant(
     rect.height,
     "actor actor-box",
   )
-  let mut height = actor.height
   if !conf.is_neo() {
     actor.height = rect_element.bbox().height
-    height = actor.height
   }
-  height
+  actor.height
 }
 
 ///|
@@ -366,15 +364,13 @@ fn Renderer::draw_collections(
     rect.height,
     "actor actor-box",
   )
-  let mut height = actor.height
   if !conf.is_neo() {
     actor.height = rect_element.bbox().height
-    height = actor.height
   }
   if !is_footer {
     mark_participant(group, "collections", actor)
   }
-  height
+  actor.height
 }
 
 ///|
@@ -435,15 +431,13 @@ fn Renderer::draw_queue(
     rect.height,
     "actor actor-box",
   )
-  let mut height = actor.height
   if !conf.is_neo() {
     actor.height = path.bbox().height
-    height = actor.height
   }
   if !is_footer {
     mark_participant(group, "queue", actor)
   }
-  height
+  actor.height
 }
 
 ///|
