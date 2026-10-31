@@ -439,21 +439,15 @@ fn svd(a : Array[Array[Double]]) -> Svd {
           if s[k] >= s[k + 1] {
             break
           }
-          let t = s[k]
-          s[k] = s[k + 1]
-          s[k + 1] = t
+          s.swap(k, k + 1)
           if k < n - 1 {
             for i in 0..<n {
-              let t = v[i][k + 1]
-              v[i][k + 1] = v[i][k]
-              v[i][k] = t
+              v[i].swap(k, k + 1)
             }
           }
           if k < m - 1 {
             for i in 0..<m {
-              let t = u[i][k + 1]
-              u[i][k + 1] = u[i][k]
-              u[i][k] = t
+              u[i].swap(k, k + 1)
             }
           }
           k += 1
