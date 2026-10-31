@@ -46,15 +46,14 @@ pub fn is_allowed_uri(value : String) -> Bool {
     return value == ""
   }
   let is_scheme_char = (c : Char) => c is ('a'..<='z' | '+' | '.' | '-')
-  // A leading run of scheme characters followed by a colon is a scheme.
-  let mut end = 0
-  for c in text {
-    guard is_scheme_char(c) else { break }
-    end += 1
+  // A leading run of scheme characters, starting with a letter and followed
+  // by a colon, is a scheme.
+  guard text.split_once(":") is Some((scheme, _)) &&
+    scheme is ['a'..<='z', ..] &&
+    scheme.all(is_scheme_char) else {
+    return true
   }
-  guard text is ['a'..<='z', ..] else { return true }
-  guard text[end:] is [':', ..] else { return true }
-  text[:end]
+  scheme
   is ("ftp"
   | "ftps"
   | "http"
