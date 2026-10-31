@@ -498,16 +498,16 @@ fn drop_declarations(style : String, names : Array[String]) -> String {
     let out = StringBuilder()
     let mut rest = result[:]
     let needle = name + ":"
-    while rest.find(needle) is Some(at) {
-      let after = rest[at + needle.length():]
+    while rest.split_once(needle) is Some((before, after)) {
       let end = after.find(";").unwrap_or(after.length())
       if end == 0 {
         // Nothing to remove without a value.
-        out.write_view(rest[:at + needle.length()])
+        out.write_view(before)
+        out.write_string(needle)
         rest = after
         continue
       }
-      out.write_view(rest[:at])
+      out.write_view(before)
       rest = if end < after.length() { after[end + 1:] } else { after[end:] }
     }
     out.write_view(rest)

@@ -322,8 +322,10 @@ fn rewrite_edge_path(
 /// The two gaps a neo edge's dash pattern leaves for its markers, read
 /// back from its style: `0 <start> <on> <end>`.
 fn dash_gaps(style : String) -> (String, String)? {
-  guard style.find("stroke-dasharray") is Some(at) else { return None }
-  let rest = style[at + 16:].trim_start(chars=" \t\n")
+  guard style.split_once("stroke-dasharray") is Some((_, rest)) else {
+    return None
+  }
+  let rest = rest.trim_start(chars=" \t\n")
   guard rest.strip_prefix(":") is Some(rest) else { return None }
   let end = rest.find(";").unwrap_or(rest.length())
   let tokens = [

@@ -115,10 +115,8 @@ fn split_lines(text : String) -> Array[String] {
 ///|
 /// `text.split("\n", 1)[0]`.
 fn first_line(text : String) -> String {
-  match text.find("\n") {
-    Some(at) => js_slice(text, 0, at)
-    None => text
-  }
+  guard text.split_once("\n") is Some((line, _)) else { return text }
+  line.to_owned()
 }
 
 ///|

@@ -392,16 +392,14 @@ fn class_box(
 /// The `color` declaration of a style text as a `fill` declaration:
 /// what `/color\s*:\s*([^;]*)/` matches, with `color` replaced.
 fn style_color(styles : String) -> String? {
-  let mut from = 0
-  while styles[from:].find("color") is Some(found) {
-    let start = from + found
-    let rest = styles[start + 5:]
+  let mut rest = styles[:]
+  while rest.split_once("color") is Some((_, after)) {
+    rest = after
     let value = rest.trim_start(chars=" \t\n\r")
     if value.has_prefix(":") {
       let end = rest.find(";").unwrap_or(rest.length())
       return Some("fill\{rest[:end]}")
     }
-    from = start + 5
   }
   None
 }
