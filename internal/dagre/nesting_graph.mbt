@@ -10,9 +10,7 @@ fn nesting_graph_run(g : LayoutGraph) -> Unit raise LayoutError {
   let depths = tree_depths(g)
   let mut deepest = 0
   for _, depth in depths {
-    if depth > deepest {
-      deepest = depth
-    }
+    deepest = depth.max(deepest)
   }
   let height = deepest - 1
   let node_sep = 2 * height + 1
