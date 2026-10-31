@@ -219,7 +219,7 @@ pub fn draw(db : GanttDb, context : @diagram.Context) -> Unit raise GanttError {
     raise Unsupported("the sandbox security level")
   }
   let conf = (name : String, default : Double) => {
-    config.number("gantt." + name).unwrap_or(default)
+    config.number("gantt.\{name}").unwrap_or(default)
   }
   let bar_height = conf("barHeight", 20.0)
   let bar_gap = conf("barGap", 4.0)
@@ -432,10 +432,10 @@ pub fn draw(db : GanttDb, context : @diagram.Context) -> Unit raise GanttError {
       task_class = " task"
     }
     if task.milestone {
-      task_class = " milestone " + task_class
+      task_class = " milestone \{task_class}"
     }
     if task.vert {
-      task_class = " vert " + task_class
+      task_class = " vert \{task_class}"
     }
     group
     .append("rect")
@@ -588,7 +588,7 @@ pub fn draw(db : GanttDb, context : @diagram.Context) -> Unit raise GanttError {
     let lines = line_break.split(name)
     let label = labels
       .append("text")
-      .attr("dy", n(-(lines.length().to_double() - 1.0) / 2.0) + "em")
+      .attr("dy", "\{n(-(lines.length().to_double() - 1.0) / 2.0)}em")
     for j, line in lines {
       let tspan = label
         .append("tspan")
