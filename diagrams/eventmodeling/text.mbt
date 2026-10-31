@@ -70,16 +70,10 @@ fn text_dimensions(text : String) -> (Double, Double) raise {
       if line_width == 0.0 && box_height == 0.0 {
         raise Invalid("svg element not in render tree")
       }
-      width = js_round(if line_width > width { line_width } else { width })
+      width = js_round(max(width, line_width))
       let rounded = js_round(box_height)
       height += rounded
-      line_height = js_round(
-        if rounded > line_height {
-          rounded
-        } else {
-          line_height
-        },
-      )
+      line_height = js_round(max(line_height, rounded))
     }
     dims.push((width, height, line_height))
   }

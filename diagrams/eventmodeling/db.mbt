@@ -162,16 +162,10 @@ fn substring(
   end : Int32,
 ) -> String raise Unsupported {
   let length = text.length()
-  let clamp = (index : Int32) => {
-    if index < 0 {
-      0
-    } else if index > length {
-      length
-    } else {
-      index
-    }
-  }
-  let (start, end) = (clamp(start), clamp(end))
+  let (start, end) = (
+    start.clamp(min=0, max=length),
+    end.clamp(min=0, max=length),
+  )
   let (start, end) = if start > end { (end, start) } else { (start, end) }
   // A cut through a character outside the basic plane leaves half of it.
   let splits = (index : Int32) => {
@@ -184,17 +178,6 @@ fn substring(
     raise Unsupported("data cut in the middle of a character")
   }
   text[start:end].to_owned()
-}
-
-///|
-/// The index of the last `}`, or -1.
-fn last_closing_brace(text : String) -> Int32 {
-  for index in (text.length() - 1)>=..0 {
-    if text[index] == '}' {
-      return index
-    }
-  }
-  -1
 }
 
 ///|
@@ -226,7 +209,7 @@ fn sanitize(text : String) -> String raise Unsupported {
 fn data_html(data : String, opening : String) -> String raise {
   let start = data.find(opening).unwrap_or(-1)
   let inner = substring(data, start + opening.length(), data.length())
-  let inner = substring(inner, 0, last_closing_brace(inner) - 1)
+  let inner = substring(inner, 0, inner.rev_find("}").unwrap_or(-1) - 1)
   wrap_label(sanitize(inner), TEXT_MAX_WIDTH).replace_all(old=" ", new="&nbsp;")
 }
 

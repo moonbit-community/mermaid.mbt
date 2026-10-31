@@ -4,20 +4,19 @@ fn boxes(source : String, relations_only~ : Bool = false) -> Json {
   let model = parse(source) catch { _ => return Json::string("parse error") }
   let theme = @theme.Theme::from_variables(Map([]))
   let state = layout(model, theme) catch {
-    Invalid(message) => return Json::string("invalid: " + message)
-    Unsupported(message) => return Json::string("unsupported: " + message)
+    Invalid(message) => return Json::string("invalid: \{message}")
+    Unsupported(message) => return Json::string("unsupported: \{message}")
     _ => return Json::string("error")
   }
   let out : Array[Json] = []
-  for box in state.boxes {
-    if relations_only {
-      break
+  if !relations_only {
+    for box in state.boxes {
+      out.push(
+        Json::string(
+          "\{box.swimlane.index} \{box.swimlane.label}: x \{box.x} y \{box.swimlane.y} \{box.width}x\{box.height}",
+        ),
+      )
     }
-    out.push(
-      Json::string(
-        "\{box.swimlane.index} \{box.swimlane.label}: x \{box.x} y \{box.swimlane.y} \{box.width}x\{box.height}",
-      ),
-    )
   }
   for relation in state.relations {
     out.push(

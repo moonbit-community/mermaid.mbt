@@ -3,9 +3,9 @@
 fn dump(source : String) -> Json {
   let model = @eventmodeling.parse(source) catch {
     @langium.ParseError(message~, ..) =>
-      return Json::string("syntax: " + message)
+      return Json::string("syntax: \{message}")
     @eventmodeling.Invalid(message) =>
-      return Json::string("invalid: " + message)
+      return Json::string("invalid: \{message}")
     _ => return Json::string("error")
   }
   let frames : Array[Json] = []
