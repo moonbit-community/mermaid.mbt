@@ -340,10 +340,7 @@ fn Db::add_edge(self : Db, edge : Edge) -> Unit raise ArchitectureError {
   guard self.nodes.get(rhs_id) is Some(rhs) else {
     raise Invalid("Cannot read properties of undefined (reading 'in')")
   }
-  let same_group = match (lhs.parent, rhs.parent) {
-    (Some(a), Some(b)) => a == b
-    _ => false
-  }
+  let same_group = lhs.parent is Some(a) && rhs.parent is Some(b) && a == b
   if edge.lhs_group && same_group {
     raise Invalid(
       "The left-hand id [\{lhs_id}] is modified to traverse the group boundary, but the edge does not pass through two groups.",

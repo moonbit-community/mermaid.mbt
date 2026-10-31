@@ -82,13 +82,7 @@ fn convert_string(text : String) -> String {
 ///|
 /// The value converter of `ARCH_ICON`: `input.replace(/[()]/g, '').trim()`.
 fn convert_icon(text : String) -> String {
-  let out = StringBuilder()
-  for c in text {
-    if c != '(' && c != ')' {
-      out.write_char(c)
-    }
-  }
-  js_trim(out.to_string())
+  js_trim(String::from_array([ for c in text if c != '(' && c != ')' => c ]))
 }
 
 ///|

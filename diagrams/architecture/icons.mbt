@@ -97,12 +97,13 @@ fn replace_ids(body : String, counter : Ref[Int32]) -> String {
   let ids = []
   let mut rest = body[:]
   while rest.split_once(" id=\"") is Some((_, value)) {
-    match value.find("\"") {
-      Some(end) if end > 0 && !value[:end].contains(" ") => {
-        ids.push(value[:end].to_owned())
-        rest = value[end + 1:]
-      }
-      _ => rest = value
+    if value.split_once("\"") is Some((id, after)) &&
+      id != "" &&
+      !id.contains(" ") {
+      ids.push(id.to_owned())
+      rest = after
+    } else {
+      rest = value
     }
   }
   let mut result = body
