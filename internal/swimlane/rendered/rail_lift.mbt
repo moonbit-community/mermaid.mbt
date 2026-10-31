@@ -139,7 +139,7 @@ pub fn lift_obstacle_hugging_same_side_rails(
       let points = route_of(edge)
       guard middle_rail(points) is Some(rail) else { continue }
       let blockers = blocking_rects_for(edge, rail, real_node_rects)
-      if blockers.length() == 0 {
+      if blockers.is_empty() {
         continue
       }
       let coords = if rail.horizontal {
