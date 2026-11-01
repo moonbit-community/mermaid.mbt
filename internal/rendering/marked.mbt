@@ -54,7 +54,8 @@ fn js_slice(text : String, start : Int32, end : Int32) -> String {
   if start >= end {
     ""
   } else {
-    text.view(start_offset=start, end_offset=end).to_owned()
+    // Bounds are clamped above; JavaScript slices retain raw UTF-16 units.
+    text.unsafe_view(start~, end~).to_owned()
   }
 }
 
